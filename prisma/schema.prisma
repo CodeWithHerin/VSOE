@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Journey {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "Paris to Venice"
+  departure   DateTime
+  arrival     DateTime
+  status      String   // "scheduled", "completed", "cancelled"
+  
+  segments    RouteSegment[]
+  buckets     InventoryBucket[]
+}
+
+model RouteSegment {
+  id          String   @id @default(uuid())
+  journeyId   String
+  journey     Journey  @relation(fields: [journeyId], references: [id])
+  
+  origin      String
+  destination String
+  departure   DateTime
+  arrival     DateTime
+  order       Int      // 0, 1, 2... sequence in journey
+  
+  buckets     InventoryBucket[]
+}
+
+model TrainCar {
+  id          String   @id @default(uuid())
+  name        String   // e.g., "L'Oriental"
+  type        String   // "sleeping", "dining", "bar"
+  
+  cabins      Cabin[]
+}
+
+model Cabin {
+  id          String   @id @default(uuid())
+  carId       String
+  car         TrainCar @relation(fields: [carId], references: [id])
+  
+  number      String   // e.g., "A1"
+  type        String   // "grand_suite", "suite", "historic"
+  capacity    Int
+  
+  buckets     InventoryBucket[]
+}
+
+model InventoryBucket {
+  id          String   @id @default(uuid())
+  
+  journeyId   String
+  journey     Journey  @relation(fields: [journeyId], references: [id])
+  
+  segmentId   String
+  segment     RouteSegment @relation(fields: [segmentId], references: [id])
+  
+  cabinId     String
+  cabin       Cabin    @relation(fields: [cabinId], references: [id])
+  
+  status      String   // "available", "held", "booked", "maintenance"
+  price       Float
+  currency    String   @default("EUR")
+  
+  @@unique([journeyId, segmentId, cabinId])
+}

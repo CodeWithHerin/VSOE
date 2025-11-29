@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --color-vsoe-midnight: #2A3F4E;
+  --color-vsoe-gold: #B8860B;
+  --color-vsoe-steam: #F0F4F8;
+  --color-vsoe-velvet: #77262D;
+
+  --font-serif: var(--font-playfair);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --background: #2A3F4E;
+  --foreground: #F0F4F8;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
