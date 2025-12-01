@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Send, X, MessageSquare, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence, useSpring, useMotionValue } from 'framer-motion';
+import { X, Sparkles, Minimize2, ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Message {
@@ -13,11 +13,12 @@ interface Message {
 export default function ChatWidget() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState<Message[]>([
-        { role: 'assistant', content: "Bonjour. I am the Digital Maître d' of Project Vitesse. How may I assist you with your journey today?" }
+        { role: 'assistant', content: "Bonsoir. I am your Digital Maître d'. How may I curate your journey on the Venice Simplon-Orient-Express today?" }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -25,7 +26,7 @@ export default function ChatWidget() {
 
     useEffect(() => {
         scrollToBottom();
-    }, [messages, isOpen]);
+    }, [messages, isOpen, isLoading]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -51,80 +52,124 @@ export default function ChatWidget() {
             setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
         } catch (error) {
             console.error(error);
-            setMessages(prev => [...prev, { role: 'assistant', content: "I apologize, but I seem to be having trouble connecting to the concierge service." }]);
+            setMessages(prev => [...prev, { role: 'assistant', content: "I apologize, but I seem to be momentarily disconnected from the concierge service. Please try again in a moment." }]);
         } finally {
             setIsLoading(false);
+            // Focus input after sending for better UX
+            setTimeout(() => inputRef.current?.focus(), 100);
         }
     };
 
     return (
-        <div className="fixed bottom-8 right-8 z-50 flex flex-col items-end pointer-events-none">
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end pointer-events-none">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, y: 20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="mb-4 w-96 bg-vsoe-midnight/95 backdrop-blur-md border border-vsoe-gold/30 shadow-2xl rounded-lg overflow-hidden pointer-events-auto"
+                        initial={{ opacity: 0, y: 20, scale: 0.95, rotateX: -5 }}
+                        animate={{ opacity: 1, y: 0, scale: 1, rotateX: 0 }}
+                        exit={{ opacity: 0, y: 20, scale: 0.95, rotateX: -5 }}
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                        className="mb-4 w-[22rem] md:w-[24rem] h-[28rem] md:h-[32rem] bg-vsoe-midnight/90 backdrop-blur-2xl border border-white/10 shadow-2xl rounded-2xl overflow-hidden pointer-events-auto flex flex-col relative"
                     >
+                        {/* Starry Background Effect */}
+                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                            <div className="absolute w-1 h-1 bg-white rounded-full top-10 left-10 opacity-50 animate-pulse" />
+                            <div className="absolute w-0.5 h-0.5 bg-white rounded-full top-20 right-20 opacity-30 animate-pulse delay-75" />
+                            <div className="absolute w-1 h-1 bg-vsoe-gold rounded-full bottom-32 left-1/2 opacity-40 animate-pulse delay-150" />
+                            <div className="absolute w-0.5 h-0.5 bg-white rounded-full bottom-10 right-10 opacity-20 animate-pulse delay-300" />
+                        </div>
+
+                        {/* Noise Overlay */}
+                        <div className="absolute inset-0 bg-noise opacity-10 pointer-events-none z-0" />
+
                         {/* Header */}
-                        <div className="bg-vsoe-midnight border-b border-vsoe-gold/20 p-4 flex justify-between items-center">
-                            <div className="flex items-center gap-2 text-vsoe-gold">
-                                <Sparkles size={18} />
-                                <h3 className="font-serif text-lg tracking-wide">Concierge</h3>
+                        <div className="relative z-10 bg-gradient-to-b from-white/10 to-transparent p-4 flex justify-between items-center border-b border-white/5">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-vsoe-gold/30 to-vsoe-gold/10 flex items-center justify-center border border-vsoe-gold/40 shadow-[0_0_15px_rgba(184,134,11,0.3)]">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-vsoe-gold drop-shadow-md">
+                                        <path d="M12 22L2 4H6L12 15L18 4H22L12 22Z" fill="currentColor" fillOpacity="0.9" />
+                                        <path d="M12 22L2 4H6L12 15L18 4H22L12 22Z" stroke="currentColor" strokeWidth="0.5" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 className="font-serif text-lg tracking-wide text-vsoe-steam">Concierge</h3>
+                                    <p className="text-[10px] uppercase tracking-widest text-vsoe-gold/80">Vitesse AI</p>
+                                </div>
                             </div>
                             <button
                                 onClick={() => setIsOpen(false)}
-                                className="text-vsoe-gold/60 hover:text-vsoe-gold transition-colors"
+                                className="text-white/40 hover:text-white transition-colors p-2 hover:bg-white/5 rounded-full"
                             >
-                                <X size={18} />
+                                <Minimize2 size={16} />
                             </button>
                         </div>
 
                         {/* Messages */}
-                        <div className="h-96 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-vsoe-gold/20">
+                        <div
+                            className="relative z-10 flex-1 min-h-0 overflow-y-auto p-4 space-y-4 scrollbar-thin scrollbar-thumb-vsoe-gold/20 scrollbar-track-transparent overscroll-contain scroll-smooth"
+                            onWheel={(e) => e.stopPropagation()}
+                        >
                             {messages.map((msg, idx) => (
-                                <div
+                                <motion.div
                                     key={idx}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.1 }}
                                     className={cn(
-                                        "max-w-[85%] p-3 rounded-lg text-sm leading-relaxed",
+                                        "max-w-[85%] p-3.5 rounded-2xl text-sm leading-relaxed shadow-lg backdrop-blur-sm",
                                         msg.role === 'user'
-                                            ? "ml-auto bg-vsoe-gold/10 text-vsoe-steam border border-vsoe-gold/20 rounded-br-none"
-                                            : "mr-auto bg-black/20 text-vsoe-steam/90 border border-white/5 rounded-bl-none"
+                                            ? "ml-auto bg-vsoe-gold/90 text-vsoe-midnight font-medium rounded-br-sm border border-vsoe-gold/20"
+                                            : "mr-auto bg-vsoe-midnight/60 text-vsoe-steam/90 border border-white/10 rounded-bl-sm"
                                     )}
                                 >
                                     {msg.content}
-                                </div>
+                                </motion.div>
                             ))}
                             {isLoading && (
-                                <div className="mr-auto bg-black/20 p-3 rounded-lg rounded-bl-none">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="mr-auto bg-vsoe-midnight/60 p-4 rounded-2xl rounded-bl-sm border border-white/10 w-16 h-10 flex items-center justify-center"
+                                >
                                     <div className="flex gap-1">
-                                        <span className="w-1.5 h-1.5 bg-vsoe-gold/50 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                        <span className="w-1.5 h-1.5 bg-vsoe-gold/50 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                        <span className="w-1.5 h-1.5 bg-vsoe-gold/50 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                                        <motion.span
+                                            animate={{ y: [0, -4, 0] }}
+                                            transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                                            className="w-1 h-1 bg-vsoe-gold rounded-full"
+                                        />
+                                        <motion.span
+                                            animate={{ y: [0, -4, 0] }}
+                                            transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                                            className="w-1 h-1 bg-vsoe-gold rounded-full"
+                                        />
+                                        <motion.span
+                                            animate={{ y: [0, -4, 0] }}
+                                            transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                                            className="w-1 h-1 bg-vsoe-gold rounded-full"
+                                        />
                                     </div>
-                                </div>
+                                </motion.div>
                             )}
                             <div ref={messagesEndRef} />
                         </div>
 
                         {/* Input */}
-                        <form onSubmit={handleSubmit} className="p-4 border-t border-vsoe-gold/20 bg-black/20">
-                            <div className="relative">
+                        <form onSubmit={handleSubmit} className="relative z-10 p-4 bg-gradient-to-t from-black/20 to-transparent flex-shrink-0">
+                            <div className="relative group">
                                 <input
+                                    ref={inputRef}
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    placeholder="Ask about availability..."
-                                    className="w-full bg-vsoe-midnight border border-vsoe-gold/30 rounded-md py-2 pl-3 pr-10 text-vsoe-steam placeholder:text-vsoe-steam/30 focus:outline-none focus:border-vsoe-gold/60 transition-colors font-sans text-sm"
+                                    placeholder="Ask about your journey..."
+                                    className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-4 pr-12 text-vsoe-steam placeholder:text-white/20 focus:outline-none focus:border-vsoe-gold/40 focus:bg-white/10 transition-all font-sans text-sm shadow-inner"
                                 />
                                 <button
                                     type="submit"
                                     disabled={isLoading || !input.trim()}
-                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-vsoe-gold hover:text-white disabled:opacity-50 transition-colors"
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 bg-vsoe-gold/10 text-vsoe-gold rounded-lg hover:bg-vsoe-gold hover:text-vsoe-midnight disabled:opacity-30 disabled:hover:bg-transparent disabled:hover:text-vsoe-gold transition-all duration-300"
                                 >
-                                    <Send size={16} />
+                                    <ArrowUp size={16} />
                                 </button>
                             </div>
                         </form>
@@ -133,14 +178,25 @@ export default function ChatWidget() {
             </AnimatePresence>
 
             {/* Toggle Button */}
-            <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className="w-14 h-14 bg-vsoe-gold text-vsoe-midnight rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors pointer-events-auto z-50"
-            >
-                <MessageSquare size={24} />
-            </motion.button>
+            <div className="pointer-events-auto">
+                <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => setIsOpen(!isOpen)}
+                    className={cn(
+                        "w-14 h-14 rounded-full shadow-[0_0_30px_rgba(184,134,11,0.3)] flex items-center justify-center transition-all duration-500 relative group overflow-hidden border border-white/10",
+                        isOpen ? "bg-vsoe-steam text-vsoe-midnight" : "bg-vsoe-midnight/80 backdrop-blur-md text-vsoe-gold"
+                    )}
+                >
+                    <div className="absolute inset-0 bg-vsoe-gold/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out rounded-full" />
+                    {isOpen ? <X size={24} /> : <Sparkles size={24} />}
+                </motion.button>
+            </div>
         </div>
     );
 }
+
+
+
+
+

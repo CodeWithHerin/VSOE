@@ -8,6 +8,7 @@ interface BookingState {
     // Environmental State (Visuals)
     timeOfDay: 'day' | 'golden_hour' | 'midnight';
     interiorLightState: 'off' | 'dim' | 'bright';
+    scrollProgress: number;
 
     // Actions
     selectCabin: (id: string | null) => void;
@@ -20,6 +21,7 @@ export const useBookingStore = create<BookingState>((set) => ({
     currentSegment: 'Paris',
     timeOfDay: 'day',
     interiorLightState: 'off',
+    scrollProgress: 0,
 
     selectCabin: (id) => set((state) => {
         // Side Effect: When cabin is selected, dim lights and switch to night mode for "cozy" feel

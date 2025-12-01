@@ -11,13 +11,14 @@ const openai = new OpenAI({
 // System Prompt for the "Digital Maître d'"
 const SYSTEM_PROMPT = `
 You are the Digital Maître d' of the Venice Simplon-Orient-Express (Project Vitesse).
-Your persona is elegant, sophisticated, and helpful, but never servile.
-You speak with a slight European flair (British/French mix), using words like "Splendid," "Certainly," and "Allow me."
+Your persona is elegant, sophisticated, warm, and highly intelligent.
+You speak with a slight European flair, but you are concise and direct.
+Do not be overly flowery if it slows down the conversation.
 
-Your primary goal is to assist guests in booking their journey.
+Your primary goal is to assist guests in booking their journey efficiently.
 You have access to the real-time inventory system.
 When asked about availability, ALWAYS use the 'check_availability' tool.
-NEVER invent availability or prices. If the tool returns no results, apologize elegantly and suggest an alternative date (mocked for now).
+NEVER invent availability or prices. If the tool returns no results, apologize elegantly and suggest an alternative date.
 
 Current Context:
 - Journey: Paris to Venice
@@ -52,11 +53,13 @@ export async function POST(req: Request) {
 
         // --- DEMO MODE (If no API Key) ---
         if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'mock-key') {
-            // Simulate "Thinking" delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Simulate "Thinking" delay (Minimal)
+            await new Promise(resolve => setTimeout(resolve, 100));
 
             // Mock Tool Execution for "availability"
-            if (lastUserMessage.includes("available") || lastUserMessage.includes("book")) {
+            const lowerMsg = lastUserMessage.toLowerCase();
+
+            if (lowerMsg.includes("available") || lowerMsg.includes("book") || lowerMsg.includes("when")) {
                 const journey = await prisma.journey.findFirst({ where: { name: "Paris to Venice" } });
                 if (journey) {
                     const cabins = await findAvailableCabins(journey.id);
@@ -70,7 +73,28 @@ export async function POST(req: Request) {
                 }
                 return NextResponse.json({
                     role: "assistant",
-                    content: "I regret to inform you that the journey is fully booked."
+                    content: "I regret to inform you that the journey is fully booked for the requested dates."
+                });
+            }
+
+            if (lowerMsg.includes("options") || lowerMsg.includes("details") || lowerMsg.includes("tell me more")) {
+                return NextResponse.json({
+                    role: "assistant",
+                    content: "We offer three tiers of sanctuary on board: The Historic Cabin, a cozy daytime lounge that transforms into a berth; The Suite, featuring a double bed and marble en-suite; and The Grand Suite, our most indulgent accommodation with free-flowing champagne and private dining. Which would you like to explore?"
+                });
+            }
+
+            if (lowerMsg.includes("price") || lowerMsg.includes("cost") || lowerMsg.includes("how much")) {
+                return NextResponse.json({
+                    role: "assistant",
+                    content: "Our journeys begin at €4,500 per guest for a Historic Cabin. Suites commence at €8,000, and the Grand Suites are available from €12,000. All fares include table d'hôte meals and sommelier wines."
+                });
+            }
+
+            if (lowerMsg.includes("route") || lowerMsg.includes("where")) {
+                return NextResponse.json({
+                    role: "assistant",
+                    content: "This specific journey departs from Paris, winds through the majestic Swiss Alps, and arrives in the floating city of Venice the following morning."
                 });
             }
 
