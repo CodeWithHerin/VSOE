@@ -1,45 +1,45 @@
 export const suites = [
     {
         id: 'grand-suite',
-        title: 'Grand Suite',
-        description: 'The ultimate in luxury. Each Grand Suite is a masterpiece of Art Deco design, featuring a private bathroom with shower, a double bed, and a spacious living area. Includes 24-hour butler service and free-flowing champagne.',
+        name: 'Grand Suites',
+        description: 'Experience the height of luxury in our spacious Grand Suites. Featuring a private bathroom with shower, double bed, and a living area, these suites offer an unparalleled journey.',
         features: [
-            'Private en-suite bathroom with shower',
-            'Double bed (convertible to twin)',
+            'Private bathroom with shower',
+            'Double bed',
             'Spacious living area',
-            '24-hour butler service',
+            '24-hour steward service',
             'Free-flowing champagne',
-            'Private dining in suite'
+            'Private dining'
         ],
-        image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2774&auto=format&fit=crop', // Placeholder for Grand Suite
-        price: 'From £10,000 per person'
+        image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2670&auto=format&fit=crop', // Luxury Bedroom
+        price: 'From £8,400 per person'
     },
     {
         id: 'suite',
-        title: 'Suite',
-        description: 'Spacious and elegant, our Suites offer a private sanctuary with a double or twin bed configuration and a private marble en-suite bathroom.',
+        name: 'Suites',
+        description: 'Our Suites offer a sanctuary of style and comfort. By day, relax in your private lounge; by night, the space transforms into a cosy bedroom with twin or double beds.',
         features: [
-            'Private en-suite bathroom',
-            'Double or twin bed configuration',
-            'Daytime lounge configuration',
-            'Complimentary amenities',
-            'Bathrobes and slippers'
+            'Private marble ensuite bathroom',
+            'Twin or double bed configuration',
+            'Lounge area',
+            '24-hour steward service',
+            'Complimentary kimono and slippers'
         ],
-        image: 'https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2670&auto=format&fit=crop', // Placeholder for Suite
-        price: 'From £6,500 per person'
+        image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2774&auto=format&fit=crop', // Elegant Room
+        price: 'From £4,500 per person'
     },
     {
         id: 'historic-cabin',
-        title: 'Historic Cabin',
-        description: 'Step back in time in our original 1920s cabins. A comfortable lounge by day transforms into a cozy upper and lower berth bedroom by night.',
+        name: 'Historic Cabin',
+        description: 'Step back in time in our authentic Historic Cabins. These intimate spaces feature a banquette sofa by day and upper and lower berths by night, with a washbasin.',
         features: [
+            'Banquette sofa converting to berths',
             'Washbasin with hot and cold water',
-            'Convertible banquette sofa',
-            'Upper and lower berths at night',
-            'Shared mosaic-tiled lavatories',
-            'Authentic Art Deco marquetry'
+            'Shared mosaic-tiled toilets',
+            '24-hour steward service',
+            'Authentic 1920s craftsmanship'
         ],
-        image: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop', // Placeholder for Historic Cabin
-        price: 'From £3,500 per person'
+        image: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop', // Classic Interior
+        price: 'From £3,530 per person'
     }
 ];

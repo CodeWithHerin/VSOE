@@ -16,6 +16,7 @@ model Journey {
   
   segments    RouteSegment[]
   buckets     InventoryBucket[]
+  bookings    Booking[]
 }
 
 model RouteSegment {
@@ -50,6 +51,7 @@ model Cabin {
   capacity    Int
   
   buckets     InventoryBucket[]
+  passengers  Passenger[]
 }
 
 model InventoryBucket {
@@ -69,4 +71,40 @@ model InventoryBucket {
   currency    String   @default("EUR")
   
   @@unique([journeyId, segmentId, cabinId])
+}
+
+model Booking {
+  id          String   @id @default(uuid())
+  createdAt   DateTime @default(now())
+  
+  // Contact Info
+  firstName   String
+  lastName    String
+  email       String
+  phone       String?
+  
+  // Journey Details
+  journeyId   String
+  journey     Journey  @relation(fields: [journeyId], references: [id])
+  
+  // Financials
+  totalPrice  Float
+  currency    String   @default("EUR")
+  status      String   // "pending", "confirmed", "cancelled"
+  
+  // Relations
+  passengers  Passenger[]
+}
+
+model Passenger {
+  id          String   @id @default(uuid())
+  bookingId   String
+  booking     Booking  @relation(fields: [bookingId], references: [id])
+  
+  firstName   String
+  lastName    String
+  passport    String?
+  
+  cabinId     String
+  cabin       Cabin    @relation(fields: [cabinId], references: [id])
 }

@@ -23,7 +23,7 @@ export default function SuitesSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
                     >
-                        Grand Suites
+                        Sanctuaries of Style
                     </motion.h2>
                     <motion.p
                         className="text-vsoe-cream/70 text-lg font-light leading-relaxed mb-10 max-w-md font-sans"
@@ -32,7 +32,8 @@ export default function SuitesSection() {
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 }}
                     >
-                        Immerse yourself in Art Deco grandeur. New heights of luxury with private en-suite bathrooms, free-flowing champagne, and a personal steward.
+                        Restored 1920s cabins that blend history with modern comfort.
+                        From the intimate Historic Cabins to the opulent Grand Suites, every detail tells a story.
                     </motion.p>
                     <motion.button
                         className="px-8 py-4 border border-vsoe-cream/30 text-vsoe-cream text-xs tracking-[0.2em] uppercase hover:bg-vsoe-cream hover:text-vsoe-blue transition-all interactive-area font-sans"

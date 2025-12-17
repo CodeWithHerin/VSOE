@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
-import ChatWidget from "@/components/ui/ChatWidget";
 import Navbar from "@/components/layout/Navbar";
 import CustomCursor from "@/components/ui/CustomCursor";
 import Preloader from "@/components/ui/Preloader";
+import AudioAmbience from "@/components/layout/AudioAmbience";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import CookieConsent from '@/components/ui/CookieConsent';
+import BookTheScene from '@/components/ui/BookTheScene';
+import AIConcierge from '@/components/ui/AIConcierge';
+import { AudioProvider } from '@/components/audio/AudioContext';
+import FloatingBackButton from '@/components/ui/FloatingBackButton';
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -45,11 +51,18 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
-        <Preloader />
-        <CustomCursor />
-        <Navbar />
-        {children}
-        <ChatWidget />
+        <AudioProvider>
+          {/* <AudioAmbience /> */}
+          {/* <Preloader /> */}
+          <SmoothScroll />
+          <CookieConsent />
+          <BookTheScene />
+          <AIConcierge />
+          <CustomCursor />
+          <Navbar />
+          {children}
+          <FloatingBackButton />
+        </AudioProvider>
       </body>
     </html>
   );

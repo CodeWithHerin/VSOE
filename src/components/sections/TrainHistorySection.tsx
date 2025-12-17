@@ -1,0 +1,91 @@
+'use client';
+
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import Image from 'next/image';
+
+export default function TrainHistorySection() {
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "end start"]
+    });
+
+    const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+
+    return (
+        <section ref={containerRef} className="relative py-32 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
+            <div className="absolute inset-0 opacity-10 pointer-events-none">
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-50" />
+            </div>
+
+            <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-24 items-center">
+                {/* Content */}
+                <motion.div
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="space-y-8 relative z-10"
+                >
+                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">The Legend</span>
+                    <h2 className="text-5xl md:text-6xl font-serif leading-tight">
+                        Art Deco <br /> <span className="text-vsoe-gold">Masterpiece</span>
+                    </h2>
+                    <p className="text-white/70 leading-relaxed font-sans text-lg">
+                        Step into a world where time stands still. The Venice Simplon-Orient-Express is not merely a train, but a rolling museum of 1920s elegance.
+                        Each carriage has been lovingly restored by expert craftsmen to its original glory, featuring intricate marquetry, polished brass, and sumptuous upholstery.
+                    </p>
+                    <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
+                        <div>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">17</span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">Restored Carriages</span>
+                        </div>
+                        <div>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">1920s</span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">Original Era</span>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Visuals */}
+                <div className="relative h-[600px] grid grid-cols-2 gap-8">
+                    {/* Image 1: Detail (Parallax Up) */}
+                    <motion.div
+                        style={{ y: y1 }}
+                        className="relative h-[80%] mt-auto self-end group"
+                    >
+                        <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105" />
+                        <div className="relative h-full w-full overflow-hidden">
+                            <Image
+                                src="https://images.unsplash.com/photo-1550586678-f7225f03c44b?q=80&w=1600&auto=format&fit=crop" // Replaced broken image with "Gold/Detail" texture
+                                alt="Art Deco Detail"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-vsoe-gold/10 mix-blend-overlay" />
+                        </div>
+                    </motion.div>
+
+                    {/* Image 2: Interior (Parallax Down) */}
+                    <motion.div
+                        style={{ y: y2 }}
+                        className="relative h-[80%] group"
+                    >
+                        <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105 delay-75" />
+                        <div className="relative h-full w-full overflow-hidden">
+                            <Image
+                                src="https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?q=80&w=1600&auto=format&fit=crop"
+                                alt="Interior"
+                                fill
+                                className="object-cover transition-transform duration-700 group-hover:scale-110"
+                            />
+                            <div className="absolute inset-0 bg-vsoe-gold/10 mix-blend-overlay" />
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        </section>
+    );
+}

@@ -6,11 +6,11 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
-    
+
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
-    
-    const springConfig = { damping: 25, stiffness: 700 };
+
+    const springConfig = { damping: 40, stiffness: 250, mass: 0.8 };
     const cursorXSpring = useSpring(cursorX, springConfig);
     const cursorYSpring = useSpring(cursorY, springConfig);
 
@@ -25,7 +25,7 @@ export default function CustomCursor() {
         const handleMouseLeave = () => setIsHovering(false);
 
         window.addEventListener('mousemove', moveCursor);
-        
+
         // Add hover listeners to interactive elements
         const interactiveElements = document.querySelectorAll('a, button, .interactive-area');
         interactiveElements.forEach(el => {
@@ -84,11 +84,13 @@ export default function CustomCursor() {
                     y: "-50%"
                 }}
                 animate={{
-                    width: isHovering ? 80 : 40,
-                    height: isHovering ? 80 : 40,
-                    backgroundColor: isHovering ? "rgba(197, 160, 89, 0.1)" : "transparent",
-                    borderColor: isHovering ? "transparent" : "#c5a059",
-                    backdropFilter: isHovering ? "blur(2px)" : "none"
+                    width: isHovering ? 60 : 32,
+                    height: isHovering ? 60 : 32,
+                    backgroundColor: "transparent",
+                    borderColor: "#c5a059",
+                    borderWidth: isHovering ? "1px" : "1px",
+                    opacity: isHovering ? 1 : 0.5,
+                    scale: isHovering ? 1.1 : 1
                 }}
                 transition={{
                     type: "spring",

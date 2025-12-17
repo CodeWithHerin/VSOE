@@ -1,80 +1,102 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { Train, Clock, MapPin, ArrowRight, Calendar } from 'lucide-react';
+import Link from 'next/link';
+
+const JOURNEYS = [
+    {
+        id: 'paris-venice',
+        title: "The Classic Route",
+        route: "Paris → Venice",
+        duration: "1 Night",
+        image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=2566&auto=format&fit=crop",
+        description: "The original journey. Depart Paris in the late afternoon and awake to the scenery of the Swiss Alps.",
+        price: "From £3,530",
+        dates: "Mar 2025 - Nov 2025"
+    },
+    {
+        id: 'paris-istanbul',
+        title: "The Gateway",
+        route: "Paris → Istanbul",
+        duration: "5 Nights",
+        image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop",
+        description: "A historic transcontinental odyssey. Only runs once a year in late August.",
+        price: "From £17,500",
+        dates: "August 2025 Only"
+    },
+    {
+        id: 'venice-paris',
+        title: "The Italian",
+        route: "Venice → Paris",
+        duration: "1 Night",
+        image: "https://images.unsplash.com/photo-1499856871940-a09d43a6bfaf?q=80&w=2568&auto=format&fit=crop",
+        description: "Return from the floating city in style. Brunch in the Dolomites, tea in France.",
+        price: "From £3,530",
+        dates: "Mar 2025 - Nov 2025"
+    }
+];
 
 export default function GrandTourSection() {
-    const targetRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: targetRef,
-    });
-
-    const x = useTransform(scrollYProgress, [0, 1], ["20%", "-80%"]);
-
     return (
-        <section ref={targetRef} id="grand-tour" className="relative h-[300vh] bg-vsoe-cream text-vsoe-blue">
-            <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
-                {/* Section Header */}
-                <div className="absolute top-12 left-6 md:left-20 z-10">
-                    <span className="text-vsoe-blue/50 text-xs font-bold tracking-[0.3em] uppercase block mb-2 font-sans">The Journey</span>
-                    <h2 className="text-4xl md:text-5xl text-vsoe-blue font-serif">Europe Unfolded</h2>
-                    <p className="text-[10px] uppercase tracking-widest mt-2 animate-pulse text-vsoe-gold font-sans">Scroll to Travel</p>
-                </div>
+        <section className="w-full bg-vsoe-midnight py-12 relative z-20">
+            <div className="container mx-auto px-6 md:px-12">
 
-                {/* Horizontal Scroll Track */}
-                <motion.div style={{ x }} className="flex items-center gap-32 pl-[20vw] h-full">
-                    {/* Location 1: London */}
-                    <div className="w-[80vw] md:w-[40vw] flex-shrink-0 relative group interactive-area">
-                        <div className="aspect-[16/10] overflow-hidden mb-8 relative">
-                            <img
-                                src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop"
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                alt="London"
-                            />
-                            <div className="absolute bottom-0 left-0 bg-vsoe-blue text-vsoe-cream px-6 py-4">
-                                <span className="font-display text-xl">01</span>
+                {/* Cards Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {JOURNEYS.map((journey, index) => (
+                        <motion.div
+                            key={journey.id}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            className="group relative bg-[#0a0f1c] border border-vsoe-gold/20 hover:border-vsoe-gold/60 transition-colors duration-500 overflow-hidden"
+                        >
+                            {/* Image with Hover Effect */}
+                            <div className="aspect-[16/10] overflow-hidden relative">
+                                <img
+                                    src={journey.image}
+                                    alt={journey.title}
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1c] to-transparent" />
+
+                                {/* Route Badge */}
+                                <div className="absolute top-4 left-4 bg-vsoe-midnight/90 backdrop-blur border border-vsoe-gold/50 px-3 py-1 text-[10px] uppercase tracking-widest text-vsoe-gold flex items-center gap-2">
+                                    <Train size={12} /> {journey.route}
+                                </div>
                             </div>
-                        </div>
-                        <h3 className="text-4xl md:text-6xl mb-2 font-serif">London</h3>
-                    </div>
 
-                    {/* Location 2: Paris */}
-                    <div className="w-[80vw] md:w-[40vw] flex-shrink-0 relative group interactive-area">
-                        <div className="aspect-[16/10] overflow-hidden mb-8 relative">
-                            <img
-                                src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop"
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                alt="Paris"
-                            />
-                            <div className="absolute bottom-0 left-0 bg-vsoe-blue text-vsoe-cream px-6 py-4">
-                                <span className="font-display text-xl">02</span>
+                            {/* Content */}
+                            <div className="p-8">
+                                <h3 className="text-2xl font-serif text-vsoe-cream mb-2 group-hover:text-vsoe-gold transition-colors">{journey.title}</h3>
+                                <p className="text-white/60 text-sm font-sans mb-6 leading-relaxed border-b border-white/5 pb-6">
+                                    {journey.description}
+                                </p>
+
+                                {/* Meta details */}
+                                <div className="grid grid-cols-2 gap-4 mb-8">
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock size={10} /> Duration</span>
+                                        <span className="text-sm text-vsoe-cream">{journey.duration}</span>
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar size={10} /> Dates</span>
+                                        <span className="text-sm text-vsoe-cream">{journey.dates}</span>
+                                    </div>
+                                </div>
+
+                                {/* Action */}
+                                <div className="flex items-center justify-between">
+                                    <span className="text-vsoe-gold font-serif text-lg">{journey.price}</span>
+                                    <Link href={`/book?journey=${journey.id}`} className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.2em] text-white hover:text-vsoe-gold transition-colors">
+                                        Reserve <ArrowRight size={14} />
+                                    </Link>
+                                </div>
                             </div>
-                        </div>
-                        <h3 className="text-4xl md:text-6xl mb-2 font-serif">Paris</h3>
-                    </div>
-
-                    {/* Location 3: Venice */}
-                    <div className="w-[80vw] md:w-[40vw] flex-shrink-0 relative group interactive-area">
-                        <div className="aspect-[16/10] overflow-hidden mb-8 relative">
-                            <img
-                                src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop"
-                                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                                alt="Venice"
-                            />
-                            <div className="absolute bottom-0 left-0 bg-vsoe-blue text-vsoe-cream px-6 py-4">
-                                <span className="font-display text-xl">03</span>
-                            </div>
-                        </div>
-                        <h3 className="text-4xl md:text-6xl mb-2 font-serif">Venice</h3>
-                    </div>
-                </motion.div>
-
-                {/* Progress Bar */}
-                <div className="absolute bottom-20 left-0 w-full h-[1px] bg-vsoe-blue/10">
-                    <motion.div
-                        className="h-[2px] bg-vsoe-blue absolute top-0 left-0"
-                        style={{ scaleX: scrollYProgress, originX: 0 }}
-                    />
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>

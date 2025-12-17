@@ -1,127 +1,74 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
 
-interface HeroSectionProps {
-    id?: string;
-    title?: React.ReactNode;
-    subtitle?: string;
-    backgroundImage?: string;
-    videoSrc?: string;
-    alignment?: 'center' | 'left' | 'right';
-    children?: React.ReactNode;
-    className?: string;
-}
-
-export default function HeroSection({
-    id,
-    backgroundImage,
-    videoSrc,
-    className
-}: HeroSectionProps) {
-    const [videoError, setVideoError] = React.useState(false);
-
+export default function HeroSection() {
     return (
-        <section
-            id={id}
-            className={cn(
-                "relative min-h-screen w-full flex flex-col justify-center items-center overflow-hidden",
-                className
-            )}
-        >
-            {/* Background Layer */}
+        <section className="relative h-screen w-full overflow-hidden bg-vsoe-midnight">
+            {/* Video Background */}
             <div className="absolute inset-0 z-0">
-                {videoSrc && !videoError ? (
-                    <div className="w-full h-full">
-                        <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="w-full h-full object-cover opacity-60 filter contrast-125 saturate-50"
-                            onError={() => setVideoError(true)}
-                        >
-                            <source src={videoSrc} type="video/mp4" />
-                        </video>
-                    </div>
-                ) : (
-                    <motion.div
-                        initial={{ scale: 1.05 }}
-                        animate={{ scale: 1 }}
-                        transition={{ duration: 20, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
-                        className="w-full h-full"
-                    >
-                        <img
-                            src={backgroundImage || "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2784&auto=format&fit=crop"}
-                            alt="Hero Background"
-                            className="w-full h-full object-cover opacity-60 filter contrast-125 saturate-50"
-                        />
-                    </motion.div>
-                )}
-                <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/20 to-transparent" />
-            </div>
-
-            {/* Content Layer */}
-            <div className="relative z-10 text-center px-4 w-full max-w-7xl mx-auto">
-                {/* Vertical Line */}
-                <motion.div
-                    className="w-[1px] h-20 bg-vsoe-gold mx-auto mb-8 shadow-[0_0_15px_#c5a059]"
-                    initial={{ scaleY: 0 }}
-                    animate={{ scaleY: 1 }}
-                    transition={{ duration: 1, ease: "circOut", delay: 4 }} // Delay for preloader
-                    style={{ originY: 0 }}
-                />
-
-                {/* Split Text Title */}
-                <div className="overflow-hidden mb-2">
-                    <motion.h1
-                        className="text-[12vw] leading-[0.85] text-vsoe-cream mix-blend-overlay font-serif"
-                        initial={{ opacity: 0, y: "100%" }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.5, ease: "circOut", delay: 4.5 }}
-                    >
-                        LEGENDARY
-                    </motion.h1>
-                </div>
-                <div className="overflow-hidden">
-                    <motion.h1
-                        className="text-[12vw] leading-[0.85] text-vsoe-gold italic font-serif"
-                        initial={{ opacity: 0, y: "100%" }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1.5, ease: "circOut", delay: 5.2 }}
-                    >
-                        JOURNEYS
-                    </motion.h1>
-                </div>
-
-                {/* Subtitle */}
-                <motion.p
-                    className="mt-8 text-vsoe-cream/80 text-xs md:text-sm tracking-[0.3em] uppercase font-sans"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1, delay: 6 }}
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    poster="https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2784&auto=format&fit=crop"
+                    className="h-full w-full object-cover opacity-60 scale-105"
                 >
-                    Est. 1982 • The Golden Age of Travel
-                </motion.p>
+                    <source src="https://cdn.coverr.co/videos/coverr-train-in-the-snow-4626/1080p.mp4" type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/40" />
             </div>
 
-            {/* Explore Button */}
+            {/* Editorial Layout */}
+            <div className="relative z-10 h-full max-w-[1800px] mx-auto px-6 md:px-12 grid grid-cols-12 items-center">
+
+                {/* Left Column: Main Title */}
+                <div className="col-span-12 md:col-span-8 pt-20">
+                    <motion.div
+                        initial={{ opacity: 0, x: -50 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                        <span className="block text-vsoe-gold text-sm font-bold tracking-[0.4em] uppercase mb-6 pl-2 border-l-2 border-vsoe-gold">
+                            The Venice Simplon-Orient-Express
+                        </span>
+                        <h1 className="text-7xl md:text-[9rem] leading-[0.9] font-serif text-vsoe-cream mix-blend-overlay">
+                            TIMELESS
+                            <br />
+                            <span className="italic font-light ml-24">ELEGANCE</span>
+                        </h1>
+                    </motion.div>
+                </div>
+
+                {/* Right Column: Floating Card & CTA */}
+                <div className="col-span-12 md:col-span-4 flex flex-col justify-end h-full pb-32">
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                        className="bg-white/5 backdrop-blur-md border border-white/10 p-8 border-l-4 border-l-vsoe-gold"
+                    >
+                        <p className="text-vsoe-cream/80 font-sans text-lg leading-relaxed mb-8">
+                            A work of art in itself and a true Art Deco icon, the legendary train offers one of the most celebrated and romantic journeys in the world.
+                        </p>
+                        <button className="group flex items-center gap-4 text-vsoe-gold uppercase tracking-widest text-xs font-bold hover:text-white transition-colors">
+                            <span>Discover the Legend</span>
+                            <div className="w-12 h-[1px] bg-vsoe-gold group-hover:w-20 transition-all duration-300" />
+                        </button>
+                    </motion.div>
+                </div>
+            </div>
+
+            {/* Scroll Indicator */}
             <motion.div
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 interactive-area group cursor-pointer"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 7 }}
+                transition={{ delay: 1.5 }}
+                className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
             >
-                <span className="text-[10px] tracking-[0.3em] text-vsoe-cream/70 uppercase group-hover:text-vsoe-gold transition-colors font-sans">Explore</span>
-                <div className="w-[1px] h-16 bg-white/20 overflow-hidden relative">
-                    <motion.div
-                        className="absolute top-0 left-0 w-full h-full bg-vsoe-gold"
-                        animate={{ y: ["-100%", "100%"] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                    />
-                </div>
+                <span className="text-[10px] text-vsoe-gold uppercase tracking-widest writing-vertical-rl rotate-180">Scroll</span>
+                <div className="w-[1px] h-16 bg-gradient-to-b from-vsoe-gold to-transparent" />
             </motion.div>
         </section>
     );
