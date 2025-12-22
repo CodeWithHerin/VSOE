@@ -51,10 +51,8 @@ const RainParticles = ({ count = 2000 }) => {
         <points ref={mesh}>
             <bufferGeometry>
                 <bufferAttribute
-                    attach="attributes-position"
-                    count={count}
-                    array={positions}
-                    itemSize={3}
+                    attach="attributes-position" // @ts-ignore
+                    args={[positions, 3]}
                 />
             </bufferGeometry>
             <pointsMaterial
