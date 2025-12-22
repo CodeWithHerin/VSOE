@@ -11,7 +11,7 @@ const Marquee = dynamic(() => import('@/components/ui/Marquee'), { ssr: false })
 const TrainHistorySection = dynamic(() => import('@/components/sections/TrainHistorySection'));
 const RouteExperience = dynamic(() => import('@/components/sections/RouteExperience'));
 const JournalSection = dynamic(() => import('@/components/sections/JournalSection'));
-const SuitesSection = dynamic(() => import('@/components/sections/SuitesSection'));
+const GrandSuitesExperience = dynamic(() => import('@/components/sections/GrandSuitesExperience'));
 const DiningSection = dynamic(() => import('@/components/sections/DiningSection'));
 
 export default function Home() {
@@ -25,12 +25,17 @@ export default function Home() {
     switch (topInterest) {
       case 'gastronomy':
         return {
-          video: "https://cdn.coverr.co/videos/coverr-pouring-wine-in-restaurant-5362/1080p.mp4",
+          // video: "https://cdn.coverr.co/videos/coverr-pouring-wine-in-restaurant-5362/1080p.mp4",
+          // Override to Train video for consistency and reliability
+          // video: "https://videos.pexels.com/video-files/2883395/2883395-hd_1920_1080_30fps.mp4",
+          // Official VSOE Render (High Performance CDN)
+          video: "https://videos.ctfassets.net/txhaodyqr481/6g7G1G8Xy8y84s8o4kO6yS/09c316715f36611585c531d0537d8051/belmond-vsoe-hero.mp4",
           subtitle: "Taste the Extraordinary"
         };
       default:
         return {
-          video: "https://cdn.coverr.co/videos/coverr-train-in-the-snow-4626/1080p.mp4", // Restored original video as it was distinct
+          // Standard Cinematic Train Video (Westminster/London vibe)
+          video: "https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4",
           subtitle: "Beyond the Golden Age"
         };
     }
@@ -40,12 +45,15 @@ export default function Home() {
 
   return (
     <main className="relative w-full bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-      <Preloader />
+      {/* <Preloader /> */}
 
       {/* 1. The Dream: Hero Section */}
       <HeroSection
-      // Cinematic Fast-Forward Train Journey
-      // videoSrc={content.video} // Note: HeroSection handles its own video internally now, simplified prop usage.
+        // Cinematic Fast-Forward Train Journey: Westminster/Travel vibe matching the map
+        videoSrc="https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4"
+        backgroundImage="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop"
+        title="Venice Simplon-Orient-Express"
+        subtitle={content.subtitle}
       />
 
       {/* 2. The Legend: History & Context */}
@@ -55,7 +63,7 @@ export default function Home() {
       <RouteExperience />
 
       {/* 4. The Experience: Suites (Sanctuaries) */}
-      <SuitesSection />
+      <GrandSuitesExperience />
 
       {/* 5. The Experience: Dining (Gastronomy) */}
       <DiningSection />

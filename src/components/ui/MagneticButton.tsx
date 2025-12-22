@@ -13,16 +13,21 @@ export default function MagneticButton({ children, className = "", onClick }: Ma
     const ref = useRef<HTMLDivElement>(null);
     const [position, setPosition] = useState({ x: 0, y: 0 });
 
-    const handleMouse = (e: React.MouseEvent) => {
+    const mouseMove = (e: React.MouseEvent) => {
         const { clientX, clientY } = e;
-        const { height, width, left, top } = ref.current!.getBoundingClientRect();
-        const middleX = clientX - (left + width / 2);
-        const middleY = clientY - (top + height / 2);
+        const { width, height, left, top } = ref.current!.getBoundingClientRect();
+        // Calculate center
+        const centerX = left + width / 2;
+        const centerY = top + height / 2;
 
-        setPosition({ x: middleX * 0.15, y: middleY * 0.15 });
+        // Calculate distance from center (increased strength for better 'stick')
+        const x = (clientX - centerX) * 0.35;
+        const y = (clientY - centerY) * 0.35;
+
+        setPosition({ x, y });
     };
 
-    const reset = () => {
+    const mouseLeave = () => {
         setPosition({ x: 0, y: 0 });
     };
 
@@ -31,8 +36,8 @@ export default function MagneticButton({ children, className = "", onClick }: Ma
     return (
         <motion.div
             ref={ref}
-            onMouseMove={handleMouse}
-            onMouseLeave={reset}
+            onMouseMove={mouseMove}
+            onMouseLeave={mouseLeave}
             animate={{ x, y }}
             transition={{ type: "spring", stiffness: 150, damping: 15, mass: 0.1 }}
             className={`cursor-pointer ${className}`}

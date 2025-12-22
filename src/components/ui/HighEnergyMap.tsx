@@ -8,33 +8,33 @@ const LOCATIONS = [
     {
         id: 'london',
         name: 'London',
-        x: 20, y: 30,
+        x: 28, y: 38,
         href: '/destinations',
-        video: 'https://cdn.coverr.co/videos/coverr-london-eye-time-lapse-4622/1080p.mp4',
+        video: 'https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4', // Westminster / Big Ben
         description: 'The Departure'
     },
     {
         id: 'paris',
         name: 'Paris',
-        x: 35, y: 45,
+        x: 36, y: 50,
         href: '/destinations/paris-venice',
-        video: 'https://cdn.coverr.co/videos/coverr-eiffel-tower-at-night-4623/1080p.mp4',
+        video: 'https://videos.pexels.com/video-files/2034909/2034909-hd_1920_1080_30fps.mp4', // Eiffel Tower
         description: 'City of Light'
     },
     {
         id: 'venice',
         name: 'Venice',
-        x: 55, y: 65,
+        x: 50, y: 65,
         href: '/destinations/paris-venice',
-        video: 'https://cdn.coverr.co/videos/coverr-venice-canals-4624/1080p.mp4',
+        video: 'https://videos.pexels.com/video-files/4456997/4456997-hd_1920_1080_25fps.mp4', // Venice Canal
         description: 'The Arrival'
     },
     {
         id: 'istanbul',
         name: 'Istanbul',
-        x: 85, y: 70,
+        x: 82, y: 75,
         href: '/destinations/paris-istanbul',
-        video: 'https://cdn.coverr.co/videos/coverr-istanbul-bosphorus-4625/1080p.mp4',
+        video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Istanbul
         description: 'The Gateway'
     }
 ];
@@ -43,59 +43,84 @@ export default function HighEnergyMap() {
     const [activeLocation, setActiveLocation] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // 3D Tilt Logic
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-    const rotateX = useTransform(y, [-0.5, 0.5], [10, -10]); // Reduced tilt for better usability
-    const rotateY = useTransform(x, [-0.5, 0.5], [-10, 10]);
 
-    // Smooth physics
-    const springConfig = { damping: 25, stiffness: 120 };
-    const springRotateX = useSpring(rotateX, springConfig);
-    const springRotateY = useSpring(rotateY, springConfig);
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const width = rect.width;
-        const height = rect.height;
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-        const xPct = (mouseX / width) - 0.5;
-        const yPct = (mouseY / height) - 0.5;
-        x.set(xPct);
-        y.set(yPct);
-    };
+    // Removed 3D Tilt Logic per user request ("remove flexing")
 
+    // Smooth physics (kept for potential future parallax if needed, but unused for tilt now)
+
+    // Simplified mouse handler for just tracking active state if needed, or largely static
     const handleMouseLeave = () => {
-        x.set(0);
-        y.set(0);
         setActiveLocation(null);
     };
 
     return (
-        <section className="py-0 md:py-12 bg-vsoe-midnight perspective-1000 overflow-hidden relative z-10 w-full flex justify-center">
-            {/* Main Map Container */}
+        <section className="py-0 md:py-24 bg-vsoe-midnight relative z-10 w-full flex justify-center overflow-hidden">
+
+            {/* Art Deco Decorative Background Pattern */}
+            <div className="absolute inset-0 opacity-5 pointer-events-none">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-vsoe-gold via-transparent to-transparent" />
+                <div className="w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+            </div>
+
+            {/* Main Map Container - Static, no 3D Tilt */}
             <motion.div
                 ref={containerRef}
-                onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
-                style={{
-                    rotateX: springRotateX,
-                    rotateY: springRotateY,
-                    transformStyle: "preserve-3d"
-                }}
-                className="relative w-full max-w-[90vw] aspect-[16/10] md:aspect-[21/9] bg-[#0a0f1c] rounded-sm border border-vsoe-gold/10 shadow-[0_0_100px_rgba(0,0,0,0.5)] group overflow-hidden cursor-crosshair"
+                className="relative w-full max-w-6xl aspect-[16/9] md:aspect-[21/9] bg-[#0a0f1c] shadow-2xl group overflow-hidden select-none"
             >
+                {/* --- Art Deco Frame (The "Extra Ordinary" Design) --- */}
+                <div className="absolute inset-0 z-50 pointer-events-none border-[12px] border-vsoe-midnight">
+                    {/* Inner Gold Border */}
+                    <div className="absolute inset-0 border border-vsoe-gold/30 w-full h-full" />
+                    <div className="absolute inset-2 border border-vsoe-gold/10 w-[calc(100%-16px)] h-[calc(100%-16px)]" />
+
+                    {/* Ornamental Corners */}
+                    <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-vsoe-gold" />
+                    <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-vsoe-gold" />
+                    <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-vsoe-gold" />
+                    <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-vsoe-gold" />
+
+                    {/* Mid-point Accents */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-[2px] bg-vsoe-gold" />
+                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-[2px] bg-vsoe-gold" />
+                </div>
                 {/* --- 1. Background Layers --- */}
-                {/* Vintage Map Texture */}
-                <div className="absolute inset-0 opacity-30 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png')] bg-cover bg-[center_top_30%] grayscale mix-blend-overlay [transform:translateZ(-60px)]" />
-                {/* Tech Grid */}
-                <div className="absolute inset-0 bg-[linear-gradient(rgba(197,160,89,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(197,160,89,0.03)_1px,transparent_1px)] bg-[size:60px_60px] [transform:translateZ(-50px)]" />
+
+                {/* Dynamic Video Background Layer */}
+                <div className="absolute inset-0 z-0 pointer-events-none">
+                    <AnimatePresence mode="popLayout">
+                        {activeLocation && (
+                            <motion.div
+                                key={activeLocation}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 0.6 }} // Subtle video
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.8 }}
+                                className="absolute inset-0"
+                            >
+                                <video
+                                    className="w-full h-full object-cover opacity-50"
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    src={LOCATIONS.find(l => l.id === activeLocation)?.video}
+                                />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </div>
+
+                {/* Minimalist 'Official' Style Background - Dark Navy + Subtle Vector Outline */}
+                {/* Replaces the 'Relief Map' which was too scientific/colorful */}
+                <div className="absolute inset-0 bg-[#050B14]" />
+                <div className="absolute inset-0 opacity-20 bg-[url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/World_map_blank_without_borders.svg/2000px-World_map_blank_without_borders.svg.png')] bg-cover bg-[center_top_30%] invert filter brightness-200" />
+
+                {/* Tech Grid - Keeping for subtle texture but making it more 'Art Deco' gold */}
+                <div className="absolute inset-0 bg-[linear-gradient(rgba(197,160,89,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(197,160,89,0.05)_1px,transparent_1px)] bg-[size:40px_40px] [transform:translateZ(-50px)]" />
                 {/* Vignette */}
-                <div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 40%, #0a0f1c 100%) pointer-events-none z-10" />
-
-
+                <div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 20%, #0a0f1c 90%) pointer-events-none z-10" />
                 {/* --- 2. The Path (Neon) --- */}
                 <svg className="absolute inset-0 w-full h-full pointer-events-none [transform:translateZ(20px)] opacity-50">
                     <defs>
@@ -105,135 +130,131 @@ export default function HighEnergyMap() {
                         </filter>
                     </defs>
                     <motion.path
-                        d="M 20% 30% C 25% 35%, 30% 40%, 35% 45% S 45% 55%, 55% 65% S 70% 68%, 85% 70%"
+                        d="M 28% 38% C 32% 44%, 34% 48%, 36% 50% S 44% 60%, 50% 65% S 66% 72%, 82% 75%"
                         fill="none"
                         stroke="#C5A059"
-                        strokeWidth="1.5"
-                        filter="url(#glow)"
+                        strokeWidth="1" // Thinner, more elegant
+                        strokeOpacity="0.8"
+                        // filter="url(#glow)" // Removed for performance
                         initial={{ pathLength: 0 }}
                         whileInView={{ pathLength: 1 }}
                         transition={{ duration: 2.5, ease: "easeInOut" }}
                     />
-                    {/* Traveling Dot */}
-                    <motion.circle r="2" fill="#fff" filter="url(#glow)">
+                    {/* Traveling Dot (Gold) */}
+                    <motion.circle r="3" fill="#C5A059">
                         <animateMotion
-                            dur="6s"
+                            dur="8s"
                             repeatCount="indefinite"
-                            path="M 20% 30% C 25% 35%, 30% 40%, 35% 45% S 45% 55%, 55% 65% S 70% 68%, 85% 70%"
+                            path="M 28% 38% C 32% 44%, 34% 48%, 36% 50% S 44% 60%, 50% 65% S 66% 72%, 82% 75%"
                         />
                     </motion.circle>
                 </svg>
-
-
                 {/* --- 3. Interactive Nodes --- */}
                 {LOCATIONS.map((loc) => (
                     <Link
                         href={loc.href}
                         key={loc.id}
-                        className="absolute -translate-x-1/2 -translate-y-1/2 z-30 group/node"
+                        className="absolute -translate-x-1/2 -translate-y-1/2 z-[60] group/node" // Boost z-index above overlay (z-40)
                         style={{ left: `${loc.x}%`, top: `${loc.y}%`, transform: 'translateZ(50px)' }}
                     >
-                        {/* Hit Area */}
+                        {/* Hit Area & Diamond Marker */}
                         <div
-                            className="w-12 h-12 flex items-center justify-center"
+                            className="w-16 h-16 flex items-center justify-center cursor-pointer relative"
                             onMouseEnter={() => setActiveLocation(loc.id)}
                         >
+                            {/* Outer Ring */}
                             <motion.div
-                                className={`w-3 h-3 rotate-45 border transition-all duration-500
-                                    ${activeLocation === loc.id
-                                        ? 'bg-vsoe-gold border-vsoe-gold scale-150 shadow-[0_0_20px_#C5A059]'
-                                        : 'bg-[#0a0f1c] border-vsoe-gold/50 group-hover/node:border-vsoe-gold'}`}
+                                className={`absolute inset-0 rounded-full border border-vsoe-gold/20 transition-all duration-500
+                                    ${activeLocation === loc.id ? 'scale-100 opacity-100' : 'scale-50 opacity-0'}`}
                             />
+
+                            {/* Diamond Node */}
+                            <motion.div
+                                className={`w-3 h-3 rotate-45 transition-all duration-500 shadow-lg
+                                    ${activeLocation === loc.id
+                                        ? 'bg-vsoe-gold scale-125 shadow-[0_0_15px_#C5A059]'
+                                        : 'bg-vsoe-midnight border-2 border-vsoe-gold group-hover/node:bg-vsoe-gold'}`}
+                            />
+
+                            {/* City Label (Added per user request for clarity) */}
+                            <div className={`absolute left-full ml-4 top-1/2 -translate-y-1/2 text-white font-serif tracking-widest text-xs uppercase
+                                transition-all duration-500 whitespace-nowrap
+                                ${activeLocation === loc.id ? 'opacity-100 translate-x-0' : 'opacity-40 translate-x-[-5px] group-hover/node:opacity-100'}`}>
+                                {loc.name}
+                            </div>
                         </div>
                     </Link>
                 ))}
+                {/* --- 4. Elegant Overlay (Art Deco Style) --- */}
+                <div className="absolute inset-0 z-40 pointer-events-none p-8 md:p-16 flex flex-col justify-between">
 
-
-                {/* --- 4. Cinematic HUD Overlay (The "Better" Design) --- */}
-                <div className="absolute inset-0 z-40 pointer-events-none p-6 md:p-12 flex flex-col justify-between">
-
-                    {/* Top Bar: Title / Status */}
+                    {/* Top: Compass / Header */}
                     <div className="flex justify-between items-start">
-                        <div>
-                            <span className="text-[10px] md:text-xs text-vsoe-gold/60 font-mono uppercase tracking-[0.2em] block mb-1">
-                                System Status: Active
+                        <div className="flex flex-col">
+                            <span className="text-xs font-serif text-vsoe-gold tracking-[0.2em] uppercase mb-1">
+                                European Grand Tour
                             </span>
-                            <span className="text-[10px] md:text-xs text-vsoe-gold/40 font-mono uppercase tracking-[0.2em]">
-                                VSOE-NETWORK
-                            </span>
+                            <div className="h-[1px] w-12 bg-vsoe-gold/50" />
                         </div>
-                        <div className="text-right">
-                            <div className="flex items-center gap-2 justify-end">
-                                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                <span className="text-[10px] md:text-xs text-vsoe-gold/60 font-mono uppercase tracking-[0.2em]">
-                                    Live Navigation
-                                </span>
-                            </div>
-                            <span className="text-[10px] text-vsoe-gold/30 font-mono">
-                                48° 51' N / 2° 21' E
-                            </span>
+                        {/* Compass Rose Decoration */}
+                        <div className="opacity-50">
+                            <span className="text-xl font-serif text-vsoe-gold/30">N</span>
                         </div>
                     </div>
 
                     {/* Center: Dynamic Title */}
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full text-center">
+                    <div className="absolute bottom-12 left-12 w-full max-w-lg text-left pointer-events-none z-50">
                         <AnimatePresence mode="wait">
                             {activeLocation ? (
                                 <motion.div
                                     key="loc-title"
-                                    initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-                                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                    exit={{ opacity: 0, scale: 1.1, filter: "blur(10px)" }}
-                                    transition={{ duration: 0.5 }}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.4 }}
                                 >
-                                    <h2 className="text-[12vw] md:text-[8vw] font-serif text-transparent bg-clip-text bg-gradient-to-b from-white via-white/80 to-transparent leading-none">
+                                    <h2 className="text-6xl md:text-8xl font-serif text-white drop-shadow-lg leading-none">
                                         {LOCATIONS.find(l => l.id === activeLocation)?.name.toUpperCase()}
                                     </h2>
-                                    <motion.p
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.2 }}
-                                        className="text-vsoe-gold text-sm md:text-xl font-sans tracking-[0.4em] uppercase mt-4"
-                                    >
+                                    <motion.div
+                                        initial={{ width: 0 }}
+                                        animate={{ width: "100px" }}
+                                        className="h-[2px] bg-vsoe-gold my-4"
+                                    />
+                                    <p className="text-vsoe-gold text-sm md:text-lg font-sans tracking-[0.3em] uppercase drop-shadow-md">
                                         {LOCATIONS.find(l => l.id === activeLocation)?.description}
-                                    </motion.p>
-                                    <div className="mt-8">
-                                        <span className="inline-block border border-vsoe-gold/30 px-4 py-2 text-[10px] uppercase tracking-widest text-vsoe-gold/80 bg-black/50 backdrop-blur-sm">
-                                            Click to Explore Route
+                                    </p>
+
+                                    <div className="mt-8 pointer-events-auto">
+                                        <span className="inline-block border border-vsoe-gold/50 px-6 py-2 text-xs uppercase tracking-widest text-white hover:bg-vsoe-gold hover:text-vsoe-midnight transition-colors cursor-pointer backdrop-blur-md">
+                                            Discover Journey
                                         </span>
                                     </div>
                                 </motion.div>
                             ) : (
                                 <motion.div
                                     key="default-title"
-                                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                                    exit={{ opacity: 0, filter: "blur(10px)" }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
                                     transition={{ duration: 0.8 }}
                                 >
-                                    <h2 className="text-[6vw] font-serif text-white/10 leading-none tracking-widest blur-[2px]">
-                                        THE GRAND TOUR
+                                    <h2 className="text-4xl md:text-6xl font-serif text-white/20 leading-none tracking-[0.1em]">
+                                        SELECT A ROUTE
                                     </h2>
                                 </motion.div>
                             )}
                         </AnimatePresence>
                     </div>
 
-                    {/* Bottom Bar: Instructions */}
+                    {/* Bottom: Coordinates / instruction */}
                     <div className="flex justify-between items-end">
-                        <div className="max-w-xs hidden md:block">
-                            <p className="text-[10px] text-vsoe-cream/40 leading-relaxed font-mono">
-                                EXPLORE THE RAIL NETWORK. <br />
-                                HOVER OVER NODES TO IDENTIFY STOPS. <br />
-                                SELECT A DESTINATION TO PROCEED.
-                            </p>
-                        </div>
-                        <div className="text-right">
-                            <div className="w-24 h-[1px] bg-vsoe-gold/20 ml-auto mb-2" />
-                            <span className="text-[10px] text-vsoe-gold/40 font-mono tracking-widest">
-                                FIG. 24-B
-                            </span>
-                        </div>
+                        <p className="text-[10px] text-vsoe-gold/60 font-sans tracking-widest uppercase">
+                            Venice Simplon-Orient-Express Network
+                        </p>
+                        <p className="text-[10px] text-white/30 font-serif italic">
+                            Est. 1982
+                        </p>
                     </div>
                 </div>
 
@@ -241,4 +262,3 @@ export default function HighEnergyMap() {
         </section>
     );
 }
-

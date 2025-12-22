@@ -19,7 +19,7 @@ export default function RouteExperience() {
             {/* Background Pattern */}
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-vsoe-gold via-transparent to-transparent pointer-events-none" />
 
-            <div className="relative pt-20">
+            <div className="relative pt-12">
                 {/* 1. The Interactive Map */}
                 <HighEnergyMap />
 
@@ -32,7 +32,7 @@ export default function RouteExperience() {
                 </div>
 
                 {/* 3. The Details (Grand Tour) */}
-                <div className="relative z-10 pb-20">
+                <div className="relative z-10 pb-12">
                     <GrandTourSection />
                 </div>
             </div>

@@ -31,14 +31,14 @@ const STORIES = [
 
 export default function JournalSection() {
     return (
-        <section className="py-32 bg-vsoe-cream text-vsoe-blue">
+        <section className="py-20 md:py-32 bg-vsoe-cream text-vsoe-blue">
             <div className="max-w-7xl mx-auto px-6">
-                <div className="flex justify-between items-end mb-16">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-6 md:gap-0">
                     <div>
                         <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">The Journal</span>
                         <h2 className="text-4xl md:text-5xl font-serif">Stories from the Rails</h2>
                     </div>
-                    <Link href="/stories" className="hidden md:flex items-center gap-2 text-xs uppercase tracking-widest border-b border-vsoe-blue/30 pb-1 hover:border-vsoe-blue transition-colors">
+                    <Link href="/stories" className="flex items-center gap-2 text-xs uppercase tracking-widest border-b border-vsoe-blue/30 pb-1 hover:border-vsoe-blue transition-colors">
                         View All Stories <ArrowRight size={14} />
                     </Link>
                 </div>

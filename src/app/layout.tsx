@@ -53,7 +53,7 @@ export default function RootLayout({
       >
         <AudioProvider>
           {/* <AudioAmbience /> */}
-          {/* <Preloader /> */}
+          <Preloader />
           <SmoothScroll />
           <CookieConsent />
           <BookTheScene />

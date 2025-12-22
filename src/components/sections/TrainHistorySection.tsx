@@ -4,7 +4,10 @@ import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
 
+import { useTrackInterest } from '@/lib/profiling';
+
 export default function TrainHistorySection() {
+    useTrackInterest('heritage');
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -15,12 +18,12 @@ export default function TrainHistorySection() {
     const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
 
     return (
-        <section ref={containerRef} className="relative py-32 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
+        <section ref={containerRef} className="relative py-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
             <div className="absolute inset-0 opacity-10 pointer-events-none">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-50" />
             </div>
 
-            <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-24 items-center">
+            <div id="track-heritage" className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
                 {/* Content */}
                 <motion.div
                     initial={{ opacity: 0, x: -40 }}

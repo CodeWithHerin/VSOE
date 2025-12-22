@@ -30,16 +30,19 @@ const JOURNEYS = [
         title: "The Italian",
         route: "Venice → Paris",
         duration: "1 Night",
-        image: "https://images.unsplash.com/photo-1499856871940-a09d43a6bfaf?q=80&w=2568&auto=format&fit=crop",
+        image: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop", // Venice Canal
         description: "Return from the floating city in style. Brunch in the Dolomites, tea in France.",
         price: "From £3,530",
         dates: "Mar 2025 - Nov 2025"
     }
 ];
 
+import { useTrackInterest } from '@/lib/profiling';
+
 export default function GrandTourSection() {
+    useTrackInterest('adventure');
     return (
-        <section className="w-full bg-vsoe-midnight py-12 relative z-20">
+        <section id="track-adventure" className="w-full bg-vsoe-midnight py-12 relative z-20">
             <div className="container mx-auto px-6 md:px-12">
 
                 {/* Cards Grid */}

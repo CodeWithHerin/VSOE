@@ -26,6 +26,10 @@ export default function Navbar() {
     const { scrollY } = useScroll();
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    // New state
+    const [currentLang, setCurrentLang] = useState('EN');
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
     const handleMouseEnter = (menu: string) => {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -47,32 +51,40 @@ export default function Navbar() {
         <>
             <motion.nav
                 className={cn(
-                    "fixed top-0 w-full z-50 transition-all duration-500 border-b border-white/10",
-                    isScrolled ? "bg-vsoe-midnight/95 backdrop-blur-md py-4" : "bg-gradient-to-b from-black/80 to-transparent py-6"
+                    "fixed top-0 w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]", // Liquid ease
+                    isScrolled
+                        ? "bg-vsoe-midnight/95 backdrop-blur-md text-vsoe-cream shadow-2xl py-2 border-b border-white/5" // Scrolled: Reverted to Midnight (Dark)
+                        : "bg-gradient-to-b from-black/80 to-transparent text-white py-6" // Initial: Transparent
                 )}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
                 transition={{ duration: 0.8, delay: 1 }}
             >
-                <div className="max-w-[1920px] mx-auto px-6 md:px-12 flex justify-between items-center">
+                {/* Top Grid: Logo & Actions - Smooth Collapse with max-height */}
+                <div className={cn(
+                    "max-w-[1920px] mx-auto px-6 md:px-12 grid grid-cols-3 items-center transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                    isScrolled ? "lg:max-h-0 lg:opacity-0 lg:overflow-hidden lg:my-0" : "lg:max-h-[200px] lg:opacity-100 lg:my-0"
+                )}>
 
-                    {/* Left: Mobile Menu & Search */}
-                    <div className="flex items-center gap-6">
+                    {/* Left: Mobile Menu */}
+                    <div className="flex items-center gap-6 justify-start">
                         <button
-                            className="lg:hidden text-white hover:text-vsoe-gold transition-colors"
+                            className={cn(
+                                "lg:hidden transition-colors hover:text-vsoe-gold",
+                                isScrolled ? "text-vsoe-midnight" : "text-white"
+                            )}
                             onClick={() => setIsMobileMenuOpen(true)}
                         >
                             <Menu size={24} />
                         </button>
-                        <button className="hidden lg:flex items-center gap-2 text-xs uppercase tracking-widest text-white/80 hover:text-vsoe-gold transition-colors">
-                            <Search size={14} />
-                            <span>Search</span>
-                        </button>
                     </div>
 
-                    {/* Center: Logo */}
-                    <Link href="/" className="absolute left-1/2 -translate-x-1/2 text-center group">
-                        <div className="font-display text-2xl md:text-3xl font-bold text-white tracking-wider group-hover:text-vsoe-gold transition-colors duration-500">
+                    {/* Center: Logo - Hides when scrolled per user request */}
+                    <Link href="/" className={cn(
+                        "flex flex-col items-center justify-center text-center group transition-all duration-500",
+                        isScrolled ? "opacity-0 pointer-events-none translate-y-[-20px] blur-sm" : "opacity-100 translate-y-0 blur-0"
+                    )}>
+                        <div className="font-display text-lg md:text-2xl font-bold text-white tracking-wider group-hover:text-vsoe-gold transition-colors duration-500 whitespace-nowrap">
                             BELMOND
                         </div>
                         <div className="hidden md:block text-[10px] text-vsoe-gold tracking-[0.4em] uppercase mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
@@ -81,14 +93,28 @@ export default function Navbar() {
                     </Link>
 
                     {/* Right: Actions */}
-                    <div className="flex items-center gap-8">
+                    <div className="flex items-center gap-8 justify-end">
+                        <button
+                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            className={cn(
+                                "hidden lg:flex items-center gap-2 text-xs uppercase tracking-widest transition-all duration-500 hover:text-vsoe-gold",
+                                isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0 text-white/80"
+                            )}
+                        >
+                            <Search size={14} />
+                            <span>{isSearchOpen ? 'Close' : 'Search'}</span>
+                        </button>
+
                         <div className="relative hidden lg:block">
                             <button
                                 onClick={() => setIsLangOpen(!isLangOpen)}
-                                className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/80 hover:text-vsoe-gold transition-colors"
+                                className={cn(
+                                    "flex items-center gap-2 text-xs uppercase tracking-widest transition-all duration-500 z-50 relative hover:text-vsoe-gold",
+                                    isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0 text-white/80"
+                                )}
                             >
                                 <Globe size={14} />
-                                <span>EN</span>
+                                <span>{currentLang}</span>
                                 <ChevronDown size={10} className={`transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
                             </button>
 
@@ -100,13 +126,22 @@ export default function Navbar() {
                                         exit={{ opacity: 0, y: 10 }}
                                         className="absolute top-full right-0 mt-4 w-32 bg-vsoe-midnight border border-white/10 py-2 rounded-sm shadow-xl z-[100]"
                                     >
-                                        {['English', 'Français', 'Italiano', 'Deutsch'].map((lang) => (
+                                        {[
+                                            { code: 'EN', label: 'English' },
+                                            { code: 'FR', label: 'Français' },
+                                            { code: 'IT', label: 'Italiano' },
+                                            { code: 'DE', label: 'Deutsch' }
+                                        ].map((lang) => (
                                             <button
-                                                key={lang}
-                                                onClick={() => setIsLangOpen(false)}
-                                                className="block w-full text-left px-4 py-2 text-xs uppercase tracking-widest text-white/60 hover:text-vsoe-gold hover:bg-white/5 transition-colors"
+                                                key={lang.code}
+                                                onClick={() => {
+                                                    setCurrentLang(lang.code);
+                                                    setIsLangOpen(false);
+                                                }}
+                                                className={`block w-full text-left px-4 py-2 text-xs uppercase tracking-widest transition-colors ${currentLang === lang.code ? 'text-vsoe-gold' : 'text-white/60 hover:text-vsoe-gold hover:bg-white/5'
+                                                    }`}
                                             >
-                                                {lang}
+                                                {lang.label}
                                             </button>
                                         ))}
                                     </motion.div>
@@ -114,27 +149,30 @@ export default function Navbar() {
                             </AnimatePresence>
                         </div>
 
-                        <Link href="/book">
-                            <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block">
-                                Book a Journey
+                        <Link href="/book" className={cn("transition-all duration-500", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
+                            <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-4 md:px-8 py-3 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block">
+                                <span className="hidden md:inline">Book a Journey</span>
+                                <span className="md:hidden">Book</span>
                             </MagneticButton>
                         </Link>
                     </div>
                 </div>
 
                 {/* Desktop Mega Menu */}
-                <div className="hidden lg:flex justify-center gap-10 mt-6 pb-2" onMouseLeave={handleMouseLeave}>
+                <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1" onMouseLeave={handleMouseLeave}>
                     {NAV_ITEMS.map((item) => (
-                        <div key={item.label} className="relative py-4" onMouseEnter={() => handleMouseEnter(item.label)}>
+                        <div key={item.label} className="relative py-2" onMouseEnter={() => handleMouseEnter(item.label)}>
                             <Link
                                 href={item.href}
                                 className={cn(
-                                    "text-[11px] uppercase tracking-[0.15em] hover:text-vsoe-gold transition-colors relative group py-2",
-                                    activeMenu === item.label ? "text-vsoe-gold" : "text-white/70"
+                                    "text-xs uppercase tracking-[0.15em] hover:text-vsoe-gold transition-colors relative group py-1 font-medium",
+                                    activeMenu === item.label
+                                        ? "text-vsoe-gold"
+                                        : "text-white/80" // Always light text: Midnight bg (scrolled) & Transparent bg (top)
                                 )}
                             >
                                 {item.label}
-                                <span className={cn(
+                                < span className={cn(
                                     "absolute -bottom-1 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300",
                                     activeMenu === item.label ? "w-full" : "group-hover:w-full"
                                 )} />
@@ -142,7 +180,6 @@ export default function Navbar() {
                         </div>
                     ))}
                 </div>
-
                 {/* Mega Menu Panel */}
                 <AnimatePresence>
                     {activeMenu && (activeMenu === 'Destinations' || activeMenu === 'Experiences') && (
@@ -213,38 +250,40 @@ export default function Navbar() {
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </motion.nav>
+            </motion.nav >
 
             {/* Mobile Menu Overlay */}
             <AnimatePresence>
-                {isMobileMenuOpen && (
-                    <motion.div
-                        initial={{ opacity: 0, x: -100 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -100 }}
-                        className="fixed inset-0 z-[60] bg-vsoe-midnight text-white p-8"
-                    >
-                        <div className="flex justify-between items-center mb-12">
-                            <span className="font-display text-2xl">Menu</span>
-                            <button onClick={() => setIsMobileMenuOpen(false)}>
-                                <X size={24} />
-                            </button>
-                        </div>
-                        <div className="flex flex-col gap-6">
-                            {NAV_ITEMS.map((item) => (
-                                <Link
-                                    key={item.label}
-                                    href={item.href}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="text-2xl font-serif hover:text-vsoe-gold transition-colors"
-                                >
-                                    {item.label}
-                                </Link>
-                            ))}
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                {
+                    isMobileMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, x: -100 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -100 }}
+                            className="fixed inset-0 z-[100] bg-vsoe-midnight text-white p-8"
+                        >
+                            <div className="flex justify-between items-center mb-12">
+                                <span className="font-display text-2xl">Menu</span>
+                                <button onClick={() => setIsMobileMenuOpen(false)}>
+                                    <X size={24} />
+                                </button>
+                            </div>
+                            <div className="flex flex-col gap-8 px-4">
+                                {NAV_ITEMS.map((item) => (
+                                    <Link
+                                        key={item.label}
+                                        href={item.href}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="text-3xl font-serif text-white/90 hover:text-vsoe-gold transition-colors"
+                                    >
+                                        {item.label}
+                                    </Link>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )
+                }
+            </AnimatePresence >
         </>
     );
 }

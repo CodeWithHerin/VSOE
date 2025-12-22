@@ -6,7 +6,7 @@ import Footer from '@/components/layout/Footer';
 import HeroSection from '@/components/ui/HeroSection';
 import { journeys } from '@/data/journeys';
 import { notFound } from 'next/navigation';
-import { ArrowRight, Calendar, Clock, MapPin } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, MapPin, Play } from 'lucide-react';
 import Link from 'next/link';
 
 export default function JourneyPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,10 +23,10 @@ export default function JourneyPage({ params }: { params: Promise<{ id: string }
             <HeroSection
                 title={journey.name}
                 subtitle={journey.duration}
-                backgroundImage={journey.image}
+                videoSrc={journey.heroVideo}
             />
 
-            <div className="max-w-7xl mx-auto px-6 py-24">
+            <div className="max-w-7xl mx-auto px-6 py-12">
                 <div className="grid lg:grid-cols-3 gap-16">
                     {/* Main Content */}
                     <div className="lg:col-span-2 space-y-12">
@@ -53,6 +53,50 @@ export default function JourneyPage({ params }: { params: Promise<{ id: string }
                                         <p className="text-vsoe-blue/60 text-sm">
                                             {index === 0 ? 'Departure' : index === journey.stops.length - 1 ? 'Arrival' : 'Stopover'}
                                         </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Detailed Timeline with Media */}
+                        <div>
+                            <h3 className="text-2xl font-serif mb-8">Journey Timeline</h3>
+                            <div className="space-y-12">
+                                {journey.timeline.map((item, index) => (
+                                    <div key={index} className="grid md:grid-cols-2 gap-8 items-center group">
+                                        {/* Text */}
+                                        <div className={index % 2 === 0 ? "order-1" : "order-1 md:order-2"}>
+                                            <div className="flex items-center gap-4 mb-3">
+                                                <span className="text-vsoe-gold font-bold text-xs tracking-[0.2em]">{item.day} — {item.time}</span>
+                                            </div>
+                                            <h4 className="text-2xl font-serif mb-3">{item.title}</h4>
+                                            <div className="flex items-center gap-2 text-vsoe-blue/60 text-xs uppercase tracking-widest mb-4">
+                                                <MapPin size={12} /> {item.location}
+                                            </div>
+                                            <p className="text-vsoe-blue/70 leading-relaxed font-sans">
+                                                {item.description}
+                                            </p>
+                                        </div>
+
+                                        {/* Media */}
+                                        <div className={`${index % 2 === 0 ? "order-2" : "order-2 md:order-1"} relative aspect-video overflow-hidden rounded-sm bg-vsoe-blue/5`}>
+                                            {item.video ? (
+                                                <video
+                                                    src={item.video}
+                                                    autoPlay
+                                                    loop
+                                                    muted
+                                                    playsInline
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                />
+                                            ) : (
+                                                <img
+                                                    src={item.image}
+                                                    alt={item.title}
+                                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                                />
+                                            )}
+                                        </div>
                                     </div>
                                 ))}
                             </div>

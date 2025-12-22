@@ -21,21 +21,21 @@ export default function AvailabilityCalendar() {
     ];
 
     return (
-        <div className="bg-white p-8 rounded-sm shadow-xl border border-vsoe-gold/20 max-w-md mx-auto">
+        <div className="bg-white p-6 md:p-8 rounded-sm shadow-xl border border-vsoe-gold/20 w-full max-w-md mx-auto">
             {/* Header */}
             <div className="flex justify-between items-center mb-8">
                 <button
                     onClick={() => setCurrentMonth(Math.max(0, currentMonth - 1))}
                     disabled={currentMonth === 0}
-                    className="p-2 hover:text-vsoe-gold disabled:opacity-30 transition-colors"
+                    className="p-3 hover:text-vsoe-gold disabled:opacity-30 transition-colors"
                 >
                     <ChevronLeft size={20} />
                 </button>
-                <h3 className="font-serif text-xl text-vsoe-midnight">{MONTHS[currentMonth]}</h3>
+                <h3 className="font-serif text-lg md:text-xl text-vsoe-midnight">{MONTHS[currentMonth]}</h3>
                 <button
                     onClick={() => setCurrentMonth(Math.min(MONTHS.length - 1, currentMonth + 1))}
                     disabled={currentMonth === MONTHS.length - 1}
-                    className="p-2 hover:text-vsoe-gold disabled:opacity-30 transition-colors"
+                    className="p-3 hover:text-vsoe-gold disabled:opacity-30 transition-colors"
                 >
                     <ChevronRight size={20} />
                 </button>
@@ -51,7 +51,7 @@ export default function AvailabilityCalendar() {
             </div>
 
             {/* Calendar Grid */}
-            <div className="grid grid-cols-7 gap-2">
+            <div className="grid grid-cols-7 gap-1 md:gap-2">
                 {/* Offset for start of month (mock) */}
                 {[...Array(2)].map((_, i) => <div key={`empty-${i}`} />)}
 
@@ -80,7 +80,7 @@ export default function AvailabilityCalendar() {
             </div>
 
             {/* Legend */}
-            <div className="mt-8 flex justify-center gap-6 text-[10px] uppercase tracking-widest text-vsoe-midnight/60">
+            <div className="mt-8 flex flex-wrap justify-center gap-4 md:gap-6 text-[10px] uppercase tracking-widest text-vsoe-midnight/60">
                 <div className="flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-vsoe-gold" /> Available
                 </div>

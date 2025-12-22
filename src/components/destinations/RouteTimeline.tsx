@@ -28,11 +28,11 @@ export default function RouteTimeline({ events }: RouteTimelineProps) {
 
                 {/* Timeline Container */}
                 <div className="relative max-w-5xl mx-auto">
-                    {/* Central Line */}
+                    {/* Central Line (Desktop) / Left Line (Mobile) */}
                     <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[1px] bg-gradient-to-b from-vsoe-gold/0 via-vsoe-gold/50 to-vsoe-gold/0 md:-translate-x-1/2" />
 
                     {events.map((event, index) => (
-                        <div key={index} className={`relative flex flex-col md:flex-row items-center mb-24 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                        <div key={index} className={`relative flex flex-col md:flex-row items-center mb-16 md:mb-24 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
 
                             {/* Content Side */}
                             <motion.div
@@ -40,24 +40,24 @@ export default function RouteTimeline({ events }: RouteTimelineProps) {
                                 whileInView={{ opacity: 1, x: 0 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.8 }}
-                                className="w-full md:w-1/2 px-8 md:px-16 mb-8 md:mb-0"
+                                className="w-full md:w-1/2 pl-12 pr-0 md:px-16 mb-8 md:mb-0"
                             >
-                                <div className={`flex flex-col ${index % 2 === 0 ? 'md:items-start md:text-left' : 'md:items-end md:text-right'}`}>
-                                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-2 flex items-center gap-2">
+                                <div className={`flex flex-col items-start ${index % 2 === 0 ? 'md:items-start md:text-left' : 'md:items-end md:text-right text-left'}`}>
+                                    <span className="text-vsoe-gold text-[10px] md:text-xs font-bold tracking-[0.2em] uppercase mb-2 flex items-center gap-2">
                                         <Clock size={12} /> {event.day} — {event.time}
                                     </span>
-                                    <h3 className="text-3xl font-serif text-vsoe-cream mb-2">{event.title}</h3>
-                                    <span className="text-white/40 text-xs tracking-widest uppercase mb-4 flex items-center gap-2">
+                                    <h3 className="text-2xl md:text-3xl font-serif text-vsoe-cream mb-2">{event.title}</h3>
+                                    <span className="text-white/40 text-[10px] md:text-xs tracking-widest uppercase mb-4 flex items-center gap-2">
                                         <MapPin size={12} /> {event.location}
                                     </span>
-                                    <p className="text-vsoe-cream/70 font-light leading-relaxed">
+                                    <p className="text-vsoe-cream/70 font-light leading-relaxed text-sm md:text-base">
                                         {event.description}
                                     </p>
                                 </div>
                             </motion.div>
 
                             {/* Node Point */}
-                            <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-vsoe-gold rotate-45 md:-translate-x-1/2 z-20 shadow-[0_0_20px_rgba(197,160,89,0.5)] border border-vsoe-midnight" />
+                            <div className="absolute left-4 md:left-1/2 w-3 h-3 bg-vsoe-gold rotate-45 -translate-x-1/2 md:-translate-x-1/2 z-20 shadow-[0_0_20px_rgba(197,160,89,0.5)] border border-vsoe-midnight top-0 md:top-1/2 md:-translate-y-1/2 mt-1 md:mt-0" />
 
                             {/* Image Side */}
                             <motion.div
@@ -65,7 +65,7 @@ export default function RouteTimeline({ events }: RouteTimelineProps) {
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 viewport={{ once: true, margin: "-100px" }}
                                 transition={{ duration: 0.8 }}
-                                className="w-full md:w-1/2 px-8 md:px-16 pl-12 md:pl-16"
+                                className="w-full md:w-1/2 pl-12 md:px-16 md:pl-16 pr-0"
                             >
                                 <div className="aspect-[4/3] border border-vsoe-gold/20 p-2 relative group">
                                     <div className="absolute inset-0 bg-vsoe-midnight/50 group-hover:bg-transparent transition-colors duration-500 z-10" />

@@ -7,7 +7,7 @@ export default function Footer() {
             <div className="max-w-[1920px] mx-auto px-6 md:px-12">
 
                 {/* Top Section: Newsletter & Socials */}
-                <div className="grid lg:grid-cols-2 gap-16 mb-20">
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 mb-16 lg:mb-20">
                     <div>
                         <h3 className="font-serif text-3xl md:text-4xl mb-6">Join our world</h3>
                         <p className="text-white/60 mb-8 max-w-md font-sans text-sm leading-relaxed">
@@ -74,7 +74,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Section: Copyright */}
-                <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-widest text-white/40 font-sans">
+                <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-widest text-white/40 font-sans text-center md:text-left">
                     <p>© 2025 Belmond Management Limited</p>
                     <div className="flex gap-8">
                         <span>LVMH Maisons</span>

@@ -2,22 +2,57 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUIStore } from '@/store/useUIStore';
 
 export default function Preloader() {
-    const [isLoading, setIsLoading] = useState(true);
+    const isHeroVideoLoaded = useUIStore((state) => state.isHeroVideoLoaded);
+    const isPreloaderComplete = useUIStore((state) => state.isPreloaderComplete);
+    const setPreloaderComplete = useUIStore((state) => state.setPreloaderComplete);
+    
+    // If preloader is already complete (from persistence), start with exit state
+    const [shouldExit, setShouldExit] = useState(isPreloaderComplete);
+    
+    // Correction: If persisted state is true, we should never show it, so we can return null to avoid flash
+    // However, to allow "exit" animation if it was JUST completed, we handle it carefully.
+    // For simple persistence "don't show again":
+    const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
-        // Simulate asset loading / minimum display time
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2500);
-
-        return () => clearTimeout(timer);
+        setIsMounted(true);
     }, []);
+
+    useEffect(() => {
+        if (shouldExit && !isPreloaderComplete) {
+             setPreloaderComplete(true);
+        }
+    }, [shouldExit, isPreloaderComplete, setPreloaderComplete]);
+
+    useEffect(() => {
+        // If critical asset (video) is ready, we exit.
+        // We keep a small safety timeout (e.g. 500ms) to ensure it doesn't flash too fast if cached.
+        if (isHeroVideoLoaded && !isPreloaderComplete) {
+            const timer = setTimeout(() => {
+                setShouldExit(true);
+            }, 2500); // Aesthetic minimum
+            return () => clearTimeout(timer);
+        }
+
+        // Fallback: If video takes too long (>4s), force exit.
+        if (!isPreloaderComplete) {
+             const safetyTimer = setTimeout(() => {
+                setShouldExit(true);
+            }, 6000);
+            return () => clearTimeout(safetyTimer);
+        }
+       
+    }, [isHeroVideoLoaded, isPreloaderComplete]);
+
+    // If not mounted yet, or if preloader is already complete from start, don't render anything
+    if (!isMounted || isPreloaderComplete) return null;
 
     return (
         <AnimatePresence mode="wait">
-            {isLoading && (
+            {!shouldExit && (
                 <motion.div
                     className="fixed inset-0 z-[9999] flex items-center justify-center bg-vsoe-midnight"
                     initial={{ opacity: 1 }}

@@ -53,14 +53,14 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     return (
         <div className="w-full max-w-4xl mx-auto">
             {/* Steps Indicator */}
-            <div className="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
+            <div className="flex justify-between items-center mb-8 md:mb-12 border-b border-white/10 pb-6 overflow-x-auto gap-4">
                 {[1, 2, 3].map((s) => (
-                    <div key={s} className="flex items-center gap-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border transition-colors duration-500
+                    <div key={s} className="flex items-center gap-3 md:gap-4 shrink-0">
+                        <div className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center text-xs md:text-sm font-bold border transition-colors duration-500
                             ${step >= s ? 'bg-vsoe-gold border-vsoe-gold text-vsoe-midnight' : 'border-white/20 text-white/40'}`}>
-                            {step > s ? <Check size={14} /> : s}
+                            {step > s ? <Check size={12} /> : s}
                         </div>
-                        <span className={`text-xs uppercase tracking-widest ${step >= s ? 'text-vsoe-gold' : 'text-white/40'}`}>
+                        <span className={`text-[10px] md:text-xs uppercase tracking-widest ${step >= s ? 'text-vsoe-gold' : 'text-white/40'}`}>
                             {s === 1 ? 'Cabin' : s === 2 ? 'Details' : 'Confirmed'}
                         </span>
                     </div>
@@ -76,34 +76,34 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                         exit={{ opacity: 0, x: -20 }}
                         className="space-y-6"
                     >
-                        <h2 className="text-3xl font-serif text-white mb-8">Select Your Accommodation</h2>
+                        <h2 className="text-2xl md:text-3xl font-serif text-white mb-8">Select Your Accommodation</h2>
                         <div className="grid gap-6">
                             {options.map((opt) => (
                                 <div
                                     key={opt.type}
                                     onClick={() => opt.data && setSelectedCabin(opt)}
-                                    className={`relative p-8 border rounded-sm cursor-pointer transition-all duration-300 group
+                                    className={`relative p-6 md:p-8 border rounded-sm cursor-pointer transition-all duration-300 group
                                         ${!opt.data ? 'opacity-50 grayscale cursor-not-allowed border-white/5' :
                                             selectedCabin?.type === opt.type ? 'bg-vsoe-gold/10 border-vsoe-gold' : 'border-white/10 hover:border-white/30'}`}
                                 >
-                                    <div className="flex justify-between items-start">
+                                    <div className="flex flex-col md:flex-row justify-between items-start gap-4">
                                         <div>
                                             <div className="flex items-center gap-4 mb-2">
                                                 <h3 className="text-xl font-serif text-vsoe-cream">{opt.title}</h3>
                                                 {!opt.data && <span className="text-[10px] bg-red-900/50 text-red-200 px-2 py-1 uppercase tracking-widest">Sold Out</span>}
                                             </div>
-                                            <p className="text-white/60 text-sm max-w-xl">{opt.desc}</p>
+                                            <p className="text-white/60 text-sm max-w-xl leading-relaxed">{opt.desc}</p>
                                         </div>
                                         {opt.data && (
-                                            <div className="text-right">
-                                                <span className="text-2xl font-serif text-vsoe-gold">€{opt.data.price.toLocaleString()}</span>
+                                            <div className="text-left md:text-right mt-2 md:mt-0">
+                                                <span className="text-xl md:text-2xl font-serif text-vsoe-gold">€{opt.data.price.toLocaleString()}</span>
                                                 <p className="text-[10px] uppercase tracking-widest text-white/40">Per Person</p>
                                             </div>
                                         )}
                                     </div>
-                                    
+
                                     {/* Selection Ring */}
-                                    <div className={`absolute top-1/2 right-8 -translate-y-1/2 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center
+                                    <div className={`absolute top-4 right-4 md:top-1/2 md:right-8 md:-translate-y-1/2 w-6 h-6 rounded-full border border-white/20 flex items-center justify-center
                                          ${selectedCabin?.type === opt.type ? 'bg-vsoe-gold border-vsoe-gold' : ''}`}>
                                         {selectedCabin?.type === opt.type && <div className="w-2 h-2 bg-vsoe-midnight rounded-full" />}
                                     </div>
@@ -112,7 +112,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                         </div>
 
                         <div className="flex justify-end pt-8">
-                             <button
+                            <button
                                 onClick={() => selectedCabin && setStep(2)}
                                 disabled={!selectedCabin}
                                 className={`px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition-colors
@@ -168,10 +168,10 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
 
                             <div className="flex justify-between pt-8">
                                 <button type="button" onClick={() => setStep(1)} className="text-xs uppercase tracking-widest text-white/60 hover:text-white">Back</button>
-                                
+
                                 <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-12 py-4 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors min-w-[200px] flex justify-center">
                                     {isSubmitting ? (
-                                        <div className="w-4 h-4 border-2 border-vsoe-midnight border-t-transparent rounded-full animate-spin"/>
+                                        <div className="w-4 h-4 border-2 border-vsoe-midnight border-t-transparent rounded-full animate-spin" />
                                     ) : 'Confirm Booking'}
                                 </MagneticButton>
                             </div>
