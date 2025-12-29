@@ -24,9 +24,24 @@ export default function HeroSection({
     const videoRef = React.useRef<HTMLVideoElement>(null);
 
     React.useEffect(() => {
-        if (videoRef.current && videoSrc && !hasError) {
-            videoRef.current.play().catch(e => console.error("AutoPlay failed:", e));
-        }
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !hasError && videoSrc) {
+                        videoElement.play().catch(() => { });
+                    } else {
+                        videoElement.pause();
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        observer.observe(videoElement);
+        return () => observer.disconnect();
     }, [videoSrc, hasError]);
 
     const scrollToHistory = () => {
@@ -76,8 +91,9 @@ export default function HeroSection({
                     )
                 )}
 
-                {/* Overlay for readability */}
-                <div className="absolute inset-0 bg-black/20" />
+                {/* Overlay for readability - Enhanced for video contrast */}
+                <div className="absolute inset-0 bg-black/30" />
+                <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight/90 via-transparent to-black/40" />
             </div>
 
             {/* Content Container */}
@@ -86,15 +102,15 @@ export default function HeroSection({
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, delay: 0.5 }}
-                    className="flex flex-col items-center"
+                    className="flex flex-col items-center drop-shadow-lg"
                 >
                     {subtitle && (
-                        <span className="mb-6 block font-sans text-sm font-medium tracking-[0.2em] uppercase text-white/90">
+                        <span className="mb-6 block font-sans text-sm md:text-base font-medium tracking-[0.2em] uppercase text-vsoe-gold drop-shadow-md">
                             {subtitle}
                         </span>
                     )}
                     {title && (
-                        <h1 className="font-serif text-5xl font-light tracking-wide md:text-7xl lg:text-8xl">
+                        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-vsoe-cream">
                             {title}
                         </h1>
                     )}

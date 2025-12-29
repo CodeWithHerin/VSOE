@@ -34,7 +34,8 @@ export default function Home() {
         };
       default:
         return {
-          // Standard Cinematic Train Video (Westminster/London vibe)
+          // Reverting to Pexels as the CTFAssets link appears broken/restricted. 
+          // Alternative Cinematic Train Video
           video: "https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4",
           subtitle: "Beyond the Golden Age"
         };
@@ -50,7 +51,7 @@ export default function Home() {
       {/* 1. The Dream: Hero Section */}
       <HeroSection
         // Cinematic Fast-Forward Train Journey: Westminster/Travel vibe matching the map
-        videoSrc="https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4"
+        videoSrc="/hero-train.webm"
         backgroundImage="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop"
         title="Venice Simplon-Orient-Express"
         subtitle={content.subtitle}
@@ -60,6 +61,7 @@ export default function Home() {
       <TrainHistorySection />
 
       {/* 3. The Journey: Map + Destinations (Unified) */}
+      <Marquee />
       <RouteExperience />
 
       {/* 4. The Experience: Suites (Sanctuaries) */}
