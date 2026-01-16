@@ -1,10 +1,18 @@
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, CreditCard, Lock } from 'lucide-react';
+import { ArrowLeft, CreditCard } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentForm from '@/components/booking/PaymentForm';
+import { bookingSchema, type BookingFormData } from '@/components/booking/BookingValidation';
+import { z } from 'zod';
+
+// Initialize Stripe outside component to avoid recreation
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 function CheckoutForm() {
     const searchParams = useSearchParams();
@@ -12,60 +20,131 @@ function CheckoutForm() {
     const journeyId = searchParams.get('journeyId');
     const cabinId = searchParams.get('cabinId');
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [formData, setFormData] = useState({
+    // State
+    const [clientSecret, setClientSecret] = useState<string | null>(null);
+    const [paymentMethod, setPaymentMethod] = useState('Credit Card');
+    const [formData, setFormData] = useState<BookingFormData>({
         firstName: '',
         lastName: '',
         email: '',
-
         phone: '',
         guests: 2
     });
-    const [paymentMethod, setPaymentMethod] = useState('Credit Card');
+    const [errors, setErrors] = useState<Partial<Record<keyof BookingFormData, string>>>({});
+    const [isFormValid, setIsFormValid] = useState(false);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsLoading(true);
+    // Hardcoded price for demo - in real app, fetch from DB based on journey/cabin
+    const PRICE_EUR = 4500;
 
-        // Simulate API call to create booking
-        // In a real app, this would POST to /api/bookings
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    // Validate form on change
+    useEffect(() => {
+        const result = bookingSchema.safeParse(formData);
+        setIsFormValid(result.success);
+        if (!result.success) {
+            // We won't show errors on UI immediately to avoid noise, but `isFormValid` gate is key.
+        } else {
+            setErrors({});
+        }
+    }, [formData]);
 
-        alert("Booking Confirmed! Welcome aboard.");
-        router.push('/');
+    // Initialize Payment Intent when "Credit Card" is selected
+    useEffect(() => {
+        if (paymentMethod === 'Credit Card' && !clientSecret) {
+            fetch('/api/create-payment-intent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ amount: PRICE_EUR, currency: 'eur' }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.clientSecret) {
+                        setClientSecret(data.clientSecret);
+                    }
+                })
+                .catch((err) => console.error("Error creating payment intent:", err));
+        }
+    }, [paymentMethod, clientSecret]);
+
+    const handleSuccess = () => {
+        alert("Payment Successful! Your journey awaits.");
+        router.push(`/invoice/booking_${Date.now()}`);
+    };
+
+    const validateForm = () => {
+        const result = bookingSchema.safeParse(formData);
+
+        if (!result.success) {
+            const formattedErrors: any = {};
+            result.error.issues.forEach(issue => {
+                formattedErrors[issue.path[0]] = issue.message;
+            });
+            setErrors(formattedErrors);
+            return false;
+        }
+
+        setErrors({});
+        return true;
+    };
+
+    const handleManualSubmit = () => {
+        if (!validateForm()) return;
+
+        // Standard submission for non-stripe methods
+        alert(`Booking request sent via ${paymentMethod}. We will contact you shortly.`);
+        router.push(`/invoice/booking_${Date.now()}`);
     };
 
     if (!journeyId || !cabinId) {
-        return <div className="text-center p-20">Invalid booking session.</div>;
+        return <div className="text-center p-20 text-white">Invalid booking session.</div>;
     }
+
+    const appearance = {
+        theme: 'night' as const,
+        variables: {
+            colorPrimary: '#c5a059',
+            colorBackground: '#0a1018',
+            colorText: '#e0d5c1',
+            colorDanger: '#df1b41',
+            fontFamily: 'Ideal Sans, system-ui, sans-serif',
+            spacingUnit: '4px',
+            borderRadius: '2px',
+        },
+    };
+
+    const options = {
+        clientSecret: clientSecret || "",
+        appearance,
+    };
 
     return (
         <div className="grid lg:grid-cols-2 gap-12">
-            {/* Form Section */}
+            {/* Form Section - Note: No <form> tag to prevent nesting/validation conflicts with Stripe */}
             <div className="space-y-8">
                 <div>
                     <h2 className="text-2xl font-serif text-vsoe-gold mb-6">Guest Details</h2>
-                    <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="space-y-6">
                         <div className="grid grid-cols-2 gap-6">
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-vsoe-cream/60">First Name</label>
                                 <input
                                     required
                                     type="text"
-                                    className="w-full bg-white/5 border border-white/10 rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors"
+                                    className={`w-full bg-white/5 border ${errors.firstName ? 'border-red-500' : 'border-white/10'} rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors`}
                                     value={formData.firstName}
                                     onChange={e => setFormData({ ...formData, firstName: e.target.value })}
                                 />
+                                {errors.firstName && <span className="text-red-400 text-xs">{errors.firstName}</span>}
                             </div>
                             <div className="space-y-2">
                                 <label className="text-xs uppercase tracking-widest text-vsoe-cream/60">Last Name</label>
                                 <input
                                     required
                                     type="text"
-                                    className="w-full bg-white/5 border border-white/10 rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors"
+                                    className={`w-full bg-white/5 border ${errors.lastName ? 'border-red-500' : 'border-white/10'} rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors`}
                                     value={formData.lastName}
                                     onChange={e => setFormData({ ...formData, lastName: e.target.value })}
                                 />
+                                {errors.lastName && <span className="text-red-400 text-xs">{errors.lastName}</span>}
                             </div>
                         </div>
 
@@ -87,20 +166,22 @@ function CheckoutForm() {
                             <input
                                 required
                                 type="email"
-                                className="w-full bg-white/5 border border-white/10 rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors"
+                                className={`w-full bg-white/5 border ${errors.email ? 'border-red-500' : 'border-white/10'} rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors`}
                                 value={formData.email}
                                 onChange={e => setFormData({ ...formData, email: e.target.value })}
                             />
+                            {errors.email && <span className="text-red-400 text-xs">{errors.email}</span>}
                         </div>
 
                         <div className="space-y-2">
                             <label className="text-xs uppercase tracking-widest text-vsoe-cream/60">Phone Number</label>
                             <input
                                 type="tel"
-                                className="w-full bg-white/5 border border-white/10 rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors"
+                                className={`w-full bg-white/5 border ${errors.phone ? 'border-red-500' : 'border-white/10'} rounded-sm p-3 text-vsoe-cream focus:border-vsoe-gold focus:outline-none transition-colors`}
                                 value={formData.phone}
                                 onChange={e => setFormData({ ...formData, phone: e.target.value })}
                             />
+                            {errors.phone && <span className="text-red-400 text-xs">{errors.phone}</span>}
                         </div>
 
                         <div className="pt-8 border-t border-white/10">
@@ -123,56 +204,67 @@ function CheckoutForm() {
                             </div>
 
                             {paymentMethod === 'Credit Card' && (
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-sm flex items-center justify-center gap-4 text-white/40 mb-6">
-                                    <CreditCard size={16} />
-                                    <span className="text-sm">Secure Payment Gateway Encrypted</span>
+                                <div className="space-y-4">
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-sm flex items-center justify-center gap-4 text-white/40 mb-2">
+                                        <CreditCard size={16} />
+                                        <span className="text-sm">Secure Stripe Payment</span>
+                                    </div>
+
+                                    {clientSecret && stripePromise && (
+                                        <Elements stripe={stripePromise} options={options}>
+                                            <PaymentForm onSuccess={handleSuccess} amount={PRICE_EUR} validate={validateForm} />
+                                        </Elements>
+                                    )}
+
+                                    {!clientSecret && (
+                                        <div className="text-center text-white/50 py-4">Initializing Secure Payment...</div>
+                                    )}
                                 </div>
                             )}
 
                             {paymentMethod === 'Invoice / Wire' && (
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-sm mb-6">
-                                    <p className="text-sm text-white/80 leading-relaxed">
-                                        A pro-forma invoice will be generated and sent to your email.
-                                        Your reservation will be held for 48 hours pending wire transfer confirmation.
-                                        <br /><br />
-                                        <span className="text-vsoe-gold">Concierge will contact you to finalize corporate billing details.</span>
-                                    </p>
-                                </div>
+                                <>
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-sm mb-6">
+                                        <p className="text-sm text-white/80 leading-relaxed">
+                                            A pro-forma invoice will be generated and sent to your email.
+                                            Your reservation will be held for 48 hours pending wire transfer confirmation.
+                                            <br /><br />
+                                            <span className="text-vsoe-gold">Concierge will contact you to finalize corporate billing details.</span>
+                                        </p>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleManualSubmit}
+                                        className="w-full bg-vsoe-gold text-vsoe-midnight py-4 font-sans font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Generate Invoice
+                                    </button>
+                                </>
                             )}
 
                             {paymentMethod === 'Crypto' && (
-                                <div className="bg-white/5 border border-white/10 p-6 rounded-sm mb-6 text-center">
-                                    <p className="text-sm text-white/80 mb-4">
-                                        We accept Bitcoin, Ethereum, and USDC via BitPay.
-                                    </p>
-                                    <div className="flex justify-center gap-4 opacity-50">
-                                        <span className="text-xs border border-white/20 px-2 py-1 rounded">BTC</span>
-                                        <span className="text-xs border border-white/20 px-2 py-1 rounded">ETH</span>
-                                        <span className="text-xs border border-white/20 px-2 py-1 rounded">USDC</span>
+                                <>
+                                    <div className="bg-white/5 border border-white/10 p-6 rounded-sm mb-6 text-center">
+                                        <p className="text-sm text-white/80 mb-4">
+                                            We accept Bitcoin, Ethereum, and USDC via BitPay.
+                                        </p>
+                                        <div className="flex justify-center gap-4 opacity-50">
+                                            <span className="text-xs border border-white/20 px-2 py-1 rounded">BTC</span>
+                                            <span className="text-xs border border-white/20 px-2 py-1 rounded">ETH</span>
+                                            <span className="text-xs border border-white/20 px-2 py-1 rounded">USDC</span>
+                                        </div>
                                     </div>
-                                </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleManualSubmit}
+                                        className="w-full bg-vsoe-gold text-vsoe-midnight py-4 font-sans font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        Pay with Crypto
+                                    </button>
+                                </>
                             )}
-
-                            <div className="flex items-center gap-3 mb-8">
-                                <input
-                                    type="checkbox"
-                                    id="splitPayment"
-                                    className="w-4 h-4 rounded border-white/20 bg-white/5 text-vsoe-gold focus:ring-vsoe-gold"
-                                />
-                                <label htmlFor="splitPayment" className="text-sm text-white/70 cursor-pointer select-none">
-                                    Request Split Payment (Multiple Cards/Parties)
-                                </label>
-                            </div>
-
-                            <button
-                                type="submit"
-                                disabled={isLoading}
-                                className="w-full bg-vsoe-gold text-vsoe-midnight py-4 font-sans font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {isLoading ? 'Processing...' : paymentMethod === 'Invoice / Wire' ? 'Generate Invoice' : 'Confirm Reservation'}
-                            </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
 
@@ -201,7 +293,7 @@ function CheckoutForm() {
 
                 <div className="border-t border-white/10 pt-6 flex justify-between items-end">
                     <span className="text-sm uppercase tracking-widest text-vsoe-gold">Total</span>
-                    <span className="text-3xl font-serif text-white">€4,500</span>
+                    <span className="text-3xl font-serif text-white">€{PRICE_EUR.toLocaleString()}</span>
                 </div>
             </div>
         </div>

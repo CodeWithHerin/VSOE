@@ -27,17 +27,24 @@ export default function HeroSection({
         const videoElement = videoRef.current;
         if (!videoElement) return;
 
+        // Optimize: Use a slightly higher threshold to prevent "flicker" play/pause at edges
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach((entry) => {
+                    // Only play when significant portion is visible to reduce decoding load when scrolling away
                     if (entry.isIntersecting && !hasError && videoSrc) {
-                        videoElement.play().catch(() => { });
+                        const playPromise = videoElement.play();
+                        if (playPromise !== undefined) {
+                            playPromise.catch(() => {
+                                // Auto-play was prevented, likely user interaction needed or low power mode
+                            });
+                        }
                     } else {
                         videoElement.pause();
                     }
                 });
             },
-            { threshold: 0.1 }
+            { threshold: 0.2 } // Increased threshold
         );
 
         observer.observe(videoElement);
@@ -61,6 +68,7 @@ export default function HeroSection({
                         ref={videoRef}
                         className="absolute inset-0 h-full w-full object-cover"
                         src={videoSrc}
+                        preload="auto"
                         autoPlay
                         loop
                         muted
@@ -86,6 +94,7 @@ export default function HeroSection({
                                 fill
                                 priority
                                 className="object-cover"
+                                onLoad={() => setLoaded(true)} // Fix: Signal loaded when image is ready
                             />
                         </div>
                     )

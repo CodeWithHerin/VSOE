@@ -54,7 +54,7 @@ export default function Marquee() {
     return (
         <div
             ref={containerRef}
-            className="bg-vsoe-midnight py-12 border-y border-vsoe-gold/20 relative z-20 overflow-hidden"
+            className="bg-vsoe-midnight py-12 border-y border-vsoe-gold/20 relative z-20 overflow-hidden min-h-[160px] flex items-center transform-gpu"
         >
             {/* Track/Rails */}
             <div className="absolute top-1/2 left-0 w-full h-0.5 bg-white/30 -translate-y-1/2" />

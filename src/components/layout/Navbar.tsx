@@ -16,6 +16,7 @@ const NAV_ITEMS = [
     { label: 'Offers', href: '/offers' },
     { label: 'Membership', href: '/membership' },
     { label: 'Stories', href: '/stories' },
+    { label: 'My Bookings', href: '/profile' },
 ];
 
 export default function Navbar() {

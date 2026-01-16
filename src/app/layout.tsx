@@ -11,6 +11,7 @@ import BookTheScene from '@/components/ui/BookTheScene';
 import AIConcierge from '@/components/ui/AIConcierge';
 import { AudioProvider } from '@/components/audio/AudioContext';
 import FloatingBackButton from '@/components/ui/FloatingBackButton';
+import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -52,6 +53,7 @@ export default function RootLayout({
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
         <AudioProvider>
+          <GlobalProgressBar />
           {/* <AudioAmbience /> */}
           <Preloader />
           <SmoothScroll />

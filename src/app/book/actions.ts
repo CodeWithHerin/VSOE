@@ -1,9 +1,7 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-
-const prisma = new PrismaClient();
 
 export async function getAvailableJourneys() {
     try {
@@ -23,7 +21,9 @@ export async function getAvailableJourneys() {
                         status: 'available'
                     },
                     select: {
+                        id: true,
                         price: true,
+                        cabinId: true,
                         cabin: true
                     }
                 }
@@ -53,6 +53,13 @@ export async function getAvailableJourneys() {
                 description = "The historic five-night odyssey. A once-in-a-lifetime grand tour across Europe.";
             }
 
+            // Group available options for the wizard
+            const options = {
+                historic: j.buckets.find(b => b.cabin.type === 'historic'),
+                suite: j.buckets.find(b => b.cabin.type === 'suite'),
+                grand_suite: j.buckets.find(b => b.cabin.type === 'grand_suite'),
+            };
+
             return {
                 id: j.id,
                 name: j.name,
@@ -60,7 +67,8 @@ export async function getAvailableJourneys() {
                 price: minPrice,
                 image,
                 description,
-                availableCabins: j.buckets.length
+                availableCabins: j.buckets.length,
+                options
             };
         });
     } catch (error) {
@@ -82,7 +90,7 @@ export async function getJourney(id: string) {
             }
         }
     });
-    
+
     // Process buckets to group by cabin type for the frontend
     if (!journey) return null;
 
@@ -103,31 +111,32 @@ export async function createBooking(prevState: any, formData: FormData) {
     const journeyId = formData.get('journeyId') as string;
     const cabinId = formData.get('cabinId') as string;
     const price = parseFloat(formData.get('price') as string);
-    
+
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
-    
-    // Simulate payment processing delay
-    await new Promise(resolve => setTimeout(resolve, 2000));
+
+
 
     try {
         const booking = await prisma.booking.create({
             data: {
                 journeyId,
                 totalPrice: price,
-                status: 'confirmed', // Auto-confirm for demo
+                status: 'confirmed',
                 firstName,
                 lastName,
                 email,
                 phone,
                 passengers: {
-                    create: {
-                        firstName, // Primary passenger
-                        lastName,
-                        cabinId
-                    }
+                    create: [
+                        {
+                            firstName, // Primary passenger
+                            lastName,
+                            cabinId
+                        }
+                    ]
                 }
             }
         });

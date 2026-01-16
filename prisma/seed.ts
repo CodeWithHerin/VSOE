@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -76,26 +77,26 @@ async function main() {
     const journeys = [
         {
             name: "Paris to Venice",
-            dep: "2025-04-20T21:30:00Z", // Day 1 21:30
-            arr: "2025-04-21T18:00:00Z", // Day 2 18:00
+            dep: "2026-04-20T21:30:00Z", // Day 1 21:30
+            arr: "2026-04-21T18:00:00Z", // Day 2 18:00
             basePrice: 3530
         },
         {
             name: "Paris to Venice",
-            dep: "2025-05-15T21:30:00Z",
-            arr: "2025-05-16T18:00:00Z",
+            dep: "2026-05-15T21:30:00Z",
+            arr: "2026-05-16T18:00:00Z",
             basePrice: 3530
         },
         {
             name: "Paris to Istanbul",
-            dep: "2025-08-25T14:00:00Z",
-            arr: "2025-08-30T16:00:00Z",
+            dep: "2026-08-25T14:00:00Z",
+            arr: "2026-08-30T16:00:00Z",
             basePrice: 17500
         },
         {
             name: "London to Venice",
-            dep: "2025-06-10T10:00:00Z",
-            arr: "2025-06-11T18:00:00Z",
+            dep: "2026-06-10T10:00:00Z",
+            arr: "2026-06-11T18:00:00Z",
             basePrice: 4100
         }
     ]

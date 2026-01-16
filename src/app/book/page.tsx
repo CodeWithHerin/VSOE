@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import AvailabilityCalendar from '@/components/ui/AvailabilityCalendar';
-import JourneyGrid from '@/components/booking/JourneyGrid';
+import JourneyListFetcher from '@/components/booking/JourneyListFetcher';
 import { getAvailableJourneys } from '@/app/book/actions';
 
-export default async function BookingPage() {
-    const journeys = await getAvailableJourneys();
+// Skeleton Loader for the Grid
+function GridSkeleton() {
+    return (
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+                <div key={i} className="h-[500px] bg-white/5 rounded-sm animate-pulse flex flex-col items-center justify-center border border-white/10">
+                    <span className="text-vsoe-gold/20 text-4xl font-serif">VSOE</span>
+                </div>
+            ))}
+        </div>
+    );
+}
 
+// Helper to fetch for calendar independently
+async function CalendarWrapper() {
+    const journeys = await getAvailableJourneys();
+    return <AvailabilityCalendar journeys={journeys} />;
+}
+
+export default async function BookingPage() {
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
             <Navbar />
@@ -18,11 +35,13 @@ export default async function BookingPage() {
                     <p className="text-vsoe-cream/60 tracking-[0.2em] uppercase text-sm">Begin your story</p>
                 </div>
 
-                {/* Client Component for the interactive grid */}
-                <JourneyGrid journeys={journeys} />
+                {/* Suspense Boundary for Instant Navigation */}
+                <Suspense fallback={<GridSkeleton />}>
+                    <JourneyListFetcher />
+                </Suspense>
             </div>
 
-            {/* Availability Calendar Section */}
+            {/* Availability Calendar Section - Suspended to prevent blocking */}
             <div className="max-w-7xl mx-auto px-6 pb-20">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
                     <div className="space-y-8">
@@ -37,7 +56,9 @@ export default async function BookingPage() {
                         </div>
                     </div>
                     <div>
-                        <AvailabilityCalendar />
+                        <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-sm" />}>
+                            <CalendarWrapper />
+                        </Suspense>
                     </div>
                 </div>
             </div>
