@@ -13,7 +13,7 @@ export default function InvoiceActions() {
             </button>
             <button
                 className="ml-4 text-xs uppercase tracking-widest text-gray-500 hover:text-black underline"
-                onClick={() => alert("PDF Download feature coming soon in V2")}
+                onClick={() => window.print()}
             >
                 Download PDF
             </button>

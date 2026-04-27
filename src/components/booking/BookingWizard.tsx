@@ -4,17 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { createBooking } from '@/app/book/actions';
 import MagneticButton from '@/components/ui/MagneticButton';
-import { Check, User, CreditCard, Star, Train, ChevronRight, FileText } from 'lucide-react'; // Added icons
+import { Check, Star, Train, ChevronRight, FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements } from '@stripe/react-stripe-js';
 import PaymentForm from './PaymentForm';
-import MockPaymentForm from './MockPaymentForm';
-
-// Initialize Stripe outside component
-const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
-    : null;
 
 interface BookingWizardProps {
     journey: any;
@@ -24,10 +16,11 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     const [step, setStep] = useState(1);
     const [selectedCabin, setSelectedCabin] = useState<any>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderID, setOrderID] = useState<string>('');
+    const [amountStr, setAmountStr] = useState<string>('');
+    const [paymentAmount, setPaymentAmount] = useState<number>(0);
 
     // Payment State
-    const [clientSecret, setClientSecret] = useState<string>("");
-    const [isMockMode, setIsMockMode] = useState(false);
     const [formDataState, setFormDataState] = useState<FormData | null>(null);
     const [completedBookingId, setCompletedBookingId] = useState<string | null>(null);
 
@@ -55,25 +48,35 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
         }
     ];
 
-    // Initialize Payment Intent when reaching step 3
+    // Fetch price from DB when reaching step 3, then let browser handle PayPal
     useEffect(() => {
         if (step === 3 && selectedCabin?.data?.price) {
+            setAmountStr(''); // Reset while loading
+            setOrderID('');
             fetch('/api/create-payment-intent', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    amount: selectedCabin.data.price,
-                    currency: 'eur'
+                    journeyId: journey.id,
+                    cabinId: selectedCabin.data.cabinId,
+                    guests: 1,
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
-                    setClientSecret(data.clientSecret);
-                    if (data.mockMode) setIsMockMode(true);
+                    if (data.id) {
+                        setOrderID(data.id);
+                    }
+                    if (data.amount) {
+                        setPaymentAmount(data.amount);
+                        setAmountStr(data.amountStr ?? String(data.amount));
+                    } else if (data.error) {
+                        console.error('Price lookup failed:', data.error);
+                    }
                 })
-                .catch((err) => console.error("Payment init failed", err));
+                .catch((err) => console.error('Payment init failed', err));
         }
-    }, [step, selectedCabin]);
+    }, [step, selectedCabin, journey.id]);
 
     const handleDetailsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -119,7 +122,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
         exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
-    };
+    } as const;
 
     return (
         <div className="w-full max-w-5xl mx-auto">
@@ -298,45 +301,20 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                             <p className="text-white/60">Finalize your booking securely.</p>
                         </div>
 
-                        {/* Credit Card Visualization */}
-                        <div className="mb-10 w-full max-w-sm mx-auto h-56 bg-gradient-to-br from-[#1e293b] to-[#0f172a] rounded-xl border border-white/10 shadow-2xl relative overflow-hidden p-6 flex flex-col justify-between">
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-vsoe-gold/5 rounded-full blur-3xl" />
-                            <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl" />
-
-                            <div className="flex justify-between items-start z-10">
-                                <div className="w-12 h-8 bg-gradient-to-r from-yellow-200 to-yellow-400 rounded-md opacity-80" />
-                                <span className="text-white/30 font-mono text-xs">CREDIT CARD</span>
-                            </div>
-
-                            <div className="z-10">
-                                <div className="text-white/90 font-mono text-xl tracking-widest mb-4">•••• •••• •••• ••••</div>
-                                <div className="flex justify-between items-end">
-                                    <div>
-                                        <span className="text-[8px] text-white/40 uppercase tracking-widest block mb-1">Card Holder</span>
-                                        <span className="text-white/80 text-sm font-medium uppercase">{formDataState?.get('firstName')} {formDataState?.get('lastName')}</span>
-                                    </div>
-                                    <div>
-                                        <span className="text-[8px] text-white/40 uppercase tracking-widest block mb-1">Expires</span>
-                                        <span className="text-white/80 text-sm font-medium">MM/YY</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                         <div className="bg-white/5 p-8 rounded-sm border border-white/10">
-                            {!clientSecret ? (
+                            {!amountStr ? (
                                 <div className="flex flex-col items-center py-12">
                                     <div className="w-8 h-8 border-2 border-vsoe-gold border-t-transparent rounded-full animate-spin mb-4" />
                                     <p className="text-xs uppercase tracking-widest text-white/40">Initializing Secure Gateway...</p>
                                 </div>
-                            ) : isMockMode ? (
-                                <MockPaymentForm amount={selectedCabin?.data.price} onSuccess={finalizeBooking} />
                             ) : (
-                                stripePromise && (
-                                    <Elements stripe={stripePromise} options={{ clientSecret, appearance: { theme: 'night', variables: { colorPrimary: '#d4af37' } } }}>
-                                        <PaymentForm amount={selectedCabin?.data.price} onSuccess={finalizeBooking} />
-                                    </Elements>
-                                )
+                                <PaymentForm
+                                    amount={paymentAmount}
+                                    amountStr={amountStr}
+                                    orderID={orderID}
+                                    onSuccess={finalizeBooking}
+                                    validate={() => true}
+                                />
                             )}
                         </div>
 
@@ -370,8 +348,8 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
 
                             <h2 className="text-4xl md:text-5xl font-serif text-vsoe-gold mb-6 relative z-10">Journey Confirmed</h2>
                             <p className="text-white/70 text-lg max-w-lg mx-auto mb-10 leading-relaxed z-10">
-                                Welcome aboard, {formDataState?.get('firstName')}. Your carriage awaits.
-                                A confirmation has been sent to {formDataState?.get('email')}.
+                                Welcome aboard, {formDataState?.get('firstName') as string}. Your carriage awaits.
+                                A confirmation has been sent to {formDataState?.get('email') as string}.
                             </p>
 
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-md z-10">

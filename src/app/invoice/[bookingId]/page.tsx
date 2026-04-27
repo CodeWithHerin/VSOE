@@ -14,6 +14,29 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
 
     return (
         <main className="min-h-screen bg-white text-black p-8 md:p-16 pt-32 print:p-0">
+            {/* INJECTED PRINT STYLESHEET */}
+            <style dangerouslySetInnerHTML={{
+                __html: `
+                @media print {
+                    /* Hide custom cursor */
+                    * { cursor: none !important; }
+                    .custom-cursor { display: none !important; }
+                    
+                    /* Hide global UI components (Navbar, Footer, Cookie Banner) */
+                    nav, footer, header { display: none !important; }
+                    
+                    /* Hide all fixed overlays (Audio Controller, AI Concierge, Back Button) */
+                    div[class*="fixed"], button[class*="fixed"] { display: none !important; }
+                    
+                    /* Force clean page styling */
+                    body { background: white !important; color: black !important; }
+                    
+                    /* Full width content, remove box shadow */
+                    main { padding: 0 !important; width: 100% !important; max-width: none !important; }
+                    .shadow-lg { box-shadow: none !important; border: none !important; }
+                }
+            `}} />
+
             <div className="max-w-4xl mx-auto border border-gray-200 p-12 shadow-lg print:shadow-none print:border-none">
 
                 {/* Header */}

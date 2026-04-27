@@ -20,7 +20,9 @@ export default function LoginPage() {
             <div className="w-full max-w-md bg-white/5 p-12 border border-white/10 backdrop-blur-md">
                 <h1 className="text-3xl font-serif text-vsoe-cream mb-8 text-center">Passenger Login</h1>
 
-                <form action={authenticate} className="space-y-6">
+                <form action={async (formData: FormData) => {
+                    await authenticate(formData);
+                }} className="space-y-6">
                     <div className="space-y-2">
                         <label className="text-[10px] uppercase tracking-widest text-vsoe-gold">Email Address</label>
                         <input name="email" type="email" required className="w-full bg-transparent border-b border-white/20 py-2 text-white focus:border-vsoe-gold outline-none transition-colors" placeholder="john@example.com" />
