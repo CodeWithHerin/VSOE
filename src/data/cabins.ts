@@ -13,8 +13,8 @@ export const cabins = [
             '24-Hour Steward Service'
         ],
         images: {
-            day: 'https://images.pexels.com/photos/8082220/pexels-photo-8082220.jpeg?auto=compress&cs=tinysrgb&w=1920', // Lounge vibe
-            night: 'https://images.pexels.com/photos/14547145/pexels-photo-14547145.jpeg?auto=compress&cs=tinysrgb&w=1920' // Bedroom vibe (approx)
+            day: '/images/vsoe/vsoe-historic-cabin.jpg', // Lounge vibe
+            night: '/images/vsoe/vsoe-bar-car.jpg' // Bedroom vibe (approx)
         }
     },
     {
@@ -31,8 +31,8 @@ export const cabins = [
             'Daytime Lounge Configuration'
         ],
         images: {
-            day: 'https://images.pexels.com/photos/4946758/pexels-photo-4946758.jpeg?auto=compress&cs=tinysrgb&w=1920', // Luxury Room
-            night: 'https://images.pexels.com/photos/20439293/pexels-photo-20439293.jpeg?auto=compress&cs=tinysrgb&w=1920' // Dim lighting
+            day: '/images/vsoe/vsoe-grand-suite.jpg', // Luxury Room
+            night: '/images/vsoe/vsoe-dining-car.jpg' // Dim lighting
         }
     },
     {
@@ -49,8 +49,8 @@ export const cabins = [
             '24-Hour Butler Service'
         ],
         images: {
-            day: 'https://images.pexels.com/photos/8135502/pexels-photo-8135502.jpeg?auto=compress&cs=tinysrgb&w=1920', // Opulent bedroom
-            night: 'https://images.pexels.com/photos/18254581/pexels-photo-18254581.jpeg?auto=compress&cs=tinysrgb&w=1920' // Night mode
+            day: '/images/vsoe/vsoe-paris-departure.jpg', // Opulent bedroom
+            night: '/images/vsoe/vsoe-grand-suite.jpg' // Night mode
         }
     }
 ];

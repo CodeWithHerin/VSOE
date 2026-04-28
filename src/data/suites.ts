@@ -11,7 +11,7 @@ export const suites = [
             'Free-flowing champagne',
             'Private dining'
         ],
-        image: 'https://images.pexels.com/photos/8135502/pexels-photo-8135502.jpeg?auto=compress&cs=tinysrgb&w=1920', // Luxury Bedroom
+        image: '/images/vsoe/vsoe-grand-suite.jpg', // Luxury Bedroom
         price: 'From £8,400 per person'
     },
     {
@@ -25,7 +25,7 @@ export const suites = [
             '24-hour steward service',
             'Complimentary kimono and slippers'
         ],
-        image: 'https://images.pexels.com/photos/4946758/pexels-photo-4946758.jpeg?auto=compress&cs=tinysrgb&w=1920', // Elegant Room
+        image: '/images/vsoe/vsoe-historic-cabin.jpg', // Elegant Room
         price: 'From £4,500 per person'
     },
     {
@@ -39,7 +39,7 @@ export const suites = [
             '24-hour steward service',
             'Authentic 1920s craftsmanship'
         ],
-        image: 'https://images.pexels.com/photos/18254581/pexels-photo-18254581.jpeg?auto=compress&cs=tinysrgb&w=1920', // Classic Interior
+        image: '/images/vsoe/vsoe-bar-car.jpg', // Classic Interior
         price: 'From £3,530 per person'
     }
 ];

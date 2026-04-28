@@ -5,9 +5,9 @@ export const journeys = [
         duration: '1 Night',
         description: 'The classic route. Depart from the City of Light, traverse the Swiss Alps, and awake in the Floating City.',
         stops: ['Paris', 'Innsbruck', 'Venice'],
-        image: 'https://images.pexels.com/photos/1308940/pexels-photo-1308940.jpeg?auto=compress&cs=tinysrgb&w=1920', // Unique Paris Train
+        image: '/images/vsoe/vsoe-paris-departure.jpg', // Unique Paris Train
         heroVideo: 'https://cdn.coverr.co/videos/coverr-train-in-the-snow-4626/1080p.mp4',
-        heroImage: 'https://images.pexels.com/photos/17837317/pexels-photo-17837317.jpeg?auto=compress&cs=tinysrgb&w=1920', // Paris Street
+        heroImage: '/images/vsoe/vsoe-paris-departure.jpg', // Paris Street
         price: '£3,530',
         timeline: [
             {
@@ -60,9 +60,9 @@ export const journeys = [
         duration: '5 Nights',
         description: 'The historic odyssey. A once-in-a-lifetime grand tour across Europe, visiting Budapest and Bucharest.',
         stops: ['Paris', 'Budapest', 'Bucharest', 'Istanbul'],
-        image: 'https://images.pexels.com/photos/4464601/pexels-photo-4464601.jpeg?auto=compress&cs=tinysrgb&w=1920', // Istanbul
+        image: '/images/vsoe/vsoe-dining-car.jpg', // Istanbul
         heroVideo: 'https://cdn.coverr.co/videos/coverr-flying-over-the-coast-4632/1080p.mp4',
-        heroImage: 'https://images.pexels.com/photos/4464601/pexels-photo-4464601.jpeg?auto=compress&cs=tinysrgb&w=1920',
+        heroImage: '/images/vsoe/vsoe-dining-car.jpg',
         price: '£17,500',
         timeline: [
             {
@@ -106,7 +106,7 @@ export const journeys = [
         duration: '1 Night',
         description: 'Begin your journey in London aboard the Belmond British Pullman before boarding the VSOE in Calais.',
         stops: ['London', 'Calais', 'Paris', 'Venice'],
-        image: 'https://images.pexels.com/photos/672532/pexels-photo-672532.jpeg?auto=compress&cs=tinysrgb&w=1920', // London
+        image: '/images/vsoe/vsoe-bar-car.jpg', // London
         heroVideo: 'https://cdn.coverr.co/videos/coverr-people-walking-in-london-4621/1080p.mp4',
         heroImage: 'https://images.pexels.com/photos/460672/pexels-photo-460672.jpeg?auto=compress&cs=tinysrgb&w=1920', // Big Ben
         price: '£4,100',
