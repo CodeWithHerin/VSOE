@@ -11,21 +11,21 @@ const STORIES = [
         category: 'Style',
         title: 'The Art of Dress Code',
         excerpt: 'Why black tie remains the gold standard for dinner on board.',
-        image: 'https://images.unsplash.com/photo-1504194921103-f8b80cadd5e4?q=80&w=2670&auto=format&fit=crop'
+        image: '/images/vsoe/vsoe-exterior-night.jpg'
     },
     {
         id: 2,
         category: 'Heritage',
         title: 'Secrets of the Blue Train',
         excerpt: 'Uncovering the mysteries hidden within the marquetry of Car 3674.',
-        image: 'https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?q=80&w=2670&auto=format&fit=crop'
+        image: '/images/vsoe/vsoe-bar-car.jpg'
     },
     {
         id: 3,
         category: 'Destinations',
         title: 'Venice: A Love Letter',
         excerpt: 'The perfect itinerary for 24 hours in the Floating City.',
-        image: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=2566&auto=format&fit=crop'
+        image: '/images/vsoe/vsoe-countryside-window.jpg'
     }
 ];
 

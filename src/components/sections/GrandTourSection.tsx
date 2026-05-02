@@ -10,7 +10,7 @@ const JOURNEYS = [
         title: "The Classic Route",
         route: "Paris → Venice",
         duration: "1 Night",
-        image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=2566&auto=format&fit=crop",
+        image: "/images/vsoe/vsoe-paris-departure.jpg",
         description: "The original journey. Depart Paris in the late afternoon and awake to the scenery of the Swiss Alps.",
         price: "From £3,530",
         dates: "Mar 2025 - Nov 2025"
@@ -20,7 +20,7 @@ const JOURNEYS = [
         title: "The Gateway",
         route: "Paris → Istanbul",
         duration: "5 Nights",
-        image: "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop",
+        image: "/images/vsoe/vsoe-dining-car.jpg",
         description: "A historic transcontinental odyssey. Only runs once a year in late August.",
         price: "From £17,500",
         dates: "August 2025 Only"
@@ -30,7 +30,7 @@ const JOURNEYS = [
         title: "The Italian",
         route: "Venice → Paris",
         duration: "1 Night",
-        image: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop", // Venice Canal
+        image: "/images/vsoe/vsoe-venice-night.jpg",
         description: "Return from the floating city in style. Brunch in the Dolomites, tea in France.",
         price: "From £3,530",
         dates: "Mar 2025 - Nov 2025"

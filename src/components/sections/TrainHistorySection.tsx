@@ -62,7 +62,7 @@ export default function TrainHistorySection() {
                         <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105" />
                         <div className="relative h-full w-full overflow-hidden">
                             <Image
-                                src="https://images.unsplash.com/photo-1550586678-f7225f03c44b?q=80&w=1600&auto=format&fit=crop" // Replaced broken image with "Gold/Detail" texture
+                                src="/images/vsoe/vsoe-historic-cabin.jpg"
                                 alt="Art Deco Detail"
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
@@ -79,7 +79,7 @@ export default function TrainHistorySection() {
                         <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105 delay-75" />
                         <div className="relative h-full w-full overflow-hidden">
                             <Image
-                                src="https://images.unsplash.com/photo-1505576391880-b3f9d713dc4f?q=80&w=1600&auto=format&fit=crop"
+                                src="/images/vsoe/vsoe-bar-car.jpg"
                                 alt="Interior"
                                 fill
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"

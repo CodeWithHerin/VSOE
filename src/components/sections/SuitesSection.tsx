@@ -8,7 +8,7 @@ import TextReveal from '@/components/ui/TextReveal';
 
 export default function SuitesSection() {
     useTrackInterest('wellness');
-    const grandSuiteImage = "https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2774&auto=format&fit=crop";
+    const grandSuiteImage = "/images/vsoe/vsoe-grand-suite.jpg";
 
     return (
         <section id="track-wellness" className="relative w-full min-h-screen py-20 md:py-32 bg-vsoe-blue flex items-center">
