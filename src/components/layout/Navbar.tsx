@@ -4,20 +4,220 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Globe, Search } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import MagneticButton from '@/components/ui/MagneticButton';
 
-const NAV_ITEMS = [
-    { label: 'Destinations', href: '/destinations' },
-    { label: 'Experiences', href: '/experiences' },
-    { label: 'Packages & Tours', href: '/packages' },
-    { label: 'Signature Suites', href: '/suites' },
-    { label: 'Occasions', href: '/occasions' },
-    { label: 'Offers', href: '/offers' },
-    { label: 'Membership', href: '/membership' },
-    { label: 'Stories', href: '/stories' },
-    { label: 'My Bookings', href: '/profile' },
+// ─── Types ───────────────────────────────────────────────────────────────────
+
+interface MegaMenuLink {
+    label: string;
+    href: string;
+    desc: string;
+}
+
+interface MegaMenuColumn {
+    heading: string;
+    links: MegaMenuLink[];
+}
+
+interface MegaMenuImage {
+    src: string;
+    label: string;
+    href: string;
+}
+
+interface MegaMenuData {
+    columns: MegaMenuColumn[];
+    images: MegaMenuImage[];
+}
+
+interface NavItem {
+    label: string;
+    href: string;
+    megaMenu?: MegaMenuData;
+}
+
+// ─── Suggested Searches ──────────────────────────────────────────────────────
+
+const SUGGESTED_SEARCHES = [
+    { label: 'Paris to Venice', href: '/destinations/paris-venice' },
+    { label: 'Grand Suite', href: '/suites' },
+    { label: 'Dining Experience', href: '/dining' },
+    { label: 'Private Charter', href: '/packages' },
 ];
+
+// ─── NAV_ITEMS ───────────────────────────────────────────────────────────────
+
+const NAV_ITEMS: NavItem[] = [
+    {
+        label: 'Destinations',
+        href: '/destinations',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'Popular Routes',
+                    links: [
+                        { label: 'Paris to Venice', href: '/destinations/paris-venice', desc: '2 nights · From €4,500' },
+                        { label: 'London to Venice', href: '/destinations/london-venice', desc: '2 nights · From €3,800' },
+                        { label: 'Paris to Istanbul', href: '/destinations/paris-istanbul', desc: '3 nights · From €6,200' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Paris', href: '/destinations/paris-venice' },
+                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Venice', href: '/destinations/paris-venice' },
+                { src: '/images/vsoe/vsoe-dining-car.jpg', label: 'Istanbul', href: '/destinations/paris-istanbul' },
+            ]
+        }
+    },
+    {
+        label: 'Experiences',
+        href: '/experiences',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'On Board',
+                    links: [
+                        { label: 'Fine Dining', href: '/dining', desc: 'Multi-course cuisine by candlelight' },
+                        { label: 'Signature Suites', href: '/suites', desc: 'Your private sanctuary on rails' },
+                        { label: 'Bar Car 3674', href: '/bar-car', desc: 'Cocktails and conversation' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-dining-car.jpg', label: 'Dining', href: '/dining' },
+                { src: '/images/vsoe/vsoe-bar-car.jpg', label: 'Bar Car', href: '/bar-car' },
+                { src: '/images/vsoe/vsoe-historic-cabin.jpg', label: 'Suites', href: '/suites' },
+            ]
+        }
+    },
+    {
+        label: 'Packages & Tours',
+        href: '/packages',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'Curated Journeys',
+                    links: [
+                        { label: 'Honeymoon Collection', href: '/packages', desc: 'Romance across Europe' },
+                        { label: 'Grand Tour', href: '/packages', desc: 'The ultimate rail odyssey' },
+                        { label: 'Festive Journeys', href: '/packages', desc: 'Christmas and New Year departures' },
+                        { label: 'Private Charters', href: '/packages', desc: 'The entire train, exclusively yours' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Grand Tour', href: '/packages' },
+                { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Departures', href: '/packages' },
+            ]
+        }
+    },
+    {
+        label: 'Signature Suites',
+        href: '/suites',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'Accommodation',
+                    links: [
+                        { label: 'Historic Cabins', href: '/suites', desc: 'Original 1920s carriages' },
+                        { label: 'Luxury Suites', href: '/suites', desc: 'Refined elegance, reimagined' },
+                        { label: 'Grand Suites', href: '/suites', desc: 'The pinnacle of rail travel' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-historic-cabin.jpg', label: 'Historic', href: '/suites' },
+                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Grand Suite', href: '/suites' },
+            ]
+        }
+    },
+    {
+        label: 'Occasions',
+        href: '/occasions',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'Celebrate in Style',
+                    links: [
+                        { label: 'Honeymoons', href: '/occasions', desc: 'Begin forever in motion' },
+                        { label: 'Anniversaries', href: '/occasions', desc: 'Milestone moments on rails' },
+                        { label: 'Corporate Events', href: '/occasions', desc: 'Impress beyond the boardroom' },
+                        { label: 'Private Dining', href: '/occasions', desc: 'Exclusive carriage hire' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-dining-car.jpg', label: 'Occasions', href: '/occasions' },
+            ]
+        }
+    },
+    {
+        label: 'Offers',
+        href: '/offers',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'Special Rates',
+                    links: [
+                        { label: 'Early Booking', href: '/offers', desc: 'Save up to 20% on advance reservations' },
+                        { label: 'Last Minute', href: '/offers', desc: 'Spontaneous luxury departures' },
+                        { label: 'Seasonal Offers', href: '/offers', desc: 'Winter and spring specials' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-bar-car.jpg', label: 'Offers', href: '/offers' },
+            ]
+        }
+    },
+    {
+        label: 'Membership',
+        href: '/membership',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'The Inner Circle',
+                    links: [
+                        { label: 'About Membership', href: '/membership', desc: 'Privileges for the discerning traveller' },
+                        { label: 'Exclusive Benefits', href: '/membership', desc: 'Priority booking and suite upgrades' },
+                        { label: 'Gift Membership', href: '/membership', desc: 'The most extraordinary gift' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Membership', href: '/membership' },
+            ]
+        }
+    },
+    {
+        label: 'Stories',
+        href: '/stories',
+        megaMenu: {
+            columns: [
+                {
+                    heading: 'From The Journal',
+                    links: [
+                        { label: 'Travel Tales', href: '/stories', desc: 'Dispatches from the golden rails' },
+                        { label: 'Gastronomy', href: '/stories', desc: 'The art of dining at speed' },
+                        { label: 'History', href: '/stories', desc: 'A century of extraordinary journeys' },
+                    ]
+                }
+            ],
+            images: [
+                { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Stories', href: '/stories' },
+                { src: '/images/vsoe/vsoe-historic-cabin.jpg', label: 'Heritage', href: '/stories' },
+            ]
+        }
+    },
+    {
+        label: 'My Bookings',
+        href: '/profile',
+    },
+];
+
+// ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -27,7 +227,7 @@ export default function Navbar() {
     const { scrollY } = useScroll();
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-    // New state
+    // Search & Language state
     const [currentLang, setCurrentLang] = useState('EN');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -47,6 +247,22 @@ export default function Navbar() {
     useMotionValueEvent(scrollY, "change", (latest) => {
         setIsScrolled(latest > 50);
     });
+
+    // Close search on Escape key
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsSearchOpen(false);
+            }
+        };
+        if (isSearchOpen) {
+            document.addEventListener('keydown', handleKeyDown);
+        }
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isSearchOpen]);
+
+    // Find the active nav item's mega menu data
+    const activeMegaMenu = NAV_ITEMS.find(item => item.label === activeMenu)?.megaMenu;
 
     return (
         <>
@@ -96,14 +312,14 @@ export default function Navbar() {
                     {/* Right: Actions */}
                     <div className="flex items-center gap-8 justify-end">
                         <button
-                            onClick={() => setIsSearchOpen(!isSearchOpen)}
+                            onClick={() => setIsSearchOpen(true)}
                             className={cn(
                                 "hidden lg:flex items-center gap-2 text-xs uppercase tracking-widest transition-all duration-500 hover:text-vsoe-gold",
                                 isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0 text-white/80"
                             )}
                         >
                             <Search size={14} />
-                            <span>{isSearchOpen ? 'Close' : 'Search'}</span>
+                            <span>Search</span>
                         </button>
 
                         <div className="relative hidden lg:block">
@@ -159,7 +375,7 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Desktop Mega Menu */}
+                {/* ─── Desktop Nav Links ─────────────────────────────────────────── */}
                 <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1" onMouseLeave={handleMouseLeave}>
                     {NAV_ITEMS.map((item) => (
                         <div key={item.label} className="relative py-2" onMouseEnter={() => handleMouseEnter(item.label)}>
@@ -173,7 +389,7 @@ export default function Navbar() {
                                 )}
                             >
                                 {item.label}
-                                < span className={cn(
+                                <span className={cn(
                                     "absolute -bottom-1 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300",
                                     activeMenu === item.label ? "w-full" : "group-hover:w-full"
                                 )} />
@@ -181,79 +397,157 @@ export default function Navbar() {
                         </div>
                     ))}
                 </div>
-                {/* Mega Menu Panel */}
+
+                {/* ─── Dynamic Mega Menu Panel ──────────────────────────────────── */}
                 <AnimatePresence>
-                    {activeMenu && (activeMenu === 'Destinations' || activeMenu === 'Experiences') && (
+                    {activeMenu && activeMegaMenu && (
                         <motion.div
+                            key={activeMenu}
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            transition={{ duration: 0.3 }}
+                            transition={{ duration: 0.3, ease: 'easeOut' }}
                             className="absolute top-full left-0 w-full bg-vsoe-midnight border-t border-white/10 shadow-2xl z-40"
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div className="max-w-[1920px] mx-auto px-12 py-12 grid grid-cols-4 gap-8">
-                                {activeMenu === 'Destinations' && (
-                                    <>
-                                        <div className="space-y-4">
-                                            <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-4">Popular Routes</h4>
-                                            <ul className="space-y-2 text-sm text-white/70">
-                                                <li><Link href="/destinations/paris-venice" className="hover:text-white transition-colors">Paris to Venice</Link></li>
-                                                <li><Link href="/destinations/london-venice" className="hover:text-white transition-colors">London to Venice</Link></li>
-                                                <li><Link href="/destinations/paris-istanbul" className="hover:text-white transition-colors">Paris to Istanbul</Link></li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-span-3 grid grid-cols-3 gap-4">
-                                            <div className="relative aspect-video group cursor-pointer overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop" alt="Paris" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl">Paris</span>
+                            <div className="max-w-[1920px] mx-auto px-12 py-12">
+                                <div className={cn(
+                                    "grid gap-8",
+                                    // Adapt grid: links column + image columns based on image count
+                                    activeMegaMenu.images.length >= 3
+                                        ? "grid-cols-4"
+                                        : activeMegaMenu.images.length === 2
+                                            ? "grid-cols-3"
+                                            : "grid-cols-2"
+                                )}>
+                                    {/* ── Left Column: Heading + Links ────────── */}
+                                    <div className="space-y-6">
+                                        {activeMegaMenu.columns.map((col) => (
+                                            <div key={col.heading}>
+                                                <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-6">
+                                                    {col.heading}
+                                                </h4>
+                                                <ul className="space-y-4">
+                                                    {col.links.map((link) => (
+                                                        <li key={link.label}>
+                                                            <Link
+                                                                href={link.href}
+                                                                className="group/link block"
+                                                            >
+                                                                <span className="text-sm text-white/90 group-hover/link:text-vsoe-gold transition-colors duration-300 relative">
+                                                                    {link.label}
+                                                                    <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300 group-hover/link:w-full" />
+                                                                </span>
+                                                                <span className="block text-[11px] text-vsoe-cream/50 mt-0.5 leading-relaxed">
+                                                                    {link.desc}
+                                                                </span>
+                                                            </Link>
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </div>
-                                            <div className="relative aspect-video group cursor-pointer overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop" alt="Venice" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl">Venice</span>
-                                            </div>
-                                            <div className="relative aspect-video group cursor-pointer overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop" alt="Istanbul" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl">Istanbul</span>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
-                                {activeMenu === 'Experiences' && (
-                                    <>
-                                        <div className="space-y-4">
-                                            <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-4">On Board</h4>
-                                            <ul className="space-y-2 text-sm text-white/70">
-                                                <li><Link href="/dining" className="hover:text-white transition-colors">Dining</Link></li>
-                                                <li><Link href="/suites" className="hover:text-white transition-colors">Suites</Link></li>
-                                                <li><Link href="/bar-car" className="hover:text-white transition-colors">Bar Car '3674'</Link></li>
-                                            </ul>
-                                        </div>
-                                        <div className="col-span-3 grid grid-cols-2 gap-4">
-                                            <div className="relative aspect-[21/9] group cursor-pointer overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop" alt="Dining" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl">Gastronomy</span>
-                                            </div>
-                                            <div className="relative aspect-[21/9] group cursor-pointer overflow-hidden">
-                                                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=2574&auto=format&fit=crop" alt="Suites" className="object-cover transition-transform duration-700 group-hover:scale-110" />
-                                                <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl">Accommodations</span>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
+                                        ))}
+                                    </div>
+
+                                    {/* ── Right Columns: Image Grid ───────────── */}
+                                    <div className={cn(
+                                        "grid gap-4",
+                                        activeMegaMenu.images.length >= 3
+                                            ? "col-span-3 grid-cols-3"
+                                            : activeMegaMenu.images.length === 2
+                                                ? "col-span-2 grid-cols-2"
+                                                : "col-span-1 grid-cols-1"
+                                    )}>
+                                        {activeMegaMenu.images.map((img) => (
+                                            <Link
+                                                key={img.label}
+                                                href={img.href}
+                                                className="relative aspect-video group/img cursor-pointer overflow-hidden"
+                                            >
+                                                <Image
+                                                    src={img.src}
+                                                    alt={img.label}
+                                                    fill
+                                                    className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                />
+                                                <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
+                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl drop-shadow-lg">
+                                                    {img.label}
+                                                </span>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
-            </motion.nav >
+            </motion.nav>
 
-            {/* Mobile Menu Overlay */}
+            {/* ─── Search Overlay ──────────────────────────────────────────────── */}
+            <AnimatePresence>
+                {isSearchOpen && (
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4, ease: 'easeOut' }}
+                        className="fixed inset-0 z-[200] bg-vsoe-midnight/95 backdrop-blur-sm flex items-center justify-center"
+                    >
+                        {/* Close Button */}
+                        <button
+                            onClick={() => setIsSearchOpen(false)}
+                            className="absolute top-8 right-8 text-white/60 hover:text-vsoe-gold transition-colors"
+                        >
+                            <X size={28} />
+                        </button>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 30 }}
+                            transition={{ duration: 0.5, delay: 0.1, ease: 'easeOut' }}
+                            className="w-full max-w-2xl px-8"
+                        >
+                            {/* Search Input */}
+                            <div className="mb-16">
+                                <label className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-6">
+                                    Search
+                                </label>
+                                <input
+                                    type="text"
+                                    autoFocus
+                                    placeholder="Search destinations, journeys, experiences..."
+                                    className="w-full bg-transparent border-b-2 border-vsoe-gold/60 focus:border-vsoe-gold pb-4 text-2xl md:text-3xl text-white font-serif outline-none transition-colors duration-300 placeholder:text-white/20"
+                                />
+                            </div>
+
+                            {/* Suggested Searches */}
+                            <div>
+                                <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold block mb-6">
+                                    Suggested
+                                </span>
+                                <div className="flex flex-wrap gap-3">
+                                    {SUGGESTED_SEARCHES.map((suggestion) => (
+                                        <Link
+                                            key={suggestion.label}
+                                            href={suggestion.href}
+                                            onClick={() => setIsSearchOpen(false)}
+                                            className="px-5 py-2.5 border border-white/15 text-sm text-white/70 hover:text-vsoe-gold hover:border-vsoe-gold/50 transition-all duration-300 rounded-sm"
+                                        >
+                                            {suggestion.label}
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* ─── Mobile Menu Overlay ─────────────────────────────────────────── */}
             <AnimatePresence>
                 {
                     isMobileMenuOpen && (
@@ -284,7 +578,7 @@ export default function Navbar() {
                         </motion.div>
                     )
                 }
-            </AnimatePresence >
+            </AnimatePresence>
         </>
     );
 }
