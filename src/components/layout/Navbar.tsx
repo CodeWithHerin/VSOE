@@ -66,8 +66,8 @@ const NAV_ITEMS: NavItem[] = [
             ],
             images: [
                 { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Paris', href: '/destinations/paris-venice' },
-                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Venice', href: '/destinations/paris-venice' },
-                { src: '/images/vsoe/vsoe-dining-car.jpg', label: 'Istanbul', href: '/destinations/paris-istanbul' },
+                { src: '/images/vsoe/vsoe-venice-night.jpg', label: 'Venice', href: '/destinations/paris-venice' },
+                { src: '/images/vsoe/vsoe-exterior-night.jpg', label: 'Istanbul', href: '/destinations/paris-istanbul' },
             ]
         }
     },
@@ -109,7 +109,7 @@ const NAV_ITEMS: NavItem[] = [
             ],
             images: [
                 { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Grand Tour', href: '/packages' },
-                { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Departures', href: '/packages' },
+                { src: '/images/vsoe/vsoe-london-station.jpg', label: 'Departures', href: '/packages' },
             ]
         }
     },
@@ -149,7 +149,7 @@ const NAV_ITEMS: NavItem[] = [
                 }
             ],
             images: [
-                { src: '/images/vsoe/vsoe-dining-car.jpg', label: 'Occasions', href: '/occasions' },
+                { src: '/images/vsoe/vsoe-champagne-detail.jpg', label: 'Occasions', href: '/occasions' },
             ]
         }
     },
@@ -168,7 +168,7 @@ const NAV_ITEMS: NavItem[] = [
                 }
             ],
             images: [
-                { src: '/images/vsoe/vsoe-bar-car.jpg', label: 'Offers', href: '/offers' },
+                { src: '/images/vsoe/vsoe-countryside-window.jpg', label: 'Offers', href: '/offers' },
             ]
         }
     },
@@ -187,7 +187,7 @@ const NAV_ITEMS: NavItem[] = [
                 }
             ],
             images: [
-                { src: '/images/vsoe/vsoe-grand-suite.jpg', label: 'Membership', href: '/membership' },
+                { src: '/images/vsoe/vsoe-venice-night.jpg', label: 'Membership', href: '/membership' },
             ]
         }
     },
@@ -207,7 +207,7 @@ const NAV_ITEMS: NavItem[] = [
             ],
             images: [
                 { src: '/images/vsoe/vsoe-paris-departure.jpg', label: 'Stories', href: '/stories' },
-                { src: '/images/vsoe/vsoe-historic-cabin.jpg', label: 'Heritage', href: '/stories' },
+                { src: '/images/vsoe/vsoe-london-station.jpg', label: 'Heritage', href: '/stories' },
             ]
         }
     },
