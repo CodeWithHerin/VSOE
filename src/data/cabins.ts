@@ -12,10 +12,7 @@ export const cabins = [
             'Complimentary Robes & Slippers',
             '24-Hour Steward Service'
         ],
-        images: {
-            day: '/images/vsoe/vsoe-historic-cabin.jpg', // Lounge vibe
-            night: '/images/vsoe/vsoe-grand-suite.jpg' // Darker bedroom feel
-        }
+        image: '/images/vsoe/vsoe-historic-cabin.jpg'
     },
     {
         id: 'suite',
@@ -30,10 +27,7 @@ export const cabins = [
             'Complimentary Champagne',
             'Daytime Lounge Configuration'
         ],
-        images: {
-            day: '/images/vsoe/vsoe-bar-car.jpg', // Lounge feel
-            night: '/images/vsoe/vsoe-dining-car.jpg' // Dim lighting
-        }
+        image: '/images/vsoe/vsoe-bar-car.jpg'
     },
     {
         id: 'grand-suite',
@@ -48,9 +42,6 @@ export const cabins = [
             'Mosaic-Tiled En-Suite',
             '24-Hour Butler Service'
         ],
-        images: {
-            day: '/images/vsoe/vsoe-paris-departure.jpg', // Opulent bedroom
-            night: '/images/vsoe/vsoe-venice-night.jpg' // Dark atmospheric
-        }
+        image: '/images/vsoe/vsoe-grand-suite.jpg'
     }
 ];

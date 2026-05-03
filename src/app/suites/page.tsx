@@ -2,7 +2,7 @@
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
-import HeroSection from '@/components/ui/HeroSection';
+import Image from 'next/image';
 import CabinShowcase from '@/components/suites/CabinShowcase';
 import { motion } from 'framer-motion';
 
@@ -12,29 +12,16 @@ export default function SuitesPage() {
             <Navbar />
 
             {/* Hero */}
-            <HeroSection
-            // title="The Accommodation" // HeroSection might default these or we can pass empty to use its internal defaults if designed that way, 
-            // but usually better to be explicit if the component supports it. 
-            // Looking at HeroSection.tsx (Step 165), it doesn't take props for title/subtitle in that version, it hardcodes "TIMELESS ELEGANCE".
-            // Wait, in Step 185 replace_file_content tried to add videoSrc and subtitle props to HeroSection in page.tsx.
-            // Let's assume standard HeroSection usage or a specific DestinationHero if we want custom titles.
-            // The current HeroSection (Step 165) seems to be the Home Page one.
-            // I should probably use a simpler Hero or the DestinationHero for this page if I want custom text.
-            // However, for now, let's use DestinationHero which is flexible.
-            />
-            {/* Actually, let's use the DestinationHero I built for Destinations, it's generic enough. */}
             <div className="relative">
                 <div className="absolute inset-0 h-[80vh] overflow-hidden">
-                    <video
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="h-full w-full object-cover opacity-50"
-                        poster="/images/vsoe/vsoe-grand-suite.jpg"
-                    >
-                        <source src="https://cdn.coverr.co/videos/coverr-luxury-hotel-room-tour-5367/1080p.mp4" type="video/mp4" />
-                    </video>
+                    <Image
+                        src="/images/vsoe/vsoe-grand-suite.jpg"
+                        alt="Grand Suite Interior"
+                        fill
+                        className="object-cover opacity-50"
+                        priority
+                        sizes="100vw"
+                    />
                     <div className="absolute inset-0 bg-black/40" />
                     <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/50 to-transparent" />
                 </div>

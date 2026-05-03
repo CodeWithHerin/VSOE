@@ -65,10 +65,10 @@ export default function CabinShowcase() {
                                 className="absolute inset-0 w-full h-full"
                             >
                                 <Image
-                                    src={isNightMode ? activeCabin.images.night : activeCabin.images.day}
+                                    src={activeCabin.image}
                                     alt={`${activeCabin.name} - ${isNightMode ? 'Night Mode' : 'Day Mode'}`}
                                     fill
-                                    className="object-cover"
+                                    className={`object-cover transition-all duration-1000 ${isNightMode ? 'brightness-[0.4] saturate-[0.7] hue-rotate-[10deg]' : 'brightness-100 saturate-100'}`}
                                     priority
                                     sizes="(max-width: 1024px) 100vw, 66vw"
                                 />
@@ -76,7 +76,7 @@ export default function CabinShowcase() {
                         </AnimatePresence>
 
                         {/* Overlay Gradient */}
-                        <div className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ${isNightMode ? 'bg-vsoe-midnight/40' : 'bg-transparent'}`} />
+                        <div className={`absolute inset-0 pointer-events-none transition-all duration-1000 ${isNightMode ? 'bg-gradient-to-t from-vsoe-midnight/60 via-blue-950/30 to-vsoe-midnight/40' : 'bg-transparent'}`} />
                     </div>
                 </div>
 
