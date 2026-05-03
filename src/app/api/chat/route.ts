@@ -61,7 +61,7 @@ const tools = [
 
 // Strip raw function-call XML that some models leak into content
 const cleanContent = (content: string) => {
-    return content.replace(/<function=\w+>.*?<\/function>/gs, '').trim();
+    return content.replace(/<function=\w+>[\s\S]*?<\/function>/g, '').trim();
 };
 
 export async function POST(req: Request) {
