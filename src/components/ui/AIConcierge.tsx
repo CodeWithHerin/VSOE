@@ -1,25 +1,52 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageSquare, X, Send, Sparkles } from 'lucide-react';
+import { X, Send, Sparkles } from 'lucide-react';
 
 export default function AIConcierge() {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { role: 'system', content: 'Good evening. I am Vitesse, your personal concierge. How may I assist you with your journey today?' }
+        { role: 'assistant', content: 'Good evening. I am Vitesse, your personal concierge. How may I assist you with your journey today?' }
     ]);
     const [input, setInput] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
 
-    const handleSend = () => {
-        if (!input.trim()) return;
-        setMessages([...messages, { role: 'user', content: input }]);
+    // Auto-scroll to bottom when messages change
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages, isLoading]);
+
+    const handleSend = async () => {
+        if (!input.trim() || isLoading) return;
+
+        const userMessage = { role: 'user' as const, content: input.trim() };
+        const updatedMessages = [...messages, userMessage];
+
+        setMessages(updatedMessages);
         setInput('');
+        setIsLoading(true);
 
-        // Mock Response
-        setTimeout(() => {
-            setMessages(prev => [...prev, { role: 'system', content: 'I have noted your request. Checking availability for the Grand Suite...' }]);
-        }, 1000);
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ messages: updatedMessages }),
+            });
+
+            if (!response.ok) throw new Error('API request failed');
+
+            const data = await response.json();
+            setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+        } catch (error) {
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: 'I apologise — I am unable to connect at the moment. Please try again shortly.'
+            }]);
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -51,7 +78,9 @@ export default function AIConcierge() {
                                 </div>
                                 <div>
                                     <h3 className="text-vsoe-gold font-serif font-bold">Vitesse Concierge</h3>
-                                    <p className="text-[10px] text-vsoe-cream/60 uppercase tracking-widest">Always at your service</p>
+                                    <p className="text-[10px] text-vsoe-cream/60 uppercase tracking-widest">
+                                        {isLoading ? 'Typing...' : 'Always at your service'}
+                                    </p>
                                 </div>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="text-vsoe-cream/60 hover:text-vsoe-gold">
@@ -71,6 +100,19 @@ export default function AIConcierge() {
                                     </div>
                                 </div>
                             ))}
+
+                            {/* Typing Indicator */}
+                            {isLoading && (
+                                <div className="flex justify-start">
+                                    <div className="max-w-[80%] p-3 rounded-lg rounded-bl-none bg-white/5 border border-white/10 flex items-center gap-1.5">
+                                        <span className="w-2 h-2 rounded-full bg-vsoe-gold/70 animate-bounce [animation-delay:0ms]" />
+                                        <span className="w-2 h-2 rounded-full bg-vsoe-gold/70 animate-bounce [animation-delay:150ms]" />
+                                        <span className="w-2 h-2 rounded-full bg-vsoe-gold/70 animate-bounce [animation-delay:300ms]" />
+                                    </div>
+                                </div>
+                            )}
+
+                            <div ref={messagesEndRef} />
                         </div>
 
                         {/* Input */}
@@ -80,11 +122,16 @@ export default function AIConcierge() {
                                     type="text"
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
-                                    onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                                    placeholder="Ask about journeys, dining, or suites..."
-                                    className="flex-1 bg-transparent border-none text-vsoe-cream placeholder-vsoe-cream/30 focus:ring-0 text-sm"
+                                    onKeyDown={(e) => e.key === 'Enter' && handleSend()}
+                                    placeholder={isLoading ? 'Vitesse is thinking...' : 'Ask about journeys, dining, or suites...'}
+                                    disabled={isLoading}
+                                    className="flex-1 bg-transparent border-none text-vsoe-cream placeholder-vsoe-cream/30 focus:ring-0 text-sm disabled:opacity-50"
                                 />
-                                <button onClick={handleSend} className="text-vsoe-gold hover:text-white transition-colors">
+                                <button
+                                    onClick={handleSend}
+                                    disabled={isLoading || !input.trim()}
+                                    className="text-vsoe-gold hover:text-white transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                                >
                                     <Send size={18} />
                                 </button>
                             </div>
