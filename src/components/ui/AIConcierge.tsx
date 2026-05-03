@@ -89,7 +89,7 @@ export default function AIConcierge() {
                         </div>
 
                         {/* Messages */}
-                        <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                        <div className="flex-1 p-4 space-y-4" style={{ overflowY: 'scroll', overscrollBehavior: 'contain' }}>
                             {messages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user'
