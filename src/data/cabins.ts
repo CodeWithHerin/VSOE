@@ -14,7 +14,7 @@ export const cabins = [
         ],
         images: {
             day: '/images/vsoe/vsoe-historic-cabin.jpg', // Lounge vibe
-            night: '/images/vsoe/vsoe-bar-car.jpg' // Bedroom vibe (approx)
+            night: '/images/vsoe/vsoe-grand-suite.jpg' // Darker bedroom feel
         }
     },
     {
@@ -31,7 +31,7 @@ export const cabins = [
             'Daytime Lounge Configuration'
         ],
         images: {
-            day: '/images/vsoe/vsoe-grand-suite.jpg', // Luxury Room
+            day: '/images/vsoe/vsoe-bar-car.jpg', // Lounge feel
             night: '/images/vsoe/vsoe-dining-car.jpg' // Dim lighting
         }
     },
@@ -50,7 +50,7 @@ export const cabins = [
         ],
         images: {
             day: '/images/vsoe/vsoe-paris-departure.jpg', // Opulent bedroom
-            night: '/images/vsoe/vsoe-grand-suite.jpg' // Night mode
+            night: '/images/vsoe/vsoe-venice-night.jpg' // Dark atmospheric
         }
     }
 ];

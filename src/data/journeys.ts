@@ -71,7 +71,7 @@ export const journeys = [
                 title: "The Beginning",
                 location: "Paris",
                 description: "Depart Paris for a journey across the continent.",
-                image: "https://images.pexels.com/photos/1308940/pexels-photo-1308940.jpeg?auto=compress&cs=tinysrgb&w=1920" // Paris
+                image: "/images/vsoe/vsoe-paris-departure.jpg"
             },
             {
                 time: "Day 2",
@@ -79,7 +79,7 @@ export const journeys = [
                 title: "Budapest",
                 location: "Hungary",
                 description: "Arrive in Budapest. Private dinner at the Danube Palace.",
-                image: "https://images.pexels.com/photos/672532/pexels-photo-672532.jpeg?auto=compress&cs=tinysrgb&w=1920" // Budapest
+                image: "/images/vsoe/vsoe-exterior-night.jpg"
             },
             {
                 time: "Day 4",
@@ -87,7 +87,7 @@ export const journeys = [
                 title: "Bucharest",
                 location: "Romania",
                 description: "Explore the architecture of 'Little Paris'.",
-                image: "https://images.unsplash.com/photo-1588612141505-ff2df44ab280?q=80&w=2000&auto=format&fit=crop" // Bucharest
+                image: "/images/vsoe/vsoe-countryside-window.jpg"
             },
             {
                 time: "Day 6",
@@ -95,7 +95,7 @@ export const journeys = [
                 title: "The Gates of the East",
                 location: "Istanbul",
                 description: "The journey concludes in the historic city where East meets West.",
-                image: "https://images.pexels.com/photos/10854693/pexels-photo-10854693.jpeg?auto=compress&cs=tinysrgb&w=1920", // Istanbul Mosque
+                image: "/images/vsoe/vsoe-dining-car.jpg",
                 video: "https://cdn.coverr.co/videos/coverr-istanbul-bosphorus-4625/1080p.mp4" // Istanbul Video
             }
         ]

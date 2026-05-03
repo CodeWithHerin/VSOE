@@ -31,7 +31,7 @@ export default function SuitesPage() {
                         muted
                         playsInline
                         className="h-full w-full object-cover opacity-50"
-                        poster="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop"
+                        poster="/images/vsoe/vsoe-grand-suite.jpg"
                     >
                         <source src="https://cdn.coverr.co/videos/coverr-luxury-hotel-room-tour-5367/1080p.mp4" type="video/mp4" />
                     </video>
