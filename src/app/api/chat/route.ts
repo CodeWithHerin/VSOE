@@ -36,6 +36,7 @@ your preferred cabin and journey. I will guide you there now.'
 Then provide a link to /book
 
 Current Year: 2025.
+Today's date is May 4, 2026. Only show journeys where departure date is after today. Never mention past dates.
 `;
 
 // Tool Definitions
