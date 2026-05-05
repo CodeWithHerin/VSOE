@@ -3,11 +3,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Send, Sparkles } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function AIConcierge() {
+    const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { role: 'assistant', content: 'Good evening. I am Vitesse, your personal concierge. How may I assist you with your journey today?' }
+        { role: 'assistant', content: t.ai.greeting }
     ]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +19,17 @@ export default function AIConcierge() {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages, isLoading]);
+
+    // Update greeting when language changes
+    useEffect(() => {
+        setMessages(prev => {
+            const newMsgs = [...prev];
+            if (newMsgs.length > 0 && newMsgs[0].role === 'assistant') {
+                newMsgs[0].content = t.ai.greeting;
+            }
+            return newMsgs;
+        });
+    }, [t.ai.greeting]);
 
     const handleSend = async () => {
         if (!input.trim() || isLoading) return;

@@ -7,6 +7,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import MagneticButton from '@/components/ui/MagneticButton';
+import { useLanguageStore } from '@/lib/store/useLanguageStore';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -228,8 +230,25 @@ export default function Navbar() {
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Search & Language state
-    const [currentLang, setCurrentLang] = useState('EN');
+    const { language: currentLang, setLanguage: setCurrentLang } = useLanguageStore();
+    const { t } = useTranslation();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    const translatedNavItems = NAV_ITEMS.map(item => {
+        let label = item.label;
+        switch (item.label) {
+            case 'Destinations': label = t.nav.destinations; break;
+            case 'Experiences': label = t.nav.experiences; break;
+            case 'Packages & Tours': label = t.nav.packages; break;
+            case 'Signature Suites': label = t.nav.suites; break;
+            case 'Occasions': label = t.nav.occasions; break;
+            case 'Offers': label = t.nav.offers; break;
+            case 'Membership': label = t.nav.membership; break;
+            case 'Stories': label = t.nav.stories; break;
+            case 'My Bookings': label = t.nav.myBookings; break;
+        }
+        return { ...item, label, originalLabel: item.label };
+    });
 
     const handleMouseEnter = (menu: string) => {
         if (closeTimeoutRef.current) {
@@ -262,7 +281,7 @@ export default function Navbar() {
     }, [isSearchOpen]);
 
     // Find the active nav item's mega menu data
-    const activeMegaMenu = NAV_ITEMS.find(item => item.label === activeMenu)?.megaMenu;
+    const activeMegaMenu = translatedNavItems.find(item => item.label === activeMenu || item.originalLabel === activeMenu)?.megaMenu;
 
     return (
         <>
@@ -319,7 +338,7 @@ export default function Navbar() {
                             )}
                         >
                             <Search size={14} />
-                            <span>Search</span>
+                            <span>{t.nav.search}</span>
                         </button>
 
                         <div className="relative hidden lg:block">
@@ -352,7 +371,7 @@ export default function Navbar() {
                                             <button
                                                 key={lang.code}
                                                 onClick={() => {
-                                                    setCurrentLang(lang.code);
+                                                    setCurrentLang(lang.code as 'EN' | 'FR' | 'IT' | 'DE');
                                                     setIsLangOpen(false);
                                                 }}
                                                 className={`block w-full text-left px-4 py-2 text-xs uppercase tracking-widest transition-colors ${currentLang === lang.code ? 'text-vsoe-gold' : 'text-white/60 hover:text-vsoe-gold hover:bg-white/5'
@@ -368,8 +387,8 @@ export default function Navbar() {
 
                         <Link href="/book" className={cn("transition-all duration-500", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
                             <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-4 md:px-8 py-3 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block">
-                                <span className="hidden md:inline">Book a Journey</span>
-                                <span className="md:hidden">Book</span>
+                                <span className="hidden md:inline">{t.nav.bookJourney}</span>
+                                <span className="md:hidden">{t.nav.book}</span>
                             </MagneticButton>
                         </Link>
                     </div>
@@ -377,7 +396,7 @@ export default function Navbar() {
 
                 {/* ─── Desktop Nav Links ─────────────────────────────────────────── */}
                 <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1" onMouseLeave={handleMouseLeave}>
-                    {NAV_ITEMS.map((item) => (
+                    {translatedNavItems.map((item) => (
                         <div key={item.label} className="relative py-2" onMouseEnter={() => handleMouseEnter(item.label)}>
                             <Link
                                 href={item.href}
