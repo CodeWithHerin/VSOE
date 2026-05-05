@@ -231,30 +231,6 @@ export default function Navbar() {
     const [currentLang, setCurrentLang] = useState('EN');
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
-    useEffect(() => {
-        // Initialize language from cookie
-        if (typeof document !== 'undefined') {
-            const match = document.cookie.match(/(^|;) ?googtrans=([^;]*)(;|$)/);
-            if (match) {
-                const langValue = match[2].split('/').pop()?.toUpperCase();
-                if (langValue && ['EN', 'FR', 'IT', 'DE'].includes(langValue)) {
-                    setCurrentLang(langValue);
-                }
-            }
-        }
-    }, []);
-
-    const changeLanguage = (code: string) => {
-        setCurrentLang(code);
-        setIsLangOpen(false);
-        if (typeof document !== 'undefined') {
-            const lowerCode = code.toLowerCase();
-            document.cookie = `googtrans=/en/${lowerCode}; path=/; domain=${window.location.hostname}`;
-            document.cookie = `googtrans=/en/${lowerCode}; path=/`; 
-            window.location.reload();
-        }
-    };
-
     const handleMouseEnter = (menu: string) => {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
@@ -375,7 +351,10 @@ export default function Navbar() {
                                         ].map((lang) => (
                                             <button
                                                 key={lang.code}
-                                                onClick={() => changeLanguage(lang.code)}
+                                                onClick={() => {
+                                                    setCurrentLang(lang.code);
+                                                    setIsLangOpen(false);
+                                                }}
                                                 className={`block w-full text-left px-4 py-2 text-xs uppercase tracking-widest transition-colors ${currentLang === lang.code ? 'text-vsoe-gold' : 'text-white/60 hover:text-vsoe-gold hover:bg-white/5'
                                                     }`}
                                             >
