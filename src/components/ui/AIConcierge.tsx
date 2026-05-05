@@ -68,6 +68,8 @@ export default function AIConcierge() {
                         initial={{ opacity: 0, y: 50, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 50, scale: 0.9 }}
+                        onWheel={(e) => e.stopPropagation()}
+                        onTouchMove={(e) => e.stopPropagation()}
                         className="fixed bottom-8 right-8 z-50 w-96 h-[500px] bg-vsoe-midnight border border-vsoe-gold/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
                     >
                         {/* Header */}
@@ -89,12 +91,7 @@ export default function AIConcierge() {
                         </div>
 
                         {/* Messages */}
-                        <div className="flex-1 p-4 space-y-4" style={{ 
-  overflowY: 'auto', 
-  overscrollBehavior: 'contain',
-  height: '0',
-  minHeight: '0'
-}}>
+                        <div className="flex-1 overflow-y-auto overscroll-contain min-h-0 p-4 space-y-4">
                             {messages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user'

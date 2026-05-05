@@ -37,6 +37,9 @@ Then provide a link to /book
 
 Current Year: 2025.
 Today's date is May 4, 2026. Only show journeys where departure date is after today. Never mention past dates.
+When directing users to book, always use the relative URL /book only. 
+Never use full domain URLs.
+The booking page URL is simply /book — never use any external domain or full URL.
 `;
 
 // Tool Definitions
