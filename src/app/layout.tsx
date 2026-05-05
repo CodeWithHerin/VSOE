@@ -12,6 +12,7 @@ import AIConcierge from '@/components/ui/AIConcierge';
 import { AudioProvider } from '@/components/audio/AudioContext';
 import FloatingBackButton from '@/components/ui/FloatingBackButton';
 import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
+import GoogleTranslate from "@/components/ui/GoogleTranslate";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -62,6 +63,7 @@ export default function RootLayout({
           <AIConcierge />
           <CustomCursor />
           <Navbar />
+          <GoogleTranslate />
           {children}
           <FloatingBackButton />
         </AudioProvider>

@@ -47,3 +47,22 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(184, 134, 11, 0.6);
 }
+
+/* Hide Google Translate UI */
+.goog-te-banner-frame {
+  display: none !important;
+}
+.goog-tooltip {
+  display: none !important;
+}
+.goog-tooltip:hover {
+  display: none !important;
+}
+.goog-text-highlight {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+body {
+  top: 0 !important;
+}
