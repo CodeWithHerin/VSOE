@@ -287,7 +287,7 @@ export default function Navbar() {
         <>
             <motion.nav
                 className={cn(
-                    "fixed top-0 w-full z-50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]", // Liquid ease
+                    "fixed top-0 w-full z-[60] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]", // Liquid ease
                     isScrolled
                         ? "bg-vsoe-midnight/95 backdrop-blur-md text-vsoe-cream shadow-2xl py-2 border-b border-white/5" // Scrolled: Reverted to Midnight (Dark)
                         : "bg-gradient-to-b from-black/80 to-transparent text-white py-6" // Initial: Transparent
