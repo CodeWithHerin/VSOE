@@ -3,8 +3,10 @@
 import { useRef, useEffect } from 'react';
 import { motion, useMotionValue, useSpring, useAnimationFrame, useTransform } from 'framer-motion';
 import { Star } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function Marquee() {
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const trainRef = useRef<HTMLDivElement>(null);
 
@@ -82,11 +84,11 @@ export default function Marquee() {
 
                     {/* Content Layer (On top of windows) */}
                     <div className="relative z-10 flex items-center gap-12 text-vsoe-gold font-display text-xs font-bold tracking-[0.25em] uppercase bg-[#1a253a]/90 py-1 px-4 rounded-full border border-vsoe-gold/10 backdrop-blur-sm shadow-sm select-none">
-                        <span>Venice Simplon-Orient-Express</span>
+                        <span>{t.marquee.vsoe}</span>
                         <Star className="w-3 h-3 fill-current animate-pulse" />
-                        <span>London • Paris • Venice • Istanbul</span>
+                        <span>{t.marquee.cities}</span>
                         <Star className="w-3 h-3 fill-current animate-pulse" />
-                        <span>The Art of Belmond</span>
+                        <span>{t.marquee.art}</span>
                     </div>
 
                     {/* Wheels (Visual only) */}

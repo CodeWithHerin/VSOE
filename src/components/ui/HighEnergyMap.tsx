@@ -3,45 +3,49 @@
 import React, { useState, useRef } from 'react';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
-const LOCATIONS = [
-    {
-        id: 'london',
-        name: 'London',
-        x: 28, y: 38,
-        href: '/destinations',
-        video: 'https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4', // Westminster / Big Ben
-        description: 'The Departure'
-    },
-    {
-        id: 'paris',
-        name: 'Paris',
-        x: 36, y: 50,
-        href: '/destinations/paris-venice',
-        video: 'https://videos.pexels.com/video-files/2034909/2034909-hd_1920_1080_30fps.mp4', // Eiffel Tower
-        description: 'City of Light'
-    },
-    {
-        id: 'venice',
-        name: 'Venice',
-        x: 50, y: 65,
-        href: '/destinations/paris-venice',
-        video: 'https://videos.pexels.com/video-files/4456997/4456997-hd_1920_1080_25fps.mp4', // Venice Canal
-        description: 'The Arrival'
-    },
-    {
-        id: 'istanbul',
-        name: 'Istanbul',
-        x: 82, y: 75,
-        href: '/destinations/paris-istanbul',
-        video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Istanbul
-        description: 'The Gateway'
-    }
-];
+
 
 export default function HighEnergyMap() {
+    const { t } = useTranslation();
     const [activeLocation, setActiveLocation] = useState<string | null>(null);
     const containerRef = useRef<HTMLDivElement>(null);
+    
+    const LOCATIONS = [
+        {
+            id: 'london',
+            name: 'London',
+            x: 28, y: 38,
+            href: '/destinations',
+            video: 'https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4', // Westminster / Big Ben
+            description: t.map?.londonDesc || 'The Departure'
+        },
+        {
+            id: 'paris',
+            name: 'Paris',
+            x: 36, y: 50,
+            href: '/destinations/paris-venice',
+            video: 'https://videos.pexels.com/video-files/2034909/2034909-hd_1920_1080_30fps.mp4', // Eiffel Tower
+            description: t.map?.parisDesc || 'City of Light'
+        },
+        {
+            id: 'venice',
+            name: 'Venice',
+            x: 50, y: 65,
+            href: '/destinations/paris-venice',
+            video: 'https://videos.pexels.com/video-files/4456997/4456997-hd_1920_1080_25fps.mp4', // Venice Canal
+            description: t.map?.veniceDesc || 'The Arrival'
+        },
+        {
+            id: 'istanbul',
+            name: 'Istanbul',
+            x: 82, y: 75,
+            href: '/destinations/paris-istanbul',
+            video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Istanbul
+            description: t.map?.istanbulDesc || 'The Gateway'
+        }
+    ];
 
 
 
@@ -192,7 +196,7 @@ export default function HighEnergyMap() {
                     <div className="flex justify-between items-start">
                         <div className="flex flex-col">
                             <span className="text-xs font-serif text-vsoe-gold tracking-[0.2em] uppercase mb-1">
-                                European Grand Tour
+                                {t.map?.grandTour || 'European Grand Tour'}
                             </span>
                             <div className="h-[1px] w-12 bg-vsoe-gold/50" />
                         </div>
@@ -227,7 +231,7 @@ export default function HighEnergyMap() {
 
                                     <div className="mt-8 pointer-events-auto">
                                         <span className="inline-block border border-vsoe-gold/50 px-6 py-2 text-xs uppercase tracking-widest text-white hover:bg-vsoe-gold hover:text-vsoe-midnight transition-colors cursor-pointer backdrop-blur-md">
-                                            Discover Journey
+                                            {t.map?.discover || 'Discover Journey'}
                                         </span>
                                     </div>
                                 </motion.div>
@@ -240,7 +244,7 @@ export default function HighEnergyMap() {
                                     transition={{ duration: 0.8 }}
                                 >
                                     <h2 className="text-4xl md:text-6xl font-serif text-white/20 leading-none tracking-[0.1em]">
-                                        SELECT A ROUTE
+                                        {t.map?.selectRoute || 'SELECT A ROUTE'}
                                     </h2>
                                 </motion.div>
                             )}
@@ -250,7 +254,7 @@ export default function HighEnergyMap() {
                     {/* Bottom: Coordinates / instruction */}
                     <div className="flex justify-between items-end">
                         <p className="text-[10px] text-vsoe-gold/60 font-sans tracking-widest uppercase">
-                            Venice Simplon-Orient-Express Network
+                            {t.map?.network || 'Venice Simplon-Orient-Express Network'}
                         </p>
                         <p className="text-[10px] text-white/30 font-serif italic">
                             Est. 1982

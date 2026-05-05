@@ -4,42 +4,47 @@ import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
-const STORIES = [
-    {
-        id: 1,
-        category: 'Style',
-        title: 'The Art of Dress Code',
-        excerpt: 'Why black tie remains the gold standard for dinner on board.',
-        image: '/images/vsoe/vsoe-exterior-night.jpg'
-    },
-    {
-        id: 2,
-        category: 'Heritage',
-        title: 'Secrets of the Blue Train',
-        excerpt: 'Uncovering the mysteries hidden within the marquetry of Car 3674.',
-        image: '/images/vsoe/vsoe-bar-car.jpg'
-    },
-    {
-        id: 3,
-        category: 'Destinations',
-        title: 'Venice: A Love Letter',
-        excerpt: 'The perfect itinerary for 24 hours in the Floating City.',
-        image: '/images/vsoe/vsoe-countryside-window.jpg'
-    }
-];
+
 
 export default function JournalSection() {
+    const { t } = useTranslation();
+    
+    const STORIES = [
+        {
+            id: 1,
+            category: 'Style',
+            title: t.journal.article1,
+            excerpt: 'Why black tie remains the gold standard for dinner on board.',
+            image: '/images/vsoe/vsoe-exterior-night.jpg'
+        },
+        {
+            id: 2,
+            category: 'Heritage',
+            title: t.journal.article2,
+            excerpt: 'Uncovering the mysteries hidden within the marquetry of Car 3674.',
+            image: '/images/vsoe/vsoe-bar-car.jpg'
+        },
+        {
+            id: 3,
+            category: 'Destinations',
+            title: t.journal.article3,
+            excerpt: 'The perfect itinerary for 24 hours in the Floating City.',
+            image: '/images/vsoe/vsoe-countryside-window.jpg'
+        }
+    ];
+
     return (
         <section className="py-20 md:py-32 bg-vsoe-cream text-vsoe-blue">
             <div className="max-w-7xl mx-auto px-6">
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 gap-6 md:gap-0">
                     <div>
-                        <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">The Journal</span>
-                        <h2 className="text-4xl md:text-5xl font-serif">Stories from the Rails</h2>
+                        <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">{t.journal.fromJournal}</span>
+                        <h2 className="text-4xl md:text-5xl font-serif">{t.journal.narrative}</h2>
                     </div>
                     <Link href="/stories" className="flex items-center gap-2 text-xs uppercase tracking-widest border-b border-vsoe-blue/30 pb-1 hover:border-vsoe-blue transition-colors">
-                        View All Stories <ArrowRight size={14} />
+                        {t.journal.read} <ArrowRight size={14} />
                     </Link>
                 </div>
 

@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface SuiteData {
     id: string;
@@ -12,31 +13,35 @@ interface SuiteData {
     features: string[];
 }
 
-const suites: SuiteData[] = [
-    {
-        id: 'paris',
-        city: 'Paris',
-        description: 'Light and sophisticated, reflecting the city’s haute couture and gastronomic excellence.',
-        video: 'https://videos.coverr.co/mp4/Coverr-paris-street-at-night-1563283259461.mp4', // Placeholder: Paris Night
-        features: ['Private en-suite bathroom', '24-hour butler service', 'Free-flowing champagne']
-    },
-    {
-        id: 'venice',
-        city: 'Venice',
-        description: 'Grandeur and romance, adorned with Venetian silk, woven fabrics and glass lamps.',
-        video: 'https://videos.pexels.com/video-files/5838025/5838025-hd_1920_1080_30fps.mp4', // Placeholder: Venice Canal
-        features: ['Murano glass details', 'Hand-crafted marquetry', 'Living area']
-    },
-    {
-        id: 'istanbul',
-        city: 'Istanbul',
-        description: 'Exotic and opulent, inspired by the Grand Bazaar and Ottoman architecture.',
-        video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Placeholder: Mosaic/Pattern vibe
-        features: ['Hand-carved timber', 'Embroidered pillows', 'Mosaic en-suite']
-    }
-];
+
 
 export default function GrandSuitesExperience() {
+    const { t } = useTranslation();
+    
+    const suites: SuiteData[] = [
+        {
+            id: 'paris',
+            city: t.suites.suite1City,
+            description: t.suites.suite1Desc,
+            video: 'https://videos.coverr.co/mp4/Coverr-paris-street-at-night-1563283259461.mp4', // Placeholder: Paris Night
+            features: [t.suites.suite1Feat1, t.suites.suite1Feat2, t.suites.suite1Feat3]
+        },
+        {
+            id: 'venice',
+            city: t.suites.suite2City,
+            description: t.suites.suite2Desc,
+            video: 'https://videos.pexels.com/video-files/5838025/5838025-hd_1920_1080_30fps.mp4', // Placeholder: Venice Canal
+            features: [t.suites.suite2Feat1, t.suites.suite2Feat2, t.suites.suite2Feat3]
+        },
+        {
+            id: 'istanbul',
+            city: t.suites.suite3City,
+            description: t.suites.suite3Desc,
+            video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Placeholder: Mosaic/Pattern vibe
+            features: [t.suites.suite3Feat1, t.suites.suite3Feat2, t.suites.suite3Feat3]
+        }
+    ];
+
     const [activeSuite, setActiveSuite] = useState<SuiteData>(suites[0]);
     const [prevSuite, setPrevSuite] = useState<SuiteData | null>(null);
 
@@ -83,10 +88,10 @@ export default function GrandSuitesExperience() {
                 <div className="flex h-1/3 w-full flex-col justify-center border-b border-vsoe-gold/20 px-8 backdrop-blur-sm md:h-full md:w-1/3 md:border-b-0 md:border-r">
                     <div className="mb-8">
                         <h2 className="font-serif text-3xl font-light text-vsoe-gold md:text-5xl">
-                            The Grand Suites
+                            {t.suites.title}
                         </h2>
                         <p className="mt-4 font-sans text-xs tracking-[0.2em] uppercase text-white/60">
-                            A World of Their Own
+                            {t.suites.sub}
                         </p>
                     </div>
 

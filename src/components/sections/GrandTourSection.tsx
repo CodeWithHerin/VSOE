@@ -3,44 +3,49 @@
 import { motion } from 'framer-motion';
 import { Train, Clock, MapPin, ArrowRight, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
-const JOURNEYS = [
-    {
-        id: 'paris-venice',
-        title: "The Classic Route",
-        route: "Paris → Venice",
-        duration: "1 Night",
-        image: "/images/vsoe/vsoe-paris-departure.jpg",
-        description: "The original journey. Depart Paris in the late afternoon and awake to the scenery of the Swiss Alps.",
-        price: "From £3,530",
-        dates: "Mar 2025 - Nov 2025"
-    },
-    {
-        id: 'paris-istanbul',
-        title: "The Gateway",
-        route: "Paris → Istanbul",
-        duration: "5 Nights",
-        image: "/images/vsoe/vsoe-dining-car.jpg",
-        description: "A historic transcontinental odyssey. Only runs once a year in late August.",
-        price: "From £17,500",
-        dates: "August 2025 Only"
-    },
-    {
-        id: 'venice-paris',
-        title: "The Italian",
-        route: "Venice → Paris",
-        duration: "1 Night",
-        image: "/images/vsoe/vsoe-venice-night.jpg",
-        description: "Return from the floating city in style. Brunch in the Dolomites, tea in France.",
-        price: "From £3,530",
-        dates: "Mar 2025 - Nov 2025"
-    }
-];
+
 
 import { useTrackInterest } from '@/lib/profiling';
 
 export default function GrandTourSection() {
+    const { t } = useTranslation();
     useTrackInterest('adventure');
+    
+    const JOURNEYS = [
+        {
+            id: 'paris-venice',
+            title: t.routes.journey1Title,
+            route: t.routes.journey1Route,
+            duration: t.routes.journey1Duration,
+            image: "/images/vsoe/vsoe-paris-departure.jpg",
+            description: t.routes.journey1Desc,
+            price: t.routes.journey1Price,
+            dates: t.routes.journey1Dates
+        },
+        {
+            id: 'paris-istanbul',
+            title: t.routes.journey2Title,
+            route: t.routes.journey2Route,
+            duration: t.routes.journey2Duration,
+            image: "/images/vsoe/vsoe-dining-car.jpg",
+            description: t.routes.journey2Desc,
+            price: t.routes.journey2Price,
+            dates: t.routes.journey2Dates
+        },
+        {
+            id: 'venice-paris',
+            title: t.routes.journey3Title,
+            route: t.routes.journey3Route,
+            duration: t.routes.journey3Duration,
+            image: "/images/vsoe/vsoe-venice-night.jpg",
+            description: t.routes.journey3Desc,
+            price: t.routes.journey3Price,
+            dates: t.routes.journey3Dates
+        }
+    ];
+
     return (
         <section id="track-adventure" className="w-full bg-vsoe-midnight py-12 relative z-20">
             <div className="container mx-auto px-6 md:px-12">
@@ -81,11 +86,11 @@ export default function GrandTourSection() {
                                 {/* Meta details */}
                                 <div className="grid grid-cols-2 gap-4 mb-8">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock size={10} /> Duration</span>
+                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock size={10} /> {t.routes.duration}</span>
                                         <span className="text-sm text-vsoe-cream">{journey.duration}</span>
                                     </div>
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar size={10} /> Dates</span>
+                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar size={10} /> {t.routes.dates}</span>
                                         <span className="text-sm text-vsoe-cream">{journey.dates}</span>
                                     </div>
                                 </div>
@@ -94,7 +99,7 @@ export default function GrandTourSection() {
                                 <div className="flex items-center justify-between">
                                     <span className="text-vsoe-gold font-serif text-lg">{journey.price}</span>
                                     <Link href={`/book?journey=${journey.id}`} className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.2em] text-white hover:text-vsoe-gold transition-colors">
-                                        Reserve <ArrowRight size={14} />
+                                        {t.routes.reserve} <ArrowRight size={14} />
                                     </Link>
                                 </div>
                             </div>

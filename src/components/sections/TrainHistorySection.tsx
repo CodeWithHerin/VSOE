@@ -3,10 +3,11 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
-
 import { useTrackInterest } from '@/lib/profiling';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function TrainHistorySection() {
+    const { t } = useTranslation();
     useTrackInterest('heritage');
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
@@ -32,22 +33,21 @@ export default function TrainHistorySection() {
                     transition={{ duration: 0.8 }}
                     className="space-y-8 relative z-10"
                 >
-                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">The Legend</span>
+                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">{t.history.legend}</span>
                     <h2 className="text-5xl md:text-6xl font-serif leading-tight">
-                        Art Deco <br /> <span className="text-vsoe-gold">Masterpiece</span>
+                        {t.history.title1} <br /> <span className="text-vsoe-gold">{t.history.title2}</span>
                     </h2>
                     <p className="text-white/70 leading-relaxed font-sans text-lg">
-                        Step into a world where time stands still. The Venice Simplon-Orient-Express is not merely a train, but a rolling museum of 1920s elegance.
-                        Each carriage has been lovingly restored by expert craftsmen to its original glory, featuring intricate marquetry, polished brass, and sumptuous upholstery.
+                        {t.history.desc}
                     </p>
                     <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
                         <div>
-                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">17</span>
-                            <span className="text-xs uppercase tracking-widest text-white/60">Restored Carriages</span>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">{t.history.restored}</span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">{t.history.restoredSub}</span>
                         </div>
                         <div>
-                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">1920s</span>
-                            <span className="text-xs uppercase tracking-widest text-white/60">Original Era</span>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">{t.history.era}</span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">{t.history.eraSub}</span>
                         </div>
                     </div>
                 </motion.div>
