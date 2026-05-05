@@ -92,16 +92,29 @@ export default function AIConcierge() {
 
                         {/* Messages */}
                         <div className="flex-1 overflow-y-auto overscroll-contain min-h-0 p-4 space-y-4">
-                            {messages.map((msg, i) => (
-                                <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user'
-                                            ? 'bg-vsoe-gold text-vsoe-midnight rounded-br-none'
-                                            : 'bg-white/5 text-vsoe-cream border border-white/10 rounded-bl-none'
-                                        }`}>
-                                        {msg.content}
+                            {messages.map((msg, i) => {
+                                const hasBookAction = msg.content.includes('[ACTION_BOOK]');
+                                const displayContent = msg.content.replace(/\[ACTION_BOOK\]/g, '').trim();
+
+                                return (
+                                    <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                        <div className={`max-w-[80%] p-3 rounded-lg text-sm ${msg.role === 'user'
+                                                ? 'bg-vsoe-gold text-vsoe-midnight rounded-br-none'
+                                                : 'bg-white/5 text-vsoe-cream border border-white/10 rounded-bl-none'
+                                            }`}>
+                                            {displayContent}
+                                            {hasBookAction && msg.role === 'assistant' && (
+                                                <a 
+                                                    href="/book" 
+                                                    className="mt-3 block text-center bg-vsoe-gold text-vsoe-midnight py-2 px-4 rounded-md font-serif font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
+                                                >
+                                                    Proceed to Booking
+                                                </a>
+                                            )}
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                );
+                            })}
 
                             {/* Typing Indicator */}
                             {isLoading && (
