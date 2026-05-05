@@ -1,3 +1,5 @@
+'use client';
+
 import { Wine, Utensils } from 'lucide-react';
 import { useTrackInterest } from '@/lib/profiling';
 import ParallaxImage from '@/components/ui/ParallaxImage';

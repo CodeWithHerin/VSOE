@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { Facebook, Instagram, Twitter, Youtube, Globe } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
