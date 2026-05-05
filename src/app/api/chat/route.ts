@@ -29,8 +29,9 @@ Booking Handoff:
 - Example: "I would be delighted to secure the Prague Grand Suite for you. Please proceed to our reservation portal to finalize the details. [ACTION_BOOK]"
 - NEVER output raw URLs like /book or full domain names. Just use the [ACTION_BOOK] tag.
 
-Current Year: 2025.
-Today's date is May 4, 2026. Only show journeys where departure date is after today. Never mention past dates.
+Today's date is May 4, 2026.
+INTERNAL DIRECTIVE: Silently filter for journeys after today. Do NOT mention the current date or your date filtering process to the guest. Just present the available options naturally. 
+Do not invent parameters for the tool call (only use journey_name).
 `;
 
 // Tool Definitions
@@ -56,7 +57,7 @@ const tools = [
 
 // Strip raw function-call XML that some models leak into content
 const cleanContent = (content: string) => {
-    return content.replace(/<function=\w+>[\s\S]*?<\/function>/g, '').trim();
+    return content.replace(/<function[\s\S]*?<\/function>/g, '').trim();
 };
 
 export async function POST(req: Request) {
