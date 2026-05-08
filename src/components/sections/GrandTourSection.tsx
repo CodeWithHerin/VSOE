@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { Train, Clock, MapPin, ArrowRight, Calendar } from 'lucide-react';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 

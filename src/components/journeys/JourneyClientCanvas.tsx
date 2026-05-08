@@ -3,10 +3,11 @@
 import React, { useRef, useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence, useTransform } from 'framer-motion';
 import { MapPin, Clock, Calendar, ArrowRight } from 'lucide-react';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
 import HeroSection from '@/components/ui/HeroSection';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface TimelineItem {
     time: string;
@@ -32,6 +33,7 @@ interface JourneyClientCanvasProps {
 }
 
 export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProps) {
+    const { t } = useTranslation();
     const containerRef = useRef<HTMLDivElement>(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -55,6 +57,7 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
 
     // Determine current background image
     const currentBg = journey.timeline[activeSegment]?.image || journey.heroImage;
+    const journeyT = t.journeysData[journey.id as keyof typeof t.journeysData];
 
     return (
         <div ref={containerRef} className="relative min-h-screen bg-vsoe-midnight">
@@ -94,8 +97,8 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
             <div className="relative z-10">
                 {/* Hero */}
                 <HeroSection
-                    title={journey.name}
-                    subtitle={journey.duration}
+                    title={journeyT.name}
+                    subtitle={journeyT.duration}
                     videoSrc={journey.heroVideo} // Video plays at top
                     backgroundImage={journey.heroImage}
                 />
@@ -106,23 +109,23 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
                         {/* Left: Sticky Context Info */}
                         <div className="hidden lg:block lg:col-span-4 relative">
                             <div className="sticky top-32 space-y-8 bg-vsoe-midnight/80 backdrop-blur-md p-8 border border-white/10 rounded-sm">
-                                <h2 className="text-3xl font-serif text-vsoe-gold">The Journey</h2>
+                                <h2 className="text-3xl font-serif text-vsoe-gold">{t.journeyClientCanvas.journeyTitle}</h2>
                                 <p className="text-white/70 font-light leading-relaxed">
-                                    {journey.description}
+                                    {journeyT.description}
                                 </p>
                                 <div className="space-y-4 pt-4 border-t border-white/10">
                                     <div className="flex items-center gap-3 text-white/60">
                                         <Clock size={16} className="text-vsoe-gold" />
-                                        <span className="text-sm uppercase tracking-widest">{journey.duration}</span>
+                                        <span className="text-sm uppercase tracking-widest">{journeyT.duration}</span>
                                     </div>
                                     <div className="flex items-center gap-3 text-white/60">
                                         <MapPin size={16} className="text-vsoe-gold" />
-                                        <span className="text-sm uppercase tracking-widest">{journey.stops.join(' — ')}</span>
+                                        <span className="text-sm uppercase tracking-widest">{journeyT.stops.join(' — ')}</span>
                                     </div>
                                 </div>
                                 <Link href="/book" className="block w-full">
                                     <button className="w-full bg-vsoe-gold text-vsoe-midnight py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors">
-                                        Check Availability
+                                        {t.journeyClientCanvas.checkAvailability}
                                     </button>
                                 </Link>
                             </div>
@@ -148,17 +151,17 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
 
                                     <div className="flex items-center justify-between mb-6">
                                         <span className="inline-block px-3 py-1 bg-vsoe-gold/20 text-vsoe-gold text-[10px] font-bold uppercase tracking-widest rounded-full">
-                                            {item.day} — {item.time}
+                                            {journeyT.timeline?.[index]?.day || item.day} — {item.time}
                                         </span>
                                         <div className="flex items-center gap-2 text-white/40 text-xs uppercase tracking-widest">
                                             <MapPin size={12} /> {item.location}
                                         </div>
                                     </div>
 
-                                    <h3 className="text-4xl md:text-5xl font-serif text-white mb-6">{item.title}</h3>
+                                    <h3 className="text-4xl md:text-5xl font-serif text-white mb-6">{journeyT.timeline?.[index]?.title || item.title}</h3>
                                     
                                     <p className="text-lg text-white/80 font-light leading-relaxed mb-8">
-                                        {item.description}
+                                        {journeyT.timeline?.[index]?.description || item.description}
                                     </p>
 
                                     {/* Media Card inside timeline if video exists, otherwise purely atmospheric */}
@@ -186,7 +189,7 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
                             <div className="lg:hidden block pt-12">
                                 <Link href="/book" className="block w-full">
                                     <button className="w-full bg-vsoe-gold text-vsoe-midnight py-4 text-xs font-bold uppercase tracking-[0.2em]">
-                                        Start Your Journey
+                                        {t.journeyClientCanvas.startJourney}
                                     </button>
                                 </Link>
                             </div>

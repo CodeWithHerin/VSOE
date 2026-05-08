@@ -2,46 +2,47 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin } from 'lucide-react';
-import Link from 'next/link';
-
-const LOCATIONS = [
-    {
-        id: 'london',
-        name: 'London',
-        x: 20, // %
-        y: 30, // %
-        image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop',
-        description: 'The journey begins. Board the Belmond British Pullman.'
-    },
-    {
-        id: 'paris',
-        name: 'Paris',
-        x: 35,
-        y: 45,
-        image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop',
-        description: 'The City of Light. A romantic evening departure.'
-    },
-    {
-        id: 'venice',
-        name: 'Venice',
-        x: 55,
-        y: 65,
-        image: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop',
-        description: 'The Floating City. Arrive in unparalleled style.'
-    },
-    {
-        id: 'istanbul',
-        name: 'Istanbul',
-        x: 85,
-        y: 70,
-        image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop',
-        description: 'The Gateway to the East. The historic terminus.'
-    }
-];
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function InteractiveMap() {
     const [activeLocation, setActiveLocation] = useState<string | null>(null);
+    const { t } = useTranslation();
+
+    const LOCATIONS = [
+        {
+            id: 'london',
+            name: 'London',
+            x: 20, // %
+            y: 30, // %
+            image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop',
+            description: t.map.londonDesc
+        },
+        {
+            id: 'paris',
+            name: 'Paris',
+            x: 35,
+            y: 45,
+            image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop',
+            description: t.map.parisDesc
+        },
+        {
+            id: 'venice',
+            name: 'Venice',
+            x: 55,
+            y: 65,
+            image: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop',
+            description: t.map.veniceDesc
+        },
+        {
+            id: 'istanbul',
+            name: 'Istanbul',
+            x: 85,
+            y: 70,
+            image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop',
+            description: t.map.istanbulDesc
+        }
+    ];
 
     return (
         <div className="relative w-full aspect-[16/9] bg-vsoe-midnight rounded-sm overflow-hidden border border-white/10 group">
@@ -109,7 +110,7 @@ export default function InteractiveMap() {
                                     <h3 className="text-xl font-serif text-vsoe-gold mb-2">{loc.name}</h3>
                                     <p className="text-xs text-vsoe-cream/80 leading-relaxed mb-4">{loc.description}</p>
                                     <Link href={`/book?destination=${loc.id}`} className="block w-full text-center py-2 border border-vsoe-gold/50 text-vsoe-gold text-[10px] uppercase tracking-widest hover:bg-vsoe-gold hover:text-vsoe-midnight transition-colors">
-                                        View Journeys
+                                        {t.map.discover}
                                     </Link>
                                 </div>
                             );

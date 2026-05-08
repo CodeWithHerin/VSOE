@@ -3,8 +3,9 @@
 import { useEffect, useState, useRef } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from 'framer-motion';
 import { Menu, X, ChevronDown, Globe, Search } from 'lucide-react';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import Image from 'next/image';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { useLanguageStore } from '@/lib/store/useLanguageStore';
@@ -222,6 +223,10 @@ const NAV_ITEMS: NavItem[] = [
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export default function Navbar() {
+    const router = useRouter();
+    const params = useParams();
+    const pathname = usePathname();
+    
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isLangOpen, setIsLangOpen] = useState(false);
@@ -230,9 +235,36 @@ export default function Navbar() {
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Search & Language state
-    const { language: currentLang, setLanguage: setCurrentLang } = useLanguageStore();
+    const { language: storeLang, setLanguage: setStoreLang } = useLanguageStore();
     const { t } = useTranslation();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    // Sync store with URL params if available
+    useEffect(() => {
+        if (params?.lang) {
+            setStoreLang(params.lang.toString().toUpperCase() as any);
+        }
+    }, [params?.lang, setStoreLang]);
+
+    const handleLanguageChange = (newLang: string) => {
+        const langLower = newLang.toLowerCase();
+        setStoreLang(newLang as any);
+        setIsLangOpen(false);
+
+        // Redirect to the same path but with a different language prefix
+        const currentPath = pathname || '/';
+        const pathSegments = currentPath.split('/').filter(Boolean);
+        
+        // If the first segment is a locale, replace it
+        const possibleLocales = ['en', 'fr', 'it', 'de'];
+        if (possibleLocales.includes(pathSegments[0])) {
+            pathSegments[0] = langLower;
+        } else {
+            pathSegments.unshift(langLower);
+        }
+        
+        router.push(`/${pathSegments.join('/')}`);
+    };
 
     const translatedNavItems = NAV_ITEMS.map(item => {
         let label = item.label;
@@ -350,7 +382,7 @@ export default function Navbar() {
                                 )}
                             >
                                 <Globe size={14} />
-                                <span>{currentLang}</span>
+                                <span>{storeLang}</span>
                                 <ChevronDown size={10} className={`transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
                             </button>
 
@@ -370,11 +402,8 @@ export default function Navbar() {
                                         ].map((lang) => (
                                             <button
                                                 key={lang.code}
-                                                onClick={() => {
-                                                    setCurrentLang(lang.code as 'EN' | 'FR' | 'IT' | 'DE');
-                                                    setIsLangOpen(false);
-                                                }}
-                                                className={`block w-full text-left px-4 py-2 text-xs uppercase tracking-widest transition-colors ${currentLang === lang.code ? 'text-vsoe-gold' : 'text-white/60 hover:text-vsoe-gold hover:bg-white/5'
+                                                onClick={() => handleLanguageChange(lang.code)}
+                                                className={`block w-full text-left px-4 py-2 text-xs uppercase tracking-widest transition-colors ${storeLang === lang.code ? 'text-vsoe-gold' : 'text-white/60 hover:text-vsoe-gold hover:bg-white/5'
                                                     }`}
                                             >
                                                 {lang.label}
@@ -533,12 +562,12 @@ export default function Navbar() {
                             {/* Search Input */}
                             <div className="mb-16">
                                 <label className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-6">
-                                    Search
+                                    {t.forms.searchLabel}
                                 </label>
                                 <input
                                     type="text"
                                     autoFocus
-                                    placeholder="Search destinations, journeys, experiences..."
+                                    placeholder={t.forms.searchPlaceholder}
                                     className="w-full bg-transparent border-b-2 border-vsoe-gold/60 focus:border-vsoe-gold pb-4 text-2xl md:text-3xl text-white font-serif outline-none transition-colors duration-300 placeholder:text-white/20"
                                 />
                             </div>
@@ -546,7 +575,7 @@ export default function Navbar() {
                             {/* Suggested Searches */}
                             <div>
                                 <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 font-bold block mb-6">
-                                    Suggested
+                                    {t.forms.searchSuggested}
                                 </span>
                                 <div className="flex flex-wrap gap-3">
                                     {SUGGESTED_SEARCHES.map((suggestion) => (
@@ -583,7 +612,7 @@ export default function Navbar() {
                                 </button>
                             </div>
                             <div className="flex flex-col gap-8 px-4">
-                                {NAV_ITEMS.map((item) => (
+                                {translatedNavItems.map((item) => (
                                     <Link
                                         key={item.label}
                                         href={item.href}

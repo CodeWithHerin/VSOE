@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { Calendar, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface Journey {
     id: string;
@@ -16,11 +17,13 @@ interface Journey {
 }
 
 export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
+    const { t, language } = useTranslation();
+    
     if (!journeys || journeys.length === 0) {
         return (
             <div className="text-center py-20 border border-white/10 rounded-sm">
-                <p className="text-xl text-vsoe-cream/60 font-serif italic">No upcoming journeys scheduled at this time.</p>
-                <p className="text-sm text-vsoe-gold mt-4 uppercase tracking-widest">Please check back later</p>
+                <p className="text-xl text-vsoe-cream/60 font-serif italic">{t.booking.noJourneys}</p>
+                <p className="text-sm text-vsoe-gold mt-4 uppercase tracking-widest">{t.booking.checkBack}</p>
             </div>
         )
     }
@@ -51,7 +54,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                             <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="flex items-center gap-2 text-vsoe-gold mb-2 text-xs tracking-[0.2em] uppercase font-bold">
                                     <Calendar size={12} />
-                                    <span>{new Date(journey.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                                    <span>{new Date(journey.date).toLocaleDateString(language, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
                                 </div>
 
                                 <h2 className="text-3xl font-serif text-white mb-4 group-hover:text-vsoe-gold transition-colors duration-300">
@@ -64,14 +67,14 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
 
                                 {journey.availableCabins < 5 && (
                                     <p className="text-red-400 text-[10px] uppercase tracking-widest mb-4 animate-pulse">
-                                        Only {journey.availableCabins} cabins left
+                                        {t.booking.cabinsLeft.replace('{count}', journey.availableCabins.toString())}
                                     </p>
                                 )}
 
                                 <div className="flex items-center justify-between border-t border-white/10 pt-6">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase tracking-widest text-white/40">Starting from</span>
-                                        <span className="text-xl font-serif text-vsoe-cream">€{journey.price.toLocaleString()}</span>
+                                        <span className="text-[10px] uppercase tracking-widest text-white/40">{t.booking.startingFrom}</span>
+                                        <span className="text-xl font-serif text-vsoe-cream">€{journey.price.toLocaleString(language)}</span>
                                     </div>
 
                                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-vsoe-gold group-hover:border-vsoe-gold group-hover:text-vsoe-midnight transition-all duration-300">

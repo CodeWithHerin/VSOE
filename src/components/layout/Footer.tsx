@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { Facebook, Instagram, Twitter, Youtube, Globe } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
@@ -20,7 +20,7 @@ export default function Footer() {
                         <form className="flex gap-4 max-w-md">
                             <input
                                 type="email"
-                                placeholder="Email Address"
+                                placeholder={t.forms.newsletterPlaceholder}
                                 className="flex-1 bg-transparent border-b border-white/30 py-3 text-white focus:outline-none focus:border-vsoe-gold transition-colors"
                             />
                             <button className="text-xs uppercase tracking-widest text-vsoe-gold hover:text-white transition-colors">
@@ -72,7 +72,7 @@ export default function Footer() {
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.language}</h4>
                         <button className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors">
                             <Globe size={16} />
-                            <span>English (UK)</span>
+                            <span>Language Selection in Navbar</span>
                         </button>
                     </div>
                 </div>

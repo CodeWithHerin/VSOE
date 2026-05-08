@@ -3,8 +3,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { X, ArrowRight } from 'lucide-react';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface BookTheSceneProps {
     triggerId?: string;
@@ -21,6 +22,7 @@ export default function BookTheScene({
 }: BookTheSceneProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [hasClosed, setHasClosed] = useState(false);
+    const { t } = useTranslation();
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -61,9 +63,9 @@ export default function BookTheScene({
                             <Image src={image} alt={title} fill className="object-cover" />
                         </div>
                         <div>
-                            <span className="text-[10px] uppercase tracking-widest text-vsoe-gold font-bold block mb-1">Book the Scene</span>
+                            <span className="text-[10px] uppercase tracking-widest text-vsoe-gold font-bold block mb-1">{t.bookTheScene.title}</span>
                             <h4 className="font-serif text-vsoe-midnight text-lg leading-none mb-1">{title}</h4>
-                            <span className="text-xs text-vsoe-midnight/60">{price} per person</span>
+                            <span className="text-xs text-vsoe-midnight/60">{price} {t.bookTheScene.perPerson}</span>
                         </div>
                     </div>
 
@@ -71,7 +73,7 @@ export default function BookTheScene({
                         href="/book"
                         className="mt-4 flex items-center justify-between w-full bg-vsoe-midnight text-white px-4 py-2 text-[10px] uppercase tracking-widest hover:bg-vsoe-gold hover:text-vsoe-midnight transition-colors"
                     >
-                        <span>Reserve Now</span>
+                        <span>{t.bookTheScene.reserve}</span>
                         <ArrowRight size={12} />
                     </Link>
                 </motion.div>

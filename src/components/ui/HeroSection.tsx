@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useUIStore } from '@/store/useUIStore';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 // Define props
 interface HeroProps {
@@ -19,6 +20,7 @@ export default function HeroSection({
     backgroundImage,
     videoSrc
 }: HeroProps) {
+    const { t } = useTranslation();
     const [hasError, setHasError] = React.useState(false);
     const setLoaded = useUIStore((state) => state.setHeroVideoLoaded);
     const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -133,7 +135,7 @@ export default function HeroSection({
                     transition={{ duration: 1, delay: 1.5 }}
                     className="absolute bottom-10 flex flex-col items-center gap-2 text-white/80 transition-colors hover:text-white"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.2em]">Discover</span>
+                    <span className="text-[10px] uppercase tracking-[0.2em]">{t.hero.discover}</span>
                     <div className="h-10 w-[1px] bg-white/50" />
                 </motion.button>
             </div>

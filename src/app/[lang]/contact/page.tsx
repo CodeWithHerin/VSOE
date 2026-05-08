@@ -1,0 +1,40 @@
+'use client';
+
+import StandardPageLayout from '@/components/layout/StandardPageLayout';
+import { useTranslation } from '@/lib/i18n/useTranslation';
+
+export default function ContactPage() {
+    const { t } = useTranslation();
+
+    return (
+        <StandardPageLayout
+            title={t.contactPage.title}
+            subtitle={t.contactPage.subtitle}
+            heroImage="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=2674&auto=format&fit=crop"
+        >
+            <h3>{t.contactPage.resTitle}</h3>
+            <p>
+                {t.contactPage.resDesc}
+            </p>
+            <p>
+                <strong>{t.contactPage.telUK}:</strong> +44 (0) 20 1234 5678<br />
+                <strong>{t.contactPage.telUS}:</strong> +1 800 123 4567<br />
+                <strong>{t.contactPage.email}:</strong> reservations@vsoe.com
+            </p>
+
+            <h3>{t.contactPage.officeTitle}</h3>
+            <p>
+                Belmond Management Limited<br />
+                Shackleton House<br />
+                4 Battle Bridge Lane<br />
+                London, SE1 2HP<br />
+                United Kingdom
+            </p>
+
+            <h3>{t.contactPage.pressTitle}</h3>
+            <p>
+                {t.contactPage.pressDesc}
+            </p>
+        </StandardPageLayout>
+    );
+}

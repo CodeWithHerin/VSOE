@@ -52,19 +52,7 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
-        <AudioProvider>
-          <GlobalProgressBar />
-          {/* <AudioAmbience /> */}
-          <Preloader />
-          <SmoothScroll />
-          <CookieConsent />
-          <BookTheScene />
-          <AIConcierge />
-          <CustomCursor />
-          <Navbar />
-          {children}
-          <FloatingBackButton />
-        </AudioProvider>
+        {children}
       </body>
     </html>
   );

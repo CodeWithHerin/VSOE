@@ -2,11 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
-
-
 
 export default function JournalSection() {
     const { t } = useTranslation();
@@ -14,23 +12,23 @@ export default function JournalSection() {
     const STORIES = [
         {
             id: 1,
-            category: 'Style',
+            category: t.journal.article1Cat,
             title: t.journal.article1,
-            excerpt: 'Why black tie remains the gold standard for dinner on board.',
+            excerpt: t.journal.article1Exc,
             image: '/images/vsoe/vsoe-exterior-night.jpg'
         },
         {
             id: 2,
-            category: 'Heritage',
+            category: t.journal.article2Cat,
             title: t.journal.article2,
-            excerpt: 'Uncovering the mysteries hidden within the marquetry of Car 3674.',
+            excerpt: t.journal.article2Exc,
             image: '/images/vsoe/vsoe-bar-car.jpg'
         },
         {
             id: 3,
-            category: 'Destinations',
+            category: t.journal.article3Cat,
             title: t.journal.article3,
-            excerpt: 'The perfect itinerary for 24 hours in the Floating City.',
+            excerpt: t.journal.article3Exc,
             image: '/images/vsoe/vsoe-countryside-window.jpg'
         }
     ];

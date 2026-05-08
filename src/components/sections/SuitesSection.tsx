@@ -1,13 +1,15 @@
 'use client';
 
-import Link from 'next/link';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { ArrowRight } from 'lucide-react';
 import { useTrackInterest } from '@/lib/profiling';
 import ParallaxImage from '@/components/ui/ParallaxImage';
 import TextReveal from '@/components/ui/TextReveal';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function SuitesSection() {
     useTrackInterest('wellness');
+    const { t } = useTranslation();
     const grandSuiteImage = "/images/vsoe/vsoe-grand-suite.jpg";
 
     return (
@@ -17,26 +19,25 @@ export default function SuitesSection() {
                 <div className="relative z-10">
                     <TextReveal>
                         <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-6 font-sans">
-                            Accommodations
+                            {t.suitesPage.accom}
                         </span>
                     </TextReveal>
 
                     <TextReveal delay={0.1}>
                         <h2 className="text-5xl md:text-7xl text-vsoe-cream mb-8 leading-[1.1] font-serif">
-                            Grand Suites
+                            {t.suites.title}
                         </h2>
                     </TextReveal>
 
                     <TextReveal delay={0.2}>
                         <p className="text-vsoe-cream/70 text-lg font-light leading-relaxed mb-10 font-sans">
-                            New heights of luxury. Private bathrooms with showers, double beds, and a living area with underfloor heating.
-                            Free-flowing champagne and private dining in your suite.
+                            {t.suitesPage.desc}
                         </p>
                     </TextReveal>
 
                     <TextReveal delay={0.3}>
                         <Link href="/suites" className="inline-flex items-center gap-4 text-vsoe-gold text-xs tracking-[0.2em] uppercase hover:gap-6 transition-all group font-sans">
-                            Discover Suites <ArrowRight className="w-4 h-4" />
+                            {t.experiencesPage.discover} <ArrowRight className="w-4 h-4" />
                         </Link>
                     </TextReveal>
                 </div>
