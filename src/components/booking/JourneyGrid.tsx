@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { Calendar, ArrowRight } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -41,10 +42,12 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                     <Link href={`/book/${journey.id}`} className="block w-full h-full">
                         {/* Background Image */}
                         <div className="absolute inset-0">
-                            <img
+                            <Image
                                 src={journey.image}
                                 alt={journey.name}
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 33vw"
+                                className="object-cover transition-transform duration-1000 group-hover:scale-110 filter grayscale group-hover:grayscale-0"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/50 to-transparent opacity-90 group-hover:opacity-60 transition-opacity duration-500" />
                         </div>

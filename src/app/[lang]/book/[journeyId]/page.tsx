@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { getJourney } from '@/app/[lang]/book/actions';
+import Image from 'next/image';
 
 
 import BookingWizard from '@/components/booking/BookingWizard';
@@ -21,10 +22,11 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
             {/* Header */}
             <div className="relative h-[50vh] flex items-end pb-20 px-6">
                 <div className="absolute inset-0">
-                    <img
+                    <Image
                         src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2784&auto=format&fit=crop"
                         alt="Journey Hero"
-                        className="w-full h-full object-cover opacity-50"
+                        fill
+                        className="object-cover opacity-50"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/60 to-transparent" />
                 </div>
