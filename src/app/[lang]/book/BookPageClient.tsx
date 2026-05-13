@@ -1,8 +1,6 @@
 'use client';
 
 import React, { Suspense } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface BookPageClientProps {
@@ -16,8 +14,7 @@ export default function BookPageClient({ journeyList, calendar, skeleton }: Book
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
-
+            
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
                 <div className="text-center mb-16">
                     <h1 className="text-5xl md:text-7xl font-serif text-vsoe-gold mb-6">{t.bookPage.selectTitle}</h1>
@@ -73,7 +70,6 @@ export default function BookPageClient({ journeyList, calendar, skeleton }: Book
                 </div>
             </div>
 
-            <Footer />
-        </main >
+                    </main >
     );
 }

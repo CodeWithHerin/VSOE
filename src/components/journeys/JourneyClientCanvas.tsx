@@ -4,8 +4,8 @@ import React, { useRef, useState } from 'react';
 import { motion, useScroll, useMotionValueEvent, AnimatePresence, useTransform } from 'framer-motion';
 import { MapPin, Clock, Calendar, ArrowRight } from 'lucide-react';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
-import Footer from '@/components/layout/Footer';
-import Navbar from '@/components/layout/Navbar';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
@@ -61,7 +61,7 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
 
     return (
         <div ref={containerRef} className="relative min-h-screen bg-vsoe-midnight">
-            <Navbar />
+            
 
             {/* --- FIXED BACKGROUND LAYER --- */}
             <div className="fixed inset-0 z-0 overflow-hidden">
@@ -197,7 +197,7 @@ export default function JourneyClientCanvas({ journey }: JourneyClientCanvasProp
                     </div>
                 </div>
 
-                <Footer />
+                
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { motion } from 'framer-motion';
 
@@ -15,7 +15,7 @@ interface StandardPageLayoutProps {
 export default function StandardPageLayout({ title, subtitle, heroImage, children }: StandardPageLayoutProps) {
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
             
             <HeroSection
                 title={title}
@@ -34,7 +34,7 @@ export default function StandardPageLayout({ title, subtitle, heroImage, childre
                 </div>
             </motion.div>
 
-            <Footer />
+            
         </main>
     );
 }

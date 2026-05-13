@@ -3,117 +3,96 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Journey {
-  id          String   @id @default(uuid())
-  name        String   // e.g., "Paris to Venice"
-  departure   DateTime
-  arrival     DateTime
-  status      String   // "scheduled", "completed", "cancelled"
-  
-  segments    RouteSegment[]
-  buckets     InventoryBucket[]
-  bookings    Booking[]
+  id        String            @id @default(uuid())
+  name      String
+  departure DateTime
+  arrival   DateTime
+  status    String
+  bookings  Booking[]
+  buckets   InventoryBucket[]
+  segments  RouteSegment[]
 }
 
 model RouteSegment {
-  id          String   @id @default(uuid())
+  id          String            @id @default(uuid())
   journeyId   String
-  journey     Journey  @relation(fields: [journeyId], references: [id])
-  
   origin      String
   destination String
   departure   DateTime
   arrival     DateTime
-  order       Int      // 0, 1, 2... sequence in journey
-  
+  order       Int
   buckets     InventoryBucket[]
+  journey     Journey           @relation(fields: [journeyId], references: [id])
 }
 
 model TrainCar {
-  id          String   @id @default(uuid())
-  name        String   // e.g., "L'Oriental"
-  type        String   // "sleeping", "dining", "bar"
-  
-  cabins      Cabin[]
+  id     String  @id @default(uuid())
+  name   String
+  type   String
+  cabins Cabin[]
 }
 
 model Cabin {
-  id          String   @id @default(uuid())
-  carId       String
-  car         TrainCar @relation(fields: [carId], references: [id])
-  
-  number      String   // e.g., "A1"
-  type        String   // "grand_suite", "suite", "historic"
-  capacity    Int
-  
-  buckets     InventoryBucket[]
-  passengers  Passenger[]
+  id         String            @id @default(uuid())
+  carId      String
+  number     String
+  type       String
+  capacity   Int
+  car        TrainCar          @relation(fields: [carId], references: [id])
+  buckets    InventoryBucket[]
+  passengers Passenger[]
 }
 
 model InventoryBucket {
-  id          String   @id @default(uuid())
-  
-  journeyId   String
-  journey     Journey  @relation(fields: [journeyId], references: [id])
-  
-  segmentId   String
-  segment     RouteSegment @relation(fields: [segmentId], references: [id])
-  
-  cabinId     String
-  cabin       Cabin    @relation(fields: [cabinId], references: [id])
-  
-  status      String   // "available", "held", "booked", "maintenance"
-  price       Float
-  currency    String   @default("EUR")
-  
+  id        String       @id @default(uuid())
+  journeyId String
+  segmentId String
+  cabinId   String
+  status    String
+  price     Float
+  currency  String       @default("EUR")
+  cabin     Cabin        @relation(fields: [cabinId], references: [id])
+  journey   Journey      @relation(fields: [journeyId], references: [id])
+  segment   RouteSegment @relation(fields: [segmentId], references: [id])
+
   @@unique([journeyId, segmentId, cabinId])
 }
 
 model Booking {
-  id          String   @id @default(uuid())
-  createdAt   DateTime @default(now())
-  
-  // Contact Info
-  firstName   String
-  lastName    String
-  email       String
-  phone       String?
-  
-  // Journey Details
-  journeyId   String
-  journey     Journey  @relation(fields: [journeyId], references: [id])
-  
-  // Financials
-  totalPrice  Float
-  currency    String   @default("EUR")
-  status      String   // "pending", "confirmed", "cancelled"
-  
-  // Relations
-  passengers  Passenger[]
+  id         String      @id @default(uuid())
+  createdAt  DateTime    @default(now())
+  firstName  String
+  lastName   String
+  email      String
+  phone      String?
+  journeyId  String
+  totalPrice Float
+  currency   String      @default("EUR")
+  status     String
+  journey    Journey     @relation(fields: [journeyId], references: [id])
+  passengers Passenger[]
 }
 
 model Passenger {
-  id          String   @id @default(uuid())
-  bookingId   String
-  booking     Booking  @relation(fields: [bookingId], references: [id])
-  
-  firstName   String
-  lastName    String
-  passport    String?
-  
-  cabinId     String
-  cabin       Cabin    @relation(fields: [cabinId], references: [id])
+  id        String  @id @default(uuid())
+  bookingId String
+  firstName String
+  lastName  String
+  passport  String?
+  cabinId   String
+  booking   Booking @relation(fields: [bookingId], references: [id])
+  cabin     Cabin   @relation(fields: [cabinId], references: [id])
 }
 
 model User {
   id        String   @id @default(uuid())
   email     String   @unique
-  password  String   // Hashed
+  password  String
   name      String?
   createdAt DateTime @default(now())
 }

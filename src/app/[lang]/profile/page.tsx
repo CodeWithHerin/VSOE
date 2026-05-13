@@ -1,6 +1,6 @@
 import React from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import { getUserBookings } from './actions';
 import Link from 'next/link';
 import { Ticket, Calendar, Clock, MapPin, User } from 'lucide-react';
@@ -11,7 +11,7 @@ export default async function ProfilePage() {
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
                 {/* Header */}
@@ -115,7 +115,7 @@ export default async function ProfilePage() {
                 )}
             </div>
 
-            <Footer />
+            
         </main>
     );
 }

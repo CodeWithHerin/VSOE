@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -48,7 +48,7 @@ export default function StoriesPage() {
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             <HeroSection
             // title="The Journal"
@@ -144,7 +144,7 @@ export default function StoriesPage() {
                 </div>
             </section>
 
-            <Footer />
+            
         </main>
     );
 }

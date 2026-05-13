@@ -1,11 +1,24 @@
 'use client';
 
+import React, { useState } from 'react';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { Facebook, Instagram, Twitter, Youtube, Globe } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function Footer() {
     const { t } = useTranslation();
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [email, setEmail] = useState('');
+
+    const handleSubscribe = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (email) {
+            setIsSubscribed(true);
+            setEmail('');
+            // In a real app, send this to an API endpoint
+        }
+    };
+
     return (
         <footer className="bg-vsoe-midnight text-vsoe-cream border-t border-white/10 pt-20 pb-10">
             <div className="max-w-[1920px] mx-auto px-6 md:px-12">
@@ -17,25 +30,34 @@ export default function Footer() {
                         <p className="text-white/60 mb-8 max-w-md font-sans text-sm leading-relaxed">
                             {t.footer.newsletter}
                         </p>
-                        <form className="flex gap-4 max-w-md">
-                            <input
-                                type="email"
-                                placeholder={t.forms.newsletterPlaceholder}
-                                className="flex-1 bg-transparent border-b border-white/30 py-3 text-white focus:outline-none focus:border-vsoe-gold transition-colors"
-                            />
-                            <button className="text-xs uppercase tracking-widest text-vsoe-gold hover:text-white transition-colors">
-                                {t.footer.subscribe}
-                            </button>
-                        </form>
+                        {isSubscribed ? (
+                            <div className="bg-vsoe-gold/10 border border-vsoe-gold/30 px-6 py-4 rounded-sm">
+                                <p className="text-vsoe-gold text-sm font-serif">Thank you for subscribing to the 1920 Club newsletter.</p>
+                            </div>
+                        ) : (
+                            <form className="flex gap-4 max-w-md" onSubmit={handleSubscribe}>
+                                <input
+                                    type="email"
+                                    required
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    placeholder={t.forms.newsletterPlaceholder}
+                                    className="flex-1 bg-transparent border-b border-white/30 py-3 text-white focus:outline-none focus:border-vsoe-gold transition-colors"
+                                />
+                                <button type="submit" className="text-xs uppercase tracking-widest text-vsoe-gold hover:text-white transition-colors">
+                                    {t.footer.subscribe}
+                                </button>
+                            </form>
+                        )}
                     </div>
 
                     <div className="lg:text-right">
                         <h3 className="font-serif text-2xl mb-6">{t.footer.follow}</h3>
                         <div className="flex gap-6 lg:justify-end text-white/60">
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
+                            <a href="https://www.instagram.com/vsoetrain" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
+                            <a href="https://www.facebook.com/VSOEtrain" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
+                            <a href="https://twitter.com/BelmondVSOE" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
+                            <a href="https://www.youtube.com/belmond" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
                         </div>
                     </div>
                 </div>

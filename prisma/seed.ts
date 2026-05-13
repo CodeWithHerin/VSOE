@@ -33,6 +33,9 @@ async function main() {
     // Grand Suites Car (The most exclusive)
     const carGrandSuites = await prisma.trainCar.create({ data: { name: "Grand Suites", type: "sleeping" } })
 
+    // Suite Car (New for 2023)
+    const carSuites = await prisma.trainCar.create({ data: { name: "Suite Car", type: "sleeping" } })
+
     // Create Cabins
     // Helper
     const createCabins = async (carId: string, type: string, prefix: string, count: number, priceBase: number) => {
@@ -69,7 +72,10 @@ async function main() {
     await createCabins(car3425.id, "historic", "B", 9, 0)
     await createCabins(car3544.id, "historic", "C", 9, 0)
 
-    console.log("🚋 Fleet created: 3 Dining, 1 Bar, 3 Historic Cars, 1 Grand Suite Car.")
+    // Suite Cabins (New for 2023 — 6 suites)
+    await createCabins(carSuites.id, "suite", "S", 6, 0)
+
+    console.log("🚋 Fleet created: 3 Dining, 1 Bar, 3 Historic Cars, 1 Suite Car, 1 Grand Suite Car.")
 
     // 3. Create Journeys
     // prices in GBP roughly converted to integer for DB basePrice (assuming DB is stored in smallest currency unit or just int)

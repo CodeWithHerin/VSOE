@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/layout/Navbar";
+
 import CustomCursor from "@/components/ui/CustomCursor";
 import Preloader from "@/components/ui/Preloader";
 import AudioAmbience from "@/components/layout/AudioAmbience";

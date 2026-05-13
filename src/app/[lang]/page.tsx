@@ -3,7 +3,6 @@
 import React from 'react';
 import dynamic from 'next/dynamic';
 import HeroSection from '@/components/ui/HeroSection';
-import Footer from '@/components/layout/Footer';
 import Preloader from '@/components/ui/Preloader';
 import { getRecommendedContent } from '@/lib/profiling';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -79,7 +78,6 @@ export default function Home() {
       <JournalSection />
 
       {/* Footer */}
-      <Footer />
-    </main>
+          </main>
   );
 }

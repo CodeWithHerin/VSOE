@@ -1,7 +1,6 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 import HeroSection from '@/components/ui/HeroSection';
 import { journeys } from '@/data/journeys';
 import { motion } from 'framer-motion';
@@ -12,7 +11,7 @@ export default function DestinationsPage() {
     const { t } = useTranslation();
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
-            <Navbar />
+
             <HeroSection
                 title={t.destinations.title}
                 subtitle={t.destinations.subtitle}
@@ -67,7 +66,7 @@ export default function DestinationsPage() {
                     })}
                 </div>
             </div>
-            <Footer />
+
         </main>
     );
 }

@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import AvailabilityCalendar from '@/components/ui/AvailabilityCalendar';
 import JourneyListFetcher from '@/components/booking/JourneyListFetcher';
 import { getAvailableJourneys } from '@/app/[lang]/book/actions';

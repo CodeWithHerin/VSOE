@@ -1,8 +1,8 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { getJourney } from '@/app/[lang]/book/actions';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import BookingWizard from '@/components/booking/BookingWizard';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 
@@ -16,7 +16,7 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             {/* Header */}
             <div className="relative h-[50vh] flex items-end pb-20 px-6">
@@ -85,7 +85,7 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
                 </div>
             </div>
 
-            <Footer />
+            
         </main>
     );
 }

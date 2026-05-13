@@ -1,8 +1,8 @@
 'use client';
 
 import { use } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
@@ -17,7 +17,7 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
 
     return (
         <main className="min-h-screen bg-vsoe-cream text-vsoe-blue">
-            <Navbar />
+            
             <HeroSection
                 title={data.title}
                 subtitle={t.legalPage.subtitle}
@@ -37,7 +37,7 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
                     </p>
                 </div>
             </div>
-            <Footer />
+            
         </main>
     );
 }

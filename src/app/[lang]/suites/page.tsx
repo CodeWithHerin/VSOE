@@ -1,7 +1,6 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
 import Image from 'next/image';
 import CabinShowcase from '@/components/suites/CabinShowcase';
 import { motion } from 'framer-motion';
@@ -11,7 +10,7 @@ export default function SuitesPage() {
     const { t } = useTranslation();
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             {/* Hero */}
             <div className="relative">
@@ -72,7 +71,7 @@ export default function SuitesPage() {
             {/* Interactive Showcase */}
             <CabinShowcase />
 
-            <Footer />
+            
         </main>
     );
 }

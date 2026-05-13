@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function LegalPage() {
@@ -9,7 +9,7 @@ export default function LegalPage() {
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
-            <Navbar />
+            
             <div className="pt-40 pb-20 px-6 max-w-3xl mx-auto">
                 <h1 className="text-4xl font-serif text-vsoe-gold mb-8">{t.legalIndex.title}</h1>
                 <div className="space-y-8 text-white/70 font-sans leading-relaxed">
@@ -27,7 +27,7 @@ export default function LegalPage() {
                     </section>
                 </div>
             </div>
-            <Footer />
+            
         </main>
     );
 }

@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import InteractiveMap from '@/components/ui/InteractiveMap';
 import { motion } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -11,7 +11,7 @@ export default function JourneysPage() {
     const { t } = useTranslation();
     return (
         <main className="min-h-screen bg-vsoe-cream text-vsoe-blue selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
                 <motion.div
@@ -54,7 +54,7 @@ export default function JourneysPage() {
                 </div>
             </div>
 
-            <Footer />
+            
         </main>
     );
 }

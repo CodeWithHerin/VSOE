@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
@@ -9,7 +9,7 @@ import { ArrowLeft } from 'lucide-react';
 export default function ComingSoonPage() {
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
-            <Navbar />
+            
             <HeroSection
                 title="Coming Soon"
                 subtitle="Under Construction"
@@ -26,7 +26,7 @@ export default function ComingSoonPage() {
                     <ArrowLeft size={14} /> Return Home
                 </Link>
             </div>
-            <Footer />
+            
         </main>
     );
 }

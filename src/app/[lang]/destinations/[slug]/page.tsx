@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import { journeys } from '@/data/journeys';
 import { notFound } from 'next/navigation';
 import DestinationHero from '@/components/destinations/DestinationHero';
@@ -25,7 +25,7 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             {/* 1. Cinematic Hero */}
             <DestinationHero
@@ -82,7 +82,7 @@ export default function DestinationDetailPage({ params }: { params: Promise<{ sl
                 </div>
             </section>
 
-            <Footer />
+            
         </main>
     );
 }

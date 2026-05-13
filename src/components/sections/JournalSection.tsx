@@ -48,26 +48,27 @@ export default function JournalSection() {
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {STORIES.map((story, index) => (
-                        <motion.div
-                            key={story.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group cursor-pointer"
-                        >
-                            <div className="aspect-[4/3] overflow-hidden mb-6 relative">
-                                <Image
-                                    src={story.image}
-                                    alt={story.title}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                            </div>
-                            <span className="text-xs font-bold tracking-[0.2em] uppercase text-vsoe-gold mb-2 block">{story.category}</span>
-                            <h3 className="text-2xl font-serif mb-3 group-hover:text-vsoe-gold transition-colors">{story.title}</h3>
-                            <p className="text-vsoe-blue/60 font-sans text-sm leading-relaxed">{story.excerpt}</p>
-                        </motion.div>
+                        <Link href={`/stories/${story.id}`} key={story.id}>
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group cursor-pointer"
+                            >
+                                <div className="aspect-[4/3] overflow-hidden mb-6 relative">
+                                    <Image
+                                        src={story.image}
+                                        alt={story.title}
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                </div>
+                                <span className="text-xs font-bold tracking-[0.2em] uppercase text-vsoe-gold mb-2 block">{story.category}</span>
+                                <h3 className="text-2xl font-serif mb-3 group-hover:text-vsoe-gold transition-colors">{story.title}</h3>
+                                <p className="text-vsoe-blue/60 font-sans text-sm leading-relaxed">{story.excerpt}</p>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
             </div>

@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { experiences } from '@/data/experiences';
 import { motion } from 'framer-motion';
@@ -12,7 +12,7 @@ export default function ExperiencesPage() {
     const { t } = useTranslation();
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
-            <Navbar />
+            
             <HeroSection
                 title={t.experiencesPage.title}
                 subtitle={t.experiencesPage.subtitle}
@@ -64,7 +64,7 @@ export default function ExperiencesPage() {
                 })}
             </div>
 
-            <Footer />
+            
         </main>
     );
 }

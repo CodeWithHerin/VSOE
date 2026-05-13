@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -29,7 +29,7 @@ export default function BarCarPage() {
 
     return (
         <main className="min-h-screen bg-[#0a1018] text-[#e0d5c1] selection:bg-[#c5a059] selection:text-[#0a1018]">
-            <Navbar />
+            
 
             {/* Bespoke Hero */}
             <section className="relative h-screen w-full overflow-hidden flex items-center justify-center">
@@ -120,7 +120,7 @@ export default function BarCarPage() {
                 </div>
             </section>
 
-            <Footer />
+            
         </main>
     );
 }

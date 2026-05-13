@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import { dining } from '@/data/dining';
 import Image from 'next/image';
 import { updateInterest } from '@/lib/profiling';
@@ -18,7 +18,7 @@ export default function DiningPage() {
 
     return (
         <main className="min-h-screen bg-vsoe-cream text-vsoe-blue selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             {/* Hero */}
             <div className="relative h-[60vh] overflow-hidden flex items-center justify-center">
@@ -104,7 +104,7 @@ export default function DiningPage() {
                 </div>
             </div>
 
-            <Footer />
+            
         </main>
     );
 }

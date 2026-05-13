@@ -1,7 +1,7 @@
 'use client';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import HeroSection from '@/components/ui/HeroSection';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
@@ -11,7 +11,7 @@ export default function OccasionsPage() {
     const { t } = useTranslation();
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
-            <Navbar />
+            
             <HeroSection
                 title={t.occasionsPage.title}
                 subtitle={t.occasionsPage.subtitle}
@@ -78,7 +78,7 @@ export default function OccasionsPage() {
                 </div>
             </section>
 
-            <Footer />
+            
         </main>
     );
 }

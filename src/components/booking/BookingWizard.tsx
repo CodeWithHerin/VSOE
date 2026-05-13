@@ -51,35 +51,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
         }
     ];
 
-    // Fetch price from DB when reaching step 3, then let browser handle PayPal
-    useEffect(() => {
-        if (step === 3 && selectedCabin?.data?.price) {
-            setAmountStr(''); // Reset while loading
-            setOrderID('');
-            fetch('/api/create-payment-intent', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    journeyId: journey.id,
-                    cabinId: selectedCabin.data.cabinId,
-                    guests: 1,
-                }),
-            })
-                .then((res) => res.json())
-                .then((data) => {
-                    if (data.id) {
-                        setOrderID(data.id);
-                    }
-                    if (data.amount) {
-                        setPaymentAmount(data.amount);
-                        setAmountStr(data.amountStr ?? String(data.amount));
-                    } else if (data.error) {
-                        console.error('Price lookup failed:', data.error);
-                    }
-                })
-                .catch((err) => console.error('Payment init failed', err));
-        }
-    }, [step, selectedCabin, journey.id]);
+    // Payment step bypassed; directly rendering Order Summary on step 3
 
     const handleDetailsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -296,7 +268,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                     </motion.div>
                 )}
 
-                {/* STEP 3: PAYMENT */}
+                {/* STEP 3: ORDER SUMMARY */}
                 {step === 3 && (
                     <motion.div
                         key="step3"
@@ -307,25 +279,40 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                         className="max-w-2xl mx-auto"
                     >
                         <div className="text-center mb-10">
-                            <h2 className="text-3xl font-serif text-white mb-2">{t.wizard.secureRes}</h2>
-                            <p className="text-white/60">{t.wizard.finalizeSecurely}</p>
+                            <h2 className="text-3xl font-serif text-white mb-2">{t.wizard.secureRes || "Order Summary"}</h2>
+                            <p className="text-white/60">{t.wizard.finalizeSecurely || "Please review your journey details"}</p>
                         </div>
 
-                        <div className="bg-white/5 p-8 rounded-sm border border-white/10">
-                            {!amountStr ? (
-                                <div className="flex flex-col items-center py-12">
-                                    <div className="w-8 h-8 border-2 border-vsoe-gold border-t-transparent rounded-full animate-spin mb-4" />
-                                    <p className="text-xs uppercase tracking-widest text-white/40">{t.wizard.initGateway}</p>
+                        <div className="bg-white/5 p-8 rounded-sm border border-white/10 space-y-6">
+                            <div className="flex justify-between border-b border-white/10 pb-6">
+                                <div>
+                                    <h3 className="text-lg font-serif text-vsoe-gold mb-1">{journey.name}</h3>
+                                    <p className="text-sm text-white/60">{selectedCabin?.title}</p>
                                 </div>
-                            ) : (
-                                <PaymentForm
-                                    amount={paymentAmount}
-                                    amountStr={amountStr}
-                                    orderID={orderID}
-                                    onSuccess={finalizeBooking}
-                                    validate={() => true}
-                                />
-                            )}
+                                <div className="text-right">
+                                    <p className="text-2xl font-serif text-vsoe-cream">€{selectedCabin?.data?.price?.toLocaleString(language)}</p>
+                                    <p className="text-[10px] uppercase tracking-widest text-white/40">Total Amount</p>
+                                </div>
+                            </div>
+                            
+                            <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Guest</p>
+                                    <p className="text-white/80">{String(formDataState?.get('firstName') || '')} {String(formDataState?.get('lastName') || '')}</p>
+                                </div>
+                                <div>
+                                    <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Contact</p>
+                                    <p className="text-white/80">{String(formDataState?.get('email') || '')}</p>
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={finalizeBooking}
+                                disabled={isSubmitting}
+                                className="w-full bg-vsoe-gold text-vsoe-midnight py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors mt-8 flex justify-center"
+                            >
+                                {isSubmitting ? <div className="w-4 h-4 border-2 border-vsoe-midnight border-t-transparent rounded-full animate-spin" /> : "Confirm Booking"}
+                            </button>
                         </div>
 
                         <div className="mt-6 text-center">

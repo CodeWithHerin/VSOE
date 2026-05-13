@@ -1,8 +1,8 @@
 'use client';
 
 import React, { use } from 'react';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
+
+
 import Image from 'next/image';
 import ShoppableCard from '@/components/ui/ShoppableCard';
 import { ArrowLeft } from 'lucide-react';
@@ -20,7 +20,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
 
     return (
         <main className="min-h-screen bg-white text-vsoe-midnight selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <Navbar />
+            
 
             {/* Hero */}
             <div className="relative h-[80vh] w-full">
@@ -118,7 +118,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
                 </div>
             </div>
 
-            <Footer />
+            
         </main>
     );
 }
