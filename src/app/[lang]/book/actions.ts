@@ -78,32 +78,37 @@ export async function getAvailableJourneys() {
 }
 
 export async function getJourney(id: string) {
-    const journey = await prisma.journey.findUnique({
-        where: { id },
-        include: {
-            segments: true,
-            buckets: {
-                where: { status: 'available' },
-                include: {
-                    cabin: true
+    try {
+        const journey = await prisma.journey.findUnique({
+            where: { id },
+            include: {
+                segments: true,
+                buckets: {
+                    where: { status: 'available' },
+                    include: {
+                        cabin: true
+                    }
                 }
             }
+        });
+
+        // Process buckets to group by cabin type for the frontend
+        if (!journey) return null;
+
+        // Group available options
+        const options = {
+            historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0], // Just take first available for price/id
+            suite: journey.buckets.filter(b => b.cabin.type === 'suite')[0],
+            grand_suite: journey.buckets.filter(b => b.cabin.type === 'grand_suite')[0],
+        };
+
+        return {
+            ...journey,
+            options // Simplified availability for UI
         }
-    });
-
-    // Process buckets to group by cabin type for the frontend
-    if (!journey) return null;
-
-    // Group available options
-    const options = {
-        historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0], // Just take first available for price/id
-        suite: journey.buckets.filter(b => b.cabin.type === 'suite')[0],
-        grand_suite: journey.buckets.filter(b => b.cabin.type === 'grand_suite')[0],
-    };
-
-    return {
-        ...journey,
-        options // Simplified availability for UI
+    } catch (error) {
+        console.error('Failed to fetch journey:', error);
+        return null; // page.tsx calls notFound() on null — clean 404, no server crash
     }
 }
 
