@@ -17,28 +17,28 @@ export default function MembershipPage() {
             icon: <Calendar size={24} />,
             title: t.membershipPage.ben1Title,
             desc: t.membershipPage.ben1Desc,
-            image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2525&auto=format&fit=crop"
+            image: "/images/vsoe/vsoe-london-station.jpg"
         },
         {
             id: 2,
             icon: <Key size={24} />,
             title: t.membershipPage.ben2Title,
             desc: t.membershipPage.ben2Desc,
-            image: "https://images.unsplash.com/photo-1560662105-57f8ad6ae2d1?q=80&w=2670&auto=format&fit=crop"
+            image: "/images/vsoe/vsoe-historic-cabin.jpg"
         },
         {
             id: 3,
             icon: <Star size={24} />,
             title: t.membershipPage.ben3Title,
             desc: t.membershipPage.ben3Desc,
-            image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop"
+            image: "/images/vsoe/vsoe-dining-car.jpg"
         },
         {
             id: 4,
             icon: <GlassWater size={24} />,
             title: t.membershipPage.ben4Title,
             desc: t.membershipPage.ben4Desc,
-            image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2670&auto=format&fit=crop"
+            image: "/images/vsoe/vsoe-champagne-detail.jpg"
         }
     ];
 
@@ -48,7 +48,7 @@ export default function MembershipPage() {
             {/* Cinematic Hero */}
             <section className="relative h-[80vh] md:h-screen w-full flex items-center justify-center overflow-hidden">
                 <Image 
-                    src="https://images.unsplash.com/photo-1551632436-cbf8dd35477c?q=80&w=2671&auto=format&fit=crop" 
+                    src="/images/vsoe/vsoe-grand-suite.jpg" 
                     alt="The 1920 Club" 
                     fill 
                     className="object-cover scale-105" 

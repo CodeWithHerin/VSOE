@@ -24,7 +24,7 @@ export default function DiningPage() {
             <div className="relative h-[60vh] overflow-hidden flex items-center justify-center">
                 <div className="absolute inset-0">
                     <Image 
-                        src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop" 
+                        src="/images/vsoe/vsoe-dining-car.jpg" 
                         alt="Dining Hero"
                         fill
                         className="object-cover"
@@ -95,7 +95,7 @@ export default function DiningPage() {
                     </div>
                     <div className="relative aspect-square md:aspect-video lg:aspect-square overflow-hidden rounded-full border-4 border-vsoe-gold/20">
                          <Image 
-                            src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=2577&auto=format&fit=crop" 
+                            src="/images/vsoe/vsoe-champagne-detail.jpg" 
                             alt="Chef"
                             fill
                             className="object-cover grayscale hover:grayscale-0 transition-all duration-700"

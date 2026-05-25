@@ -16,7 +16,7 @@ export default function ExperiencesPage() {
             <HeroSection
                 title={t.experiencesPage.title}
                 subtitle={t.experiencesPage.subtitle}
-                backgroundImage="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?q=80&w=2670&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-bar-car.jpg"
             />
 
             <div className="max-w-[1920px] mx-auto px-6 md:px-12 py-24 space-y-32">

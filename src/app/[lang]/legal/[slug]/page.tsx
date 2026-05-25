@@ -21,7 +21,7 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
             <HeroSection
                 title={data.title}
                 subtitle={t.legalPage.subtitle}
-                backgroundImage="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2672&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-exterior-night.jpg"
             />
             <div className="max-w-4xl mx-auto px-6 py-24">
                 <div className="prose prose-lg prose-headings:font-serif prose-headings:text-vsoe-blue prose-p:text-vsoe-blue/80 font-sans">

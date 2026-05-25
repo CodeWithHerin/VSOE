@@ -11,7 +11,7 @@ export default function PackagesPage() {
         <StandardPageLayout
             title={t.packagesPage.title}
             subtitle={t.packagesPage.subtitle}
-            heroImage="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=2621&auto=format&fit=crop"
+            heroImage="/images/vsoe/vsoe-exterior-night.jpg"
         >
             <h3>{t.packagesPage.expertTitle}</h3>
             <p>

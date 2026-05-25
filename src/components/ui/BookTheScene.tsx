@@ -18,7 +18,7 @@ export default function BookTheScene({
     triggerId = "hero",
     title = "Venice to Paris",
     price = "€4,500",
-    image = "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop"
+    image = "/images/vsoe/vsoe-dining-car.jpg"
 }: BookTheSceneProps) {
     const [isVisible, setIsVisible] = useState(false);
     const [hasClosed, setHasClosed] = useState(false);

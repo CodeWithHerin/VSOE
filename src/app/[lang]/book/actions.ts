@@ -38,18 +38,18 @@ export async function getAvailableJourneys() {
 
             // Determine route description based on name (simple logic for now)
             let description = "A legendary journey across Europe.";
-            let image = "https://images.unsplash.com/photo-1520939817895-060bdaf4de1e?q=80&w=2940&auto=format&fit=crop";
+            let image = "/images/vsoe/vsoe-paris-departure.jpg";
 
             if (j.name.includes("Venice")) {
-                image = "https://images.unsplash.com/photo-1520939817895-060bdaf4de1e?q=80&w=2940&auto=format&fit=crop";
+                image = "/images/vsoe/vsoe-paris-departure.jpg";
                 description = "The classic route. Depart from the City of Light and awake in the Floating City.";
             }
             if (j.name.includes("Venice to Paris")) {
-                image = "https://images.unsplash.com/photo-1499856871940-a09627c6d7db?q=80&w=2940&auto=format&fit=crop";
+                image = "/images/vsoe/vsoe-venice-night.jpg";
                 description = "Return to the capital of romance through the heart of the Swiss Alps.";
             }
             if (j.name.includes("Istanbul")) {
-                image = "https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2940&auto=format&fit=crop";
+                image = "/images/vsoe/vsoe-exterior-night.jpg";
                 description = "The historic five-night odyssey. A once-in-a-lifetime grand tour across Europe.";
             }
 

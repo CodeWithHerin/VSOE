@@ -15,19 +15,19 @@ export default function OffersPage() {
         {
             title: t.offersPage.offer1Title,
             description: t.offersPage.offer1Desc,
-            image: "https://images.unsplash.com/photo-1578683010236-d716f9a3f461?q=80&w=2670&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-grand-suite.jpg",
             code: "GRAND25"
         },
         {
             title: t.offersPage.offer2Title,
             description: t.offersPage.offer2Desc,
-            image: "https://images.unsplash.com/photo-1449156493391-d2cfa28e468b?q=80&w=2674&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-exterior-night.jpg",
             code: "ADVANCE"
         },
         {
             title: t.offersPage.offer3Title,
             description: t.offersPage.offer3Desc,
-            image: "https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?q=80&w=2566&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-venice-night.jpg",
             code: "CIPRIANI"
         }
     ];
@@ -38,7 +38,7 @@ export default function OffersPage() {
             <HeroSection
                 title={t.offersPage.title}
                 subtitle={t.offersPage.subtitle}
-                backgroundImage="https://images.unsplash.com/photo-1565551224906-3482fd929940?q=80&w=2670&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-champagne-detail.jpg"
             />
 
             <section className="py-24 px-6 md:px-12 bg-[#f4f1ea]">

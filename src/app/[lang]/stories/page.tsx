@@ -17,7 +17,7 @@ export default function StoriesPage() {
             title: t.storiesPage.s1Title,
             category: t.storiesPage.s1Cat,
             excerpt: t.storiesPage.s1Exc,
-            image: "https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2684&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-paris-departure.jpg",
             readTime: t.storiesPage.s1Time
         },
         {
@@ -25,7 +25,7 @@ export default function StoriesPage() {
             title: t.storiesPage.s2Title,
             category: t.storiesPage.s2Cat,
             excerpt: t.storiesPage.s2Exc,
-            image: "https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2600&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-venice-night.jpg",
             readTime: t.storiesPage.s2Time
         },
         {
@@ -33,7 +33,7 @@ export default function StoriesPage() {
             title: t.storiesPage.s3Title,
             category: t.storiesPage.s3Cat,
             excerpt: t.storiesPage.s3Exc,
-            image: "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-dining-car.jpg",
             readTime: t.storiesPage.s3Time
         },
         {
@@ -41,7 +41,7 @@ export default function StoriesPage() {
             title: t.storiesPage.s4Title,
             category: t.storiesPage.s4Cat,
             excerpt: t.storiesPage.s4Exc,
-            image: "https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop",
+            image: "/images/vsoe/vsoe-grand-suite.jpg",
             readTime: t.storiesPage.s4Time
         }
     ];
@@ -69,7 +69,7 @@ export default function StoriesPage() {
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div className="aspect-[4/3] overflow-hidden relative">
                         <Image
-                            src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2600&auto=format&fit=crop"
+                            src="/images/vsoe/vsoe-paris-departure.jpg"
                             alt="Featured Story"
                             fill
                             className="object-cover"

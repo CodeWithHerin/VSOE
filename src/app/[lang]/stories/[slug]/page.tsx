@@ -25,7 +25,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
             {/* Hero */}
             <div className="relative h-[80vh] w-full">
                 <Image
-                    src="https://images.unsplash.com/photo-1542259681-d4cd71a2a895?q=80&w=2670&auto=format&fit=crop"
+                    src="/images/vsoe/vsoe-historic-cabin.jpg"
                     alt="Art Deco Detail"
                     fill
                     className="object-cover"
@@ -62,7 +62,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
                     <ShoppableCard
                         title={story.card1Title}
                         price="€3,530"
-                        image="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop"
+                        image="/images/vsoe/vsoe-grand-suite.jpg"
                         link="/book"
                     />
 
@@ -77,7 +77,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
 
                     <div className="my-16 relative aspect-video rounded-sm overflow-hidden">
                         <Image
-                            src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop"
+                            src="/images/vsoe/vsoe-dining-car.jpg"
                             alt="Dining Car"
                             fill
                             className="object-cover"
@@ -93,7 +93,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
                     <ShoppableCard
                         title={story.card2Title}
                         price={t.storyDetail.included}
-                        image="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=2574&auto=format&fit=crop"
+                        image="/images/vsoe/vsoe-dining-car.jpg"
                         link="/dining"
                     />
 

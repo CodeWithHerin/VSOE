@@ -53,7 +53,7 @@ export default function Home() {
       <HeroSection
         // Cinematic Fast-Forward Train Journey: Westminster/Travel vibe matching the map
         videoSrc="/hero-train.webm"
-        backgroundImage="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2070&auto=format&fit=crop"
+        backgroundImage="/images/vsoe/vsoe-countryside-window.jpg"
         title={t.hero.title}
         subtitle={content.subtitle}
       />

@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
 
+// Force server-render on every request — DB data must never be statically cached
+export const dynamic = 'force-dynamic';
 
 import AvailabilityCalendar from '@/components/ui/AvailabilityCalendar';
 import JourneyListFetcher from '@/components/booking/JourneyListFetcher';

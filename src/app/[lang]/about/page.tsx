@@ -9,7 +9,7 @@ export default function AboutPage() {
         <StandardPageLayout
             title={t.aboutPage.title}
             subtitle={t.aboutPage.subtitle}
-            heroImage="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2657&auto=format&fit=crop"
+            heroImage="/images/vsoe/vsoe-grand-suite.jpg"
         >
             <h3>{t.aboutPage.goldenTitle}</h3>
             <p>

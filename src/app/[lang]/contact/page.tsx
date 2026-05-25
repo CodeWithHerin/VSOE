@@ -10,7 +10,7 @@ export default function ContactPage() {
         <StandardPageLayout
             title={t.contactPage.title}
             subtitle={t.contactPage.subtitle}
-            heroImage="https://images.unsplash.com/photo-1423666639041-f56000c27a9a?q=80&w=2674&auto=format&fit=crop"
+            heroImage="/images/vsoe/vsoe-london-station.jpg"
         >
             <h3>{t.contactPage.resTitle}</h3>
             <p>

@@ -1,5 +1,7 @@
 import React from 'react';
 
+// Force server-render on every request — booking history must be live
+export const dynamic = 'force-dynamic';
 
 import { getUserBookings } from './actions';
 import Link from 'next/link';

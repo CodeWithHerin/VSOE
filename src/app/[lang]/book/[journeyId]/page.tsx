@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { getJourney } from '@/app/[lang]/book/actions';
 import Image from 'next/image';
 
+// Force server-render on every request — cabin availability must be live
+export const dynamic = 'force-dynamic';
 
 import BookingWizard from '@/components/booking/BookingWizard';
 import { Calendar, MapPin, Clock } from 'lucide-react';
@@ -23,7 +25,7 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
             <div className="relative h-[50vh] flex items-end pb-20 px-6">
                 <div className="absolute inset-0">
                     <Image
-                        src="https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2784&auto=format&fit=crop"
+                        src="/images/vsoe/vsoe-paris-departure.jpg"
                         alt="Journey Hero"
                         fill
                         className="object-cover opacity-50"

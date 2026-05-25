@@ -15,7 +15,7 @@ export default function InteractiveMap() {
             name: 'London',
             x: 20, // %
             y: 30, // %
-            image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=2670&auto=format&fit=crop',
+            image: '/images/vsoe/vsoe-london-station.jpg',
             description: t.map.londonDesc
         },
         {
@@ -23,7 +23,7 @@ export default function InteractiveMap() {
             name: 'Paris',
             x: 35,
             y: 45,
-            image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=2673&auto=format&fit=crop',
+            image: '/images/vsoe/vsoe-paris-departure.jpg',
             description: t.map.parisDesc
         },
         {
@@ -31,7 +31,7 @@ export default function InteractiveMap() {
             name: 'Venice',
             x: 55,
             y: 65,
-            image: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=2670&auto=format&fit=crop',
+            image: '/images/vsoe/vsoe-venice-night.jpg',
             description: t.map.veniceDesc
         },
         {
@@ -39,7 +39,7 @@ export default function InteractiveMap() {
             name: 'Istanbul',
             x: 85,
             y: 70,
-            image: 'https://images.unsplash.com/photo-1524231757912-21f4fe3a7200?q=80&w=2671&auto=format&fit=crop',
+            image: '/images/vsoe/vsoe-exterior-night.jpg',
             description: t.map.istanbulDesc
         }
     ];

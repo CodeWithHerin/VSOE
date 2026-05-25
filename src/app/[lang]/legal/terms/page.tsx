@@ -7,7 +7,7 @@ export default function TermsPage() {
         <StandardPageLayout
             title="Terms & Conditions"
             subtitle="Legal Information"
-            heroImage="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=2670&auto=format&fit=crop"
+            heroImage="/images/vsoe/vsoe-historic-cabin.jpg"
         >
             <h3>1. Booking Conditions</h3>
             <p>

@@ -14,7 +14,7 @@ const STOPS = [
         title: 'London',
         subtitle: 'The Departure',
         description: 'Victoria Station. Steam fills the air. The adventure begins.',
-        image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/vsoe/vsoe-london-station.jpg',
         weather: 'rain',
         stats: { speed: 0, distance: 0, elevation: 15 },
         audio: 'https://cdn.pixabay.com/download/audio/2022/03/24/audio_c8c8a73467.mp3' // Rain
@@ -24,7 +24,7 @@ const STOPS = [
         title: 'Paris',
         subtitle: 'City of Light',
         description: 'Twilight over the Seine. A gourmet dinner awaits.',
-        image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/vsoe/vsoe-paris-departure.jpg',
         weather: 'clear',
         stats: { speed: 110, distance: 450, elevation: 35 },
         audio: 'https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0a13f69d2.mp3' // City ambience
@@ -34,7 +34,7 @@ const STOPS = [
         title: 'The Alps',
         subtitle: 'The Ascent',
         description: 'Snow-capped peaks glisten in the morning sun.',
-        image: 'https://images.unsplash.com/photo-1496545672479-7f9462d23854?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/vsoe/vsoe-countryside-window.jpg',
         weather: 'snow',
         stats: { speed: 85, distance: 920, elevation: 1200 },
         audio: 'https://cdn.pixabay.com/download/audio/2021/09/06/audio_17937c56b7.mp3' // Wind
@@ -44,7 +44,7 @@ const STOPS = [
         title: 'Venice',
         subtitle: 'The Arrival',
         description: 'La Serenissima. The floating city welcomes you.',
-        image: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?q=80&w=1600&auto=format&fit=crop',
+        image: '/images/vsoe/vsoe-venice-night.jpg',
         weather: 'sunset',
         stats: { speed: 60, distance: 1400, elevation: 0 },
         audio: 'https://cdn.pixabay.com/download/audio/2022/02/07/audio_6583f36368.mp3' // Water

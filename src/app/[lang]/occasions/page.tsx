@@ -15,7 +15,7 @@ export default function OccasionsPage() {
             <HeroSection
                 title={t.occasionsPage.title}
                 subtitle={t.occasionsPage.subtitle}
-                backgroundImage="https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=2670&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-grand-suite.jpg"
             />
 
             <section className="py-24 px-6 md:px-12 bg-white text-vsoe-midnight">
@@ -42,7 +42,7 @@ export default function OccasionsPage() {
                     </div>
                     <div className="aspect-[3/4] relative overflow-hidden">
                         <img
-                            src="https://images.unsplash.com/photo-1623056027376-79ba579b2827?q=80&w=2670&auto=format&fit=crop"
+                            src="/images/vsoe/vsoe-champagne-detail.jpg"
                             alt="Wedding Couple"
                             className="object-cover w-full h-full"
                         />
@@ -59,9 +59,9 @@ export default function OccasionsPage() {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
                     {[
-                        { title: t.occasionsPage.event1, image: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2632&auto=format&fit=crop" },
-                        { title: t.occasionsPage.event2, image: "https://images.unsplash.com/photo-1530103862676-de3c9ef59af2?q=80&w=2670&auto=format&fit=crop" },
-                        { title: t.occasionsPage.event3, image: "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?q=80&w=2670&auto=format&fit=crop" }
+                        { title: t.occasionsPage.event1, image: "/images/vsoe/vsoe-bar-car.jpg" },
+                        { title: t.occasionsPage.event2, image: "/images/vsoe/vsoe-dining-car.jpg" },
+                        { title: t.occasionsPage.event3, image: "/images/vsoe/vsoe-countryside-window.jpg" }
                     ].map((item, i) => (
                         <motion.div
                             key={i}

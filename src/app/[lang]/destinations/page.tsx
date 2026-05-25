@@ -15,7 +15,7 @@ export default function DestinationsPage() {
             <HeroSection
                 title={t.destinations.title}
                 subtitle={t.destinations.subtitle}
-                backgroundImage="https://images.unsplash.com/photo-1499856871940-a09627c6d7db?q=80&w=2670&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-venice-night.jpg"
             />
 
             <div className="max-w-7xl mx-auto px-6 py-24">

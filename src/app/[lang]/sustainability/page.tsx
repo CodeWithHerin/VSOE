@@ -7,7 +7,7 @@ export default function SustainabilityPage() {
         <StandardPageLayout
             title="Sustainability"
             subtitle="Preserving Our Heritage & Planet"
-            heroImage="https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?q=80&w=2590&auto=format&fit=crop"
+            heroImage="/images/vsoe/vsoe-countryside-window.jpg"
         >
             <h3>Think Global, Act Local</h3>
             <p>

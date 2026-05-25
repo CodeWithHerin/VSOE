@@ -13,7 +13,7 @@ export default function ComingSoonPage() {
             <HeroSection
                 title="Coming Soon"
                 subtitle="Under Construction"
-                backgroundImage="https://images.unsplash.com/photo-1474487548417-781cb71495f3?q=80&w=2784&auto=format&fit=crop"
+                backgroundImage="/images/vsoe/vsoe-exterior-night.jpg"
             />
             <div className="max-w-2xl mx-auto px-6 py-32 text-center">
                 <p className="text-xl text-white/70 mb-12 font-sans leading-relaxed">
