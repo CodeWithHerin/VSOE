@@ -1,6 +1,7 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { getJourney } from '@/app/[lang]/book/actions';
+import { getJourneyImage } from '@/lib/journeyImages';
 import Image from 'next/image';
 
 // Force server-render on every request — cabin availability must be live
@@ -25,8 +26,8 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
             <div className="relative h-[50vh] flex items-end pb-20 px-6">
                 <div className="absolute inset-0">
                     <Image
-                        src="/images/vsoe/vsoe-paris-departure.jpg"
-                        alt="Journey Hero"
+                        src={getJourneyImage(journey.name)}
+                        alt={journey.name}
                         fill
                         className="object-cover opacity-50"
                     />

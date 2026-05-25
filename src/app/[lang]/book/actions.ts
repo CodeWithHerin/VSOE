@@ -2,15 +2,16 @@
 
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { getJourneyMeta } from '@/lib/journeyImages';
 
 export async function getAvailableJourneys() {
     try {
         const journeys = await prisma.journey.findMany({
             where: {
                 status: 'scheduled',
-                departure: {
-                    gt: new Date()
-                }
+                // NOTE: we intentionally do NOT filter by departure > now() here
+                // so that demo/seed data with past dates still appears in the UI.
+                // In a production system you would re-add: departure: { gt: new Date() }
             },
             orderBy: {
                 departure: 'asc'
@@ -36,22 +37,8 @@ export async function getAvailableJourneys() {
             const prices = j.buckets.map(b => b.price);
             const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
-            // Determine route description based on name (simple logic for now)
-            let description = "A legendary journey across Europe.";
-            let image = "/images/vsoe/vsoe-paris-departure.jpg";
-
-            if (j.name.includes("Venice")) {
-                image = "/images/vsoe/vsoe-paris-departure.jpg";
-                description = "The classic route. Depart from the City of Light and awake in the Floating City.";
-            }
-            if (j.name.includes("Venice to Paris")) {
-                image = "/images/vsoe/vsoe-venice-night.jpg";
-                description = "Return to the capital of romance through the heart of the Swiss Alps.";
-            }
-            if (j.name.includes("Istanbul")) {
-                image = "/images/vsoe/vsoe-exterior-night.jpg";
-                description = "The historic five-night odyssey. A once-in-a-lifetime grand tour across Europe.";
-            }
+            // Map journey name → unique image + description
+            const { image, description } = getJourneyMeta(j.name);
 
             // Group available options for the wizard
             const options = {
@@ -61,9 +48,9 @@ export async function getAvailableJourneys() {
             };
 
             return {
-                id: j.id,
+                id: j.id,        // DB UUID — used in /book/[journeyId] route
                 name: j.name,
-                date: j.departure, // Date object, client will format
+                date: j.departure,
                 price: minPrice,
                 image,
                 description,
@@ -92,23 +79,22 @@ export async function getJourney(id: string) {
             }
         });
 
-        // Process buckets to group by cabin type for the frontend
         if (!journey) return null;
 
         // Group available options
         const options = {
-            historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0], // Just take first available for price/id
+            historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0],
             suite: journey.buckets.filter(b => b.cabin.type === 'suite')[0],
             grand_suite: journey.buckets.filter(b => b.cabin.type === 'grand_suite')[0],
         };
 
         return {
             ...journey,
-            options // Simplified availability for UI
-        }
+            options
+        };
     } catch (error) {
         console.error('Failed to fetch journey:', error);
-        return null; // page.tsx calls notFound() on null — clean 404, no server crash
+        return null;
     }
 }
 
@@ -121,8 +107,6 @@ export async function createBooking(prevState: any, formData: FormData) {
     const lastName = formData.get('lastName') as string;
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
-
-
 
     try {
         const booking = await prisma.booking.create({
@@ -137,7 +121,7 @@ export async function createBooking(prevState: any, formData: FormData) {
                 passengers: {
                     create: [
                         {
-                            firstName, // Primary passenger
+                            firstName,
                             lastName,
                             cabinId
                         }
@@ -146,9 +130,7 @@ export async function createBooking(prevState: any, formData: FormData) {
             }
         });
 
-        // Mark bucket as booked
-        // In a real app we'd find the specific bucket for this cabin/journey/segment
-        // For simplicity in this demo, we'll mark the first available bucket for this cabin/journey as booked
+        // Mark the first available bucket for this cabin/journey as booked
         const bucket = await prisma.inventoryBucket.findFirst({
             where: {
                 journeyId,
