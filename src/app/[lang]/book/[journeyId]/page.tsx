@@ -17,6 +17,17 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
     if (!journey) {
         notFound();
     }
+    
+    if (journey._error) {
+        return (
+            <div className="min-h-screen bg-vsoe-midnight text-vsoe-cream p-20">
+                <h1 className="text-3xl font-bold text-red-500 mb-4">Diagnostic Error</h1>
+                <pre className="bg-black/50 p-6 rounded text-sm text-white/80 overflow-auto whitespace-pre-wrap">
+                    {JSON.stringify(journey, null, 2)}
+                </pre>
+            </div>
+        );
+    }
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">

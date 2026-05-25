@@ -101,7 +101,7 @@ export async function getJourney(id: string) {
         };
     } catch (error: any) {
         console.error('[getJourney] CRITICAL ERROR for id:', id, '| message:', error?.message, '| code:', error?.code);
-        return null;
+        return { _error: error?.message || 'Unknown error', id, stack: error?.stack };
     }
 }
 
