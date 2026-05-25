@@ -70,7 +70,6 @@ export async function getJourney(id: string) {
         const journey = await prisma.journey.findUnique({
             where: { id },
             include: {
-                segments: true,
                 buckets: {
                     where: { status: 'available' },
                     include: {
@@ -84,6 +83,9 @@ export async function getJourney(id: string) {
 
         if (!journey) return null;
 
+        // Map journey name → unique image + description
+        const { image, description } = getJourneyMeta(journey.name);
+
         // Group available options
         const options = {
             historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0],
@@ -93,6 +95,8 @@ export async function getJourney(id: string) {
 
         return {
             ...journey,
+            image,
+            description,
             options
         };
     } catch (error: any) {
