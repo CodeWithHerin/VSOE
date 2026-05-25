@@ -14,15 +14,14 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
     const { journeyId } = await params;
     const journey = await getJourney(journeyId);
 
-    if (!journey) {
-        notFound();
-    }
-    
-    if (journey._error) {
+    // TEMPORARY DIAGNOSTIC RENDERING
+    if (!journey || journey._error) {
         return (
             <div className="min-h-screen bg-vsoe-midnight text-vsoe-cream p-20">
                 <h1 className="text-3xl font-bold text-red-500 mb-4">Diagnostic Error</h1>
-                <pre className="bg-black/50 p-6 rounded text-sm text-white/80 overflow-auto whitespace-pre-wrap">
+                <p className="text-xl text-vsoe-gold mb-4">Received journeyId: {journeyId}</p>
+                <p>Is journey null?: {journey === null ? "Yes" : "No"}</p>
+                <pre className="bg-black/50 p-6 rounded text-sm text-white/80 overflow-auto whitespace-pre-wrap mt-4">
                     {JSON.stringify(journey, null, 2)}
                 </pre>
             </div>
