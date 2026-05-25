@@ -65,6 +65,7 @@ export async function getAvailableJourneys() {
 }
 
 export async function getJourney(id: string) {
+    console.log('[getJourney] Looking up journey with id:', id);
     try {
         const journey = await prisma.journey.findUnique({
             where: { id },
@@ -79,6 +80,8 @@ export async function getJourney(id: string) {
             }
         });
 
+        console.log('[getJourney] Query result:', journey ? `Found: ${journey.name}` : 'NOT FOUND');
+
         if (!journey) return null;
 
         // Group available options
@@ -92,8 +95,8 @@ export async function getJourney(id: string) {
             ...journey,
             options
         };
-    } catch (error) {
-        console.error('Failed to fetch journey:', error);
+    } catch (error: any) {
+        console.error('[getJourney] CRITICAL ERROR for id:', id, '| message:', error?.message, '| code:', error?.code);
         return null;
     }
 }
