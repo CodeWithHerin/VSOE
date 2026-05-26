@@ -4,7 +4,7 @@ import React from 'react';
 // The actual data loading is handled inside the page component via useEffect.
 export default function Loading() {
     return (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-vsoe-midnight text-vsoe-cream">
+        <div className="min-h-[70vh] relative flex flex-col items-center justify-center bg-vsoe-midnight text-vsoe-cream">
             <div className="relative w-24 h-24 mb-8">
                 <div className="absolute inset-0 border-[1px] border-vsoe-gold/20 rounded-full" />
                 <div className="absolute inset-0 border-[1px] border-t-vsoe-gold border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -9,11 +9,9 @@ interface SuiteData {
     id: string;
     city: string;
     description: string;
-    video: string; // Placeholder URL
+    image: string;
     features: string[];
 }
-
-
 
 export default function GrandSuitesExperience() {
     const { t } = useTranslation();
@@ -23,21 +21,21 @@ export default function GrandSuitesExperience() {
             id: 'paris',
             city: t.suites.suite1City,
             description: t.suites.suite1Desc,
-            video: 'https://videos.pexels.com/video-files/5838025/5838025-hd_1920_1080_30fps.mp4', // Placeholder: Paris Night
+            image: '/images/vsoe/vsoe-grand-suite.jpg', // Local premium image
             features: [t.suites.suite1Feat1, t.suites.suite1Feat2, t.suites.suite1Feat3]
         },
         {
             id: 'venice',
             city: t.suites.suite2City,
             description: t.suites.suite2Desc,
-            video: 'https://videos.pexels.com/video-files/5838025/5838025-hd_1920_1080_30fps.mp4', // Placeholder: Venice Canal
+            image: '/images/vsoe/vsoe-venice-night.jpg', // Local premium image
             features: [t.suites.suite2Feat1, t.suites.suite2Feat2, t.suites.suite2Feat3]
         },
         {
             id: 'istanbul',
             city: t.suites.suite3City,
             description: t.suites.suite3Desc,
-            video: 'https://videos.pexels.com/video-files/4204944/4204944-hd_1920_1080_30fps.mp4', // Placeholder: Mosaic/Pattern vibe
+            image: '/images/vsoe/vsoe-exterior-night.jpg', // Local premium image
             features: [t.suites.suite3Feat1, t.suites.suite3Feat2, t.suites.suite3Feat3]
         }
     ];
@@ -53,7 +51,7 @@ export default function GrandSuitesExperience() {
 
     return (
         <section className="relative h-screen w-full overflow-hidden bg-vsoe-midnight text-vsoe-cream">
-            {/* Background Video Layer */}
+            {/* Background Image Layer with Cinematic Zoom */}
             <div className="absolute inset-0 z-0">
                 <AnimatePresence mode='popLayout'>
                     <motion.div
@@ -64,16 +62,20 @@ export default function GrandSuitesExperience() {
                         transition={{ duration: 1.2, ease: "easeInOut" }}
                         className="absolute inset-0"
                     >
-                        <video
-                            className="h-full w-full object-cover opacity-60"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            key={activeSuite.video} // remount video element to force autoplay new source
+                        <motion.div
+                            initial={{ scale: 1.15 }}
+                            animate={{ scale: 1 }}
+                            transition={{ duration: 6, ease: "easeOut" }}
+                            className="absolute inset-0 h-full w-full"
                         >
-                            <source src={activeSuite.video} type="video/mp4" />
-                        </video>
+                            <Image
+                                src={activeSuite.image}
+                                alt={activeSuite.city}
+                                fill
+                                className="object-cover opacity-60"
+                                priority
+                            />
+                        </motion.div>
                         {/* Vignette Overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-transparent to-vsoe-midnight/50" />
                         <div className="absolute inset-0 bg-gradient-to-r from-vsoe-midnight via-transparent to-vsoe-midnight/50" />
