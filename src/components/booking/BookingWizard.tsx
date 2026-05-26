@@ -6,7 +6,16 @@ import { createBooking } from '@/app/[lang]/book/actions';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { Check, Star, Train, ChevronRight, FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import PaymentForm from './PaymentForm';
+import dynamic from 'next/dynamic';
+
+const PaymentForm = dynamic(() => import('./PaymentForm'), {
+    ssr: false,
+    loading: () => (
+        <div className="h-40 bg-white/5 rounded-sm animate-pulse flex items-center justify-center">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-vsoe-gold/60 font-bold">Loading Secure Payment...</span>
+        </div>
+    )
+});
 
 import { useTranslation } from '@/lib/i18n/useTranslation';
 

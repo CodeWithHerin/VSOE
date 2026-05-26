@@ -16,6 +16,7 @@ export default function GrandTourSection() {
     const JOURNEYS = [
         {
             id: 'paris-venice',
+            routeParam: 'classic',
             title: t.routes.journey1Title,
             route: t.routes.journey1Route,
             duration: t.routes.journey1Duration,
@@ -26,6 +27,7 @@ export default function GrandTourSection() {
         },
         {
             id: 'paris-istanbul',
+            routeParam: 'italian',
             title: t.routes.journey2Title,
             route: t.routes.journey2Route,
             duration: t.routes.journey2Duration,
@@ -36,6 +38,7 @@ export default function GrandTourSection() {
         },
         {
             id: 'venice-paris',
+            routeParam: 'gateway',
             title: t.routes.journey3Title,
             route: t.routes.journey3Route,
             duration: t.routes.journey3Duration,
@@ -98,7 +101,7 @@ export default function GrandTourSection() {
                                 {/* Action */}
                                 <div className="flex items-center justify-between">
                                     <span className="text-vsoe-gold font-serif text-lg">{journey.price}</span>
-                                    <Link href={`/book?journey=${journey.id}`} className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.2em] text-white hover:text-vsoe-gold transition-colors">
+                                    <Link href={`/book?route=${journey.routeParam}`} className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.2em] text-white hover:text-vsoe-gold transition-colors">
                                         {t.routes.reserve} <ArrowRight size={14} />
                                     </Link>
                                 </div>

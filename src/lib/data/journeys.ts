@@ -66,40 +66,68 @@ export async function getAvailableJourneys() {
     }
 }
 
-export async function getJourney(id: string) {
-    try {
-        const journey = await prisma.journey.findUnique({
-            where: { id },
-            include: {
-                buckets: {
-                    where: { status: 'available' },
-                    include: {
-                        cabin: true
+import { unstable_cache } from 'next/cache';
+
+export const getJourney = unstable_cache(
+    async (id: string) => {
+        try {
+            const journey = await prisma.journey.findUnique({
+                where: { id },
+                include: {
+                    buckets: {
+                        where: { status: 'available' },
+                        include: {
+                            cabin: true
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        if (!journey) return null;
+            if (!journey) return null;
 
-        // Map journey name → unique image + description
-        const { image, description } = getJourneyMeta(journey.name);
+            // Map journey name → unique image + description
+            const { image, description } = getJourneyMeta(journey.name);
 
-        // Group available options
-        const options = {
-            historic: journey.buckets.filter(b => b.cabin.type === 'historic')[0],
-            suite: journey.buckets.filter(b => b.cabin.type === 'suite')[0],
-            grand_suite: journey.buckets.filter(b => b.cabin.type === 'grand_suite')[0],
-        };
+            // Group available options
+            const options = {
+                historic: journey.buckets.find(b => b.cabin.type === 'historic'),
+                suite: journey.buckets.find(b => b.cabin.type === 'suite'),
+                grand_suite: journey.buckets.find(b => b.cabin.type === 'grand_suite'),
+            };
 
-        return {
-            ...journey,
-            image,
-            description,
-            options
-        };
-    } catch (error: any) {
-        console.error('[getJourney] CRITICAL ERROR:', error?.message);
-        return null;
-    }
-}
+            // Return stripped down data structure to optimize caching
+            return {
+                id: journey.id,
+                name: journey.name,
+                departure: journey.departure.toISOString(),
+                image,
+                description,
+                options: {
+                    historic: options.historic ? {
+                        id: options.historic.id,
+                        price: Number(options.historic.price),
+                        cabinId: options.historic.cabinId,
+                        cabin: { type: options.historic.cabin.type }
+                    } : undefined,
+                    suite: options.suite ? {
+                        id: options.suite.id,
+                        price: Number(options.suite.price),
+                        cabinId: options.suite.cabinId,
+                        cabin: { type: options.suite.cabin.type }
+                    } : undefined,
+                    grand_suite: options.grand_suite ? {
+                        id: options.grand_suite.id,
+                        price: Number(options.grand_suite.price),
+                        cabinId: options.grand_suite.cabinId,
+                        cabin: { type: options.grand_suite.cabin.type }
+                    } : undefined,
+                }
+            };
+        } catch (error: any) {
+            console.error('[getJourney] CRITICAL ERROR:', error?.message);
+            return null;
+        }
+    },
+    ['journey-detail'],
+    { revalidate: 60 }
+);

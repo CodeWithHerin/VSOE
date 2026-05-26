@@ -45,7 +45,9 @@ export const updateInterest = (category: keyof UserProfile['interests'], weight:
     else if (totalScore > 10) profile.bookingIntent = 'medium';
 
     localStorage.setItem('vsoe-profile', JSON.stringify(profile));
-    console.log('Updated Profile:', profile);
+    if (process.env.NODE_ENV === 'development') {
+        console.log('Updated Profile:', profile);
+    }
 };
 
 export const getRecommendedContent = () => {

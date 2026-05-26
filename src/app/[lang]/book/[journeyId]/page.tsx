@@ -29,6 +29,8 @@ export default async function JourneyPage({ params }: { params: { journeyId: str
                         src={getJourneyImage(journey.name)}
                         alt={journey.name}
                         fill
+                        priority
+                        sizes="100vw"
                         className="object-cover opacity-50"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/60 to-transparent" />
