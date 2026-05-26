@@ -1,6 +1,6 @@
 import React from 'react';
 import JourneyGrid from '@/components/booking/JourneyGrid';
-import { getAvailableJourneys } from '@/app/[lang]/book/actions';
+import { getAvailableJourneys } from '@/lib/data/journeys';
 
 export default async function JourneyListFetcher() {
     // This await is what was blocking the whole page.
