@@ -21,10 +21,8 @@ export default function BookPageClient({ journeyList, calendar, skeleton }: Book
                     <p className="text-vsoe-cream/60 tracking-[0.2em] uppercase text-sm">{t.bookPage.beginStory}</p>
                 </div>
 
-                {/* Suspense Boundary for Instant Navigation */}
-                <Suspense fallback={skeleton}>
-                    {journeyList}
-                </Suspense>
+                {/* Instant Navigation - Suspense is handled by server */}
+                {journeyList}
             </div>
 
             {/* Availability Calendar Section - Suspended to prevent blocking */}
@@ -42,9 +40,7 @@ export default function BookPageClient({ journeyList, calendar, skeleton }: Book
                         </div>
                     </div>
                     <div>
-                        <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-sm" />}>
-                            {calendar}
-                        </Suspense>
+                        {calendar}
                     </div>
                 </div>
             </div>

@@ -28,11 +28,19 @@ async function CalendarWrapper() {
     return <AvailabilityCalendar journeys={journeys} />;
 }
 
-export default async function BookingPage() {
+export default function BookingPage() {
     return (
         <BookPageClient 
-            journeyList={<JourneyListFetcher />} 
-            calendar={<CalendarWrapper />} 
+            journeyList={
+                <Suspense fallback={<GridSkeleton />}>
+                    <JourneyListFetcher />
+                </Suspense>
+            } 
+            calendar={
+                <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-sm" />}>
+                    <CalendarWrapper />
+                </Suspense>
+            } 
             skeleton={<GridSkeleton />} 
         />
     );
