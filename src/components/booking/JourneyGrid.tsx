@@ -10,7 +10,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation';
 interface Journey {
     id: string;
     name: string;
-    date: Date;
+    date: string;  // ISO 8601 string from server — always use new Date(journey.date)
     price: number;
     image: string;
     description: string;
@@ -77,7 +77,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                                 <div className="flex items-center justify-between border-t border-white/10 pt-6">
                                     <div className="flex flex-col">
                                         <span className="text-[10px] uppercase tracking-widest text-white/40">{t.booking.startingFrom}</span>
-                                        <span className="text-xl font-serif text-vsoe-cream">€{journey.price.toLocaleString(language)}</span>
+                                        <span className="text-xl font-serif text-vsoe-cream">€{Number(journey.price).toLocaleString(language)}</span>
                                     </div>
 
                                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-vsoe-gold group-hover:border-vsoe-gold group-hover:text-vsoe-midnight transition-all duration-300">

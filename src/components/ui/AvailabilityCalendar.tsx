@@ -11,11 +11,10 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'Ju
 interface Journey {
     id: string;
     name: string;
-    date: Date;
+    date: string;  // ISO 8601 string
     price: number;
     description: string;
     availableCabins: number;
-    // ... other fields from your action
 }
 
 interface AvailabilityCalendarProps {

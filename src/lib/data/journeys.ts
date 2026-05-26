@@ -24,29 +24,40 @@ export async function getAvailableJourneys() {
 
         // Transform for frontend
         return journeys.map(j => {
-            // Find lowest price
-            const prices = j.buckets.map(b => b.price);
+            // Prisma Decimal cannot cross RSC boundary — convert to plain number first
+            const prices = j.buckets.map(b => Number(b.price));
             const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
 
             // Map journey name → unique image + description
             const { image, description } = getJourneyMeta(j.name);
 
-            // Group available options for the wizard
+            // Serialize options — strip Prisma Decimal fields
+            const serializeBucket = (b: typeof j.buckets[0] | undefined) => {
+                if (!b) return undefined;
+                return {
+                    id: b.id,
+                    price: Number(b.price),
+                    cabinId: b.cabinId,
+                    cabin: b.cabin,
+                };
+            };
+
             const options = {
-                historic: j.buckets.find(b => b.cabin.type === 'historic'),
-                suite: j.buckets.find(b => b.cabin.type === 'suite'),
-                grand_suite: j.buckets.find(b => b.cabin.type === 'grand_suite'),
+                historic: serializeBucket(j.buckets.find(b => b.cabin.type === 'historic')),
+                suite: serializeBucket(j.buckets.find(b => b.cabin.type === 'suite')),
+                grand_suite: serializeBucket(j.buckets.find(b => b.cabin.type === 'grand_suite')),
             };
 
             return {
-                id: j.id,        // DB UUID — used in /book/[journeyId] route
+                id: j.id,
                 name: j.name,
-                date: j.departure,
+                // Serialize date as ISO string — avoids RSC Date encoding edge cases on client
+                date: j.departure.toISOString(),
                 price: minPrice,
                 image,
                 description,
                 availableCabins: j.buckets.length,
-                options
+                options,
             };
         });
     } catch (error) {
