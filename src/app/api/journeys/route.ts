@@ -7,10 +7,6 @@ export const runtime = 'nodejs'; // Ensure Prisma works, Edge runtime doesn't su
 
 export async function GET() {
     try {
-        console.log('[API/journeys] Start');
-        console.log('[API/journeys] DATABASE_URL present:', !!process.env.DATABASE_URL);
-        console.log('[API/journeys] DIRECT_URL present:', !!process.env.DIRECT_URL);
-        
         const journeys = await prisma.journey.findMany({
             where: { status: 'scheduled' },
             orderBy: { departure: 'asc' },
@@ -21,8 +17,6 @@ export async function GET() {
                 }
             }
         });
-
-        console.log('[API/journeys] Query result count:', journeys.length);
 
         const data = journeys.map(j => {
             const prices = j.buckets.map(b => Number(b.price));
@@ -51,8 +45,14 @@ export async function GET() {
             };
         });
 
-        console.log('[API/journeys] Returning data');
-        return NextResponse.json({ journeys: data });
+        return NextResponse.json(
+            { journeys: data },
+            {
+                headers: {
+                    'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
+                }
+            }
+        );
     } catch (error: any) {
         console.error('[API/journeys] FULL ERROR:', error);
         console.error('[API/journeys] Error message:', error?.message);

@@ -9,7 +9,6 @@ const getPrismaUrl = () => {
             url = url.includes('?') ? `${url}&pgbouncer=true` : `${url}?pgbouncer=true`;
         }
     }
-    console.log('[Prisma Url]', url ? url.split('@')[1] || 'MASKED' : 'NOT SET');
     return url;
 };
 

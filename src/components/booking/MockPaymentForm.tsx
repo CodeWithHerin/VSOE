@@ -14,12 +14,10 @@ export default function MockPaymentForm({ onSuccess, amount }: MockPaymentFormPr
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("💳 Mock Payment Submitted. Processing...");
         setIsProcessing(true);
 
         // Simulate network delay (reduced to 500ms)
         setTimeout(() => {
-            console.log("💳 Mock Payment Complete. Calling onSuccess...");
             setIsProcessing(false);
             onSuccess();
         }, 500);

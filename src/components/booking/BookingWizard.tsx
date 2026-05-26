@@ -61,8 +61,6 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     };
 
     const finalizeBooking = async () => {
-        console.log("💰 Finalizing booking...", { hasFormData: !!formDataState });
-
         if (!formDataState) {
             console.error("❌ No form data found! Cannot proceed.");
             alert("Please fill in guest details first.");
@@ -73,12 +71,10 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
         setIsSubmitting(true);
         try {
             const res = await createBooking(null, formDataState);
-            console.log("✅ Booking Result:", res);
 
             setIsSubmitting(false);
 
             if (res.success && res.bookingId) {
-                console.log("🎉 Booking Confirmed. ID:", res.bookingId);
                 setCompletedBookingId(res.bookingId);
                 setStep(4); // Success Step
             } else {
