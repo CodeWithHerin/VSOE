@@ -23,7 +23,7 @@ export default function GrandSuitesExperience() {
             id: 'paris',
             city: t.suites.suite1City,
             description: t.suites.suite1Desc,
-            video: 'https://videos.coverr.co/mp4/Coverr-paris-street-at-night-1563283259461.mp4', // Placeholder: Paris Night
+            video: 'https://videos.pexels.com/video-files/5838025/5838025-hd_1920_1080_30fps.mp4', // Placeholder: Paris Night
             features: [t.suites.suite1Feat1, t.suites.suite1Feat2, t.suites.suite1Feat3]
         },
         {

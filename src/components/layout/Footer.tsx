@@ -68,8 +68,6 @@ export default function Footer() {
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.about}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
                             <li><Link href="/about" className="hover:text-white transition-colors">{t.footer.story}</Link></li>
-                            <li><Link href="/careers" className="hover:text-white transition-colors">{t.footer.careers}</Link></li>
-                            <li><Link href="/press" className="hover:text-white transition-colors">{t.footer.press}</Link></li>
                             <li><Link href="/sustainability" className="hover:text-white transition-colors">{t.footer.sustainability}</Link></li>
                         </ul>
                     </div>
@@ -77,8 +75,6 @@ export default function Footer() {
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.support}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
                             <li><Link href="/contact" className="hover:text-white transition-colors">{t.footer.contact}</Link></li>
-                            <li><Link href="/faq" className="hover:text-white transition-colors">{t.footer.faqs}</Link></li>
-                            <li><Link href="/gift-cards" className="hover:text-white transition-colors">{t.footer.gifts}</Link></li>
                         </ul>
                     </div>
                     <div className="space-y-6">

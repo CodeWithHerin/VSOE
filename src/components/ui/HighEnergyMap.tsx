@@ -126,7 +126,7 @@ export default function HighEnergyMap() {
                 {/* Vignette */}
                 <div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 20%, #0a0f1c 90%) pointer-events-none z-10" />
                 {/* --- 2. The Path (Neon) --- */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none [transform:translateZ(20px)] opacity-50">
+                <svg className="absolute inset-0 w-full h-full pointer-events-none [transform:translateZ(20px)] opacity-50" viewBox="0 0 100 100" preserveAspectRatio="none">
                     <defs>
                         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
                             <feGaussianBlur stdDeviation="3" result="blur" />
@@ -134,7 +134,7 @@ export default function HighEnergyMap() {
                         </filter>
                     </defs>
                     <motion.path
-                        d="M 28% 38% C 32% 44%, 34% 48%, 36% 50% S 44% 60%, 50% 65% S 66% 72%, 82% 75%"
+                        d="M 28 38 C 32 44, 34 48, 36 50 S 44 60, 50 65 S 66 72, 82 75"
                         fill="none"
                         stroke="#C5A059"
                         strokeWidth="1" // Thinner, more elegant
@@ -149,7 +149,7 @@ export default function HighEnergyMap() {
                         <animateMotion
                             dur="8s"
                             repeatCount="indefinite"
-                            path="M 28% 38% C 32% 44%, 34% 48%, 36% 50% S 44% 60%, 50% 65% S 66% 72%, 82% 75%"
+                            path="M 28 38 C 32 44, 34 48, 36 50 S 44 60, 50 65 S 66 72, 82 75"
                         />
                     </motion.circle>
                 </svg>
