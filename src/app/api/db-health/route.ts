@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getAvailableJourneys } from '@/app/[lang]/book/actions';
 
 export const dynamic = 'force-dynamic';
 
@@ -26,6 +27,19 @@ export async function GET() {
         result.db = 'connected';
         result.counts = { journeys: journeyCount, cabins: cabinCount, inventoryBuckets: bucketCount };
         result.scheduledJourneys = journeys;
+
+        try {
+            const avail = await getAvailableJourneys();
+            result.availableJourneysCount = avail.length;
+            result.availableJourneys = avail;
+        } catch (err: any) {
+            result.getAvailableJourneysError = {
+                message: err?.message,
+                code: err?.code,
+                stack: err?.stack
+            };
+        }
+
         result.status = journeyCount > 0 ? 'OK' : 'DB_EMPTY';
     } catch (error: any) {
         result.db = 'error';
