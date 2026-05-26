@@ -3,9 +3,14 @@ import { PrismaClient } from '@prisma/client'
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 const getPrismaUrl = () => {
-    // In Vercel serverless, if transaction pooler (DATABASE_URL) fails with prepared statements,
-    // using DIRECT_URL (session pooler or direct connection) avoids the 42P05 error.
-    return process.env.DIRECT_URL || process.env.DATABASE_URL;
+    let url = process.env.DATABASE_URL;
+    if (url && (url.startsWith('postgres://') || url.startsWith('postgresql://'))) {
+        if (!url.includes('pgbouncer=true') && !url.includes('localhost') && !url.includes('127.0.0.1')) {
+            url = url.includes('?') ? `${url}&pgbouncer=true` : `${url}?pgbouncer=true`;
+        }
+    }
+    console.log('[Prisma Url]', url ? url.split('@')[1] || 'MASKED' : 'NOT SET');
+    return url;
 };
 
 export const prisma =
