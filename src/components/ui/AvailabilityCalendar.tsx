@@ -28,7 +28,7 @@ export default function AvailabilityCalendar({ journeys }: AvailabilityCalendarP
         if (journeys && journeys.length > 0) {
             return new Date(journeys[0].date);
         }
-        return new Date(); // Default to now if no journeys
+        return new Date('2026-06-01T12:00:00Z'); // Stable fallback date for SSR matching
     }, [journeys]);
 
     const [currentDate, setCurrentDate] = useState(initialDate);
@@ -39,35 +39,35 @@ export default function AvailabilityCalendar({ journeys }: AvailabilityCalendarP
         const map = new Map<string, Journey>();
         journeys.forEach(j => {
             const dateParams = new Date(j.date);
-            const key = `${dateParams.getFullYear()}-${dateParams.getMonth()}-${dateParams.getDate()}`;
+            const key = `${dateParams.getUTCFullYear()}-${dateParams.getUTCMonth()}-${dateParams.getUTCDate()}`;
             map.set(key, j);
         });
         return map;
     }, [journeys]);
 
     const getDaysInMonth = (date: Date) => {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        return new Date(year, month + 1, 0).getDate();
+        const year = date.getUTCFullYear();
+        const month = date.getUTCMonth();
+        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
     };
 
     const getFirstDayOfMonth = (date: Date) => {
-        return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+        return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1)).getUTCDay();
     };
 
     const daysInMonth = getDaysInMonth(currentDate);
     const firstDay = getFirstDayOfMonth(currentDate);
 
     const handlePrevMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+        setCurrentDate(new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth() - 1, 1)));
     };
 
     const handleNextMonth = () => {
-        setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+        setCurrentDate(new Date(Date.UTC(currentDate.getUTCFullYear(), currentDate.getUTCMonth() + 1, 1)));
     };
 
     const getJourneyForDay = (day: number) => {
-        const key = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${day}`;
+        const key = `${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()}-${day}`;
         return journeyMap.get(key);
     };
 
@@ -83,7 +83,7 @@ export default function AvailabilityCalendar({ journeys }: AvailabilityCalendarP
                         <ChevronLeft size={20} />
                     </button>
                     <h3 className="font-serif text-lg md:text-xl text-vsoe-midnight">
-                        {MONTH_NAMES[currentDate.getMonth()]} {currentDate.getFullYear()}
+                        {MONTH_NAMES[currentDate.getUTCMonth()]} {currentDate.getUTCFullYear()}
                     </h3>
                     <button
                         onClick={handleNextMonth}
@@ -177,7 +177,7 @@ export default function AvailabilityCalendar({ journeys }: AvailabilityCalendarP
                                 <div className="mb-8 border-b border-white/10 pb-8">
                                     <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-2">Selected Journey</span>
                                     <h2 className="text-3xl font-serif text-vsoe-cream mb-2">{selectedJourney.name}</h2>
-                                    <p className="text-white/60">{new Date(selectedJourney.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                                    <p className="text-white/60">{new Date(selectedJourney.date).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })}</p>
                                 </div>
                                 <BookingWizard journey={selectedJourney} />
                             </div>

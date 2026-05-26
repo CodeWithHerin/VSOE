@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 import AvailabilityCalendar from '@/components/ui/AvailabilityCalendar';
 import JourneyListFetcher from '@/components/booking/JourneyListFetcher';
-import { getAvailableJourneys } from '@/app/[lang]/book/actions';
+import { getAvailableJourneys } from '@/lib/data/journeys';
 
 import BookPageClient from './BookPageClient';
 

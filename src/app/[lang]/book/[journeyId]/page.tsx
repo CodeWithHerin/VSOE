@@ -1,6 +1,6 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getJourney } from '@/app/[lang]/book/actions';
+import { getJourney } from '@/lib/data/journeys';
 import { getJourneyImage } from '@/lib/journeyImages';
 import Image from 'next/image';
 

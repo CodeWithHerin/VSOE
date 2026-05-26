@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { getAvailableJourneys } from '@/app/[lang]/book/actions';
+import { getAvailableJourneys } from '@/lib/data/journeys';
 
 export const dynamic = 'force-dynamic';
 

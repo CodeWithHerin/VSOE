@@ -57,7 +57,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                             <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="flex items-center gap-2 text-vsoe-gold mb-2 text-xs tracking-[0.2em] uppercase font-bold">
                                     <Calendar size={12} />
-                                    <span>{new Date(journey.date).toLocaleDateString(language, { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                                    <span>{new Date(journey.date).toLocaleDateString(language, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>
                                 </div>
 
                                 <h2 className="text-3xl font-serif text-white mb-4 group-hover:text-vsoe-gold transition-colors duration-300">
