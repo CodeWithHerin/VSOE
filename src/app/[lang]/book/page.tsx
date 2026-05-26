@@ -28,6 +28,8 @@ export default function BookingPage() {
         fetch('/api/journeys')
             .then(r => r.json())
             .then(data => {
+                console.log('[BookPage] Fetched data:', data);
+                console.log('[BookPage] Setting journeys to:', data.journeys);
                 setJourneys(data.journeys ?? []);
                 setLoading(false);
             })
@@ -37,6 +39,10 @@ export default function BookingPage() {
                 setLoading(false);
             });
     }, []);
+
+    useEffect(() => {
+        console.log('[BookPage] Current journeys state:', journeys);
+    }, [journeys]);
 
     return (
         <BookPageClient
