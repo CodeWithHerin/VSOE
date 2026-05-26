@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
@@ -17,9 +17,35 @@ interface Journey {
     availableCabins: number;
 }
 
+// Separate component to isolate the hydration-unsafe locale-dependent date rendering
+function JourneyDate({ date }: { date: string }) {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    const dateObj = new Date(date);
+    // Always render a stable UTC string on server; switch to locale string after mount
+    const formatted = mounted
+        ? dateObj.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+        : dateObj.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+
+    return <span suppressHydrationWarning>{formatted}</span>;
+}
+
+// Separate component to isolate locale-dependent price rendering
+function JourneyPrice({ price }: { price: number }) {
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => { setMounted(true); }, []);
+
+    const formatted = mounted
+        ? `€${Number(price).toLocaleString()}`
+        : `€${Number(price).toLocaleString('en')}`;
+
+    return <span className="text-xl font-serif text-vsoe-cream" suppressHydrationWarning>{formatted}</span>;
+}
+
 export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
-    const { t, language } = useTranslation();
-    
+    const { t } = useTranslation();
+
     if (!journeys || journeys.length === 0) {
         return (
             <div className="text-center py-20 border border-white/10 rounded-sm">
@@ -57,7 +83,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                             <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="flex items-center gap-2 text-vsoe-gold mb-2 text-xs tracking-[0.2em] uppercase font-bold">
                                     <Calendar size={12} />
-                                    <span>{new Date(journey.date).toLocaleDateString(language, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}</span>
+                                    <JourneyDate date={journey.date} />
                                 </div>
 
                                 <h2 className="text-3xl font-serif text-white mb-4 group-hover:text-vsoe-gold transition-colors duration-300">
@@ -77,7 +103,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                                 <div className="flex items-center justify-between border-t border-white/10 pt-6">
                                     <div className="flex flex-col">
                                         <span className="text-[10px] uppercase tracking-widest text-white/40">{t.booking.startingFrom}</span>
-                                        <span className="text-xl font-serif text-vsoe-cream">€{Number(journey.price).toLocaleString(language)}</span>
+                                        <JourneyPrice price={journey.price} />
                                     </div>
 
                                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-vsoe-gold group-hover:border-vsoe-gold group-hover:text-vsoe-midnight transition-all duration-300">
