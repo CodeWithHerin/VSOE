@@ -3,11 +3,9 @@ import { PrismaClient } from '@prisma/client'
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
 
 const getPrismaUrl = () => {
-    let url = process.env.DATABASE_URL;
-    if (url && url.includes('supabase') && !url.includes('pgbouncer=true') && !url.includes('localhost')) {
-        url = url.includes('?') ? `${url}&pgbouncer=true` : `${url}?pgbouncer=true`;
-    }
-    return url;
+    // In Vercel serverless, if transaction pooler (DATABASE_URL) fails with prepared statements,
+    // using DIRECT_URL (session pooler or direct connection) avoids the 42P05 error.
+    return process.env.DIRECT_URL || process.env.DATABASE_URL;
 };
 
 export const prisma =
