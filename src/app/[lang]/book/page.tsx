@@ -1,47 +1,48 @@
-import React, { Suspense } from 'react';
+'use client';
 
-// Force server-render on every request — DB data must never be statically cached
-export const dynamic = 'force-dynamic';
-
-import AvailabilityCalendar from '@/components/ui/AvailabilityCalendar';
-import JourneyListFetcher from '@/components/booking/JourneyListFetcher';
-import { getAvailableJourneys } from '@/lib/data/journeys';
-
+import React, { useEffect, useState } from 'react';
+import JourneyGrid from '@/components/booking/JourneyGrid';
 import BookPageClient from './BookPageClient';
 
-// Skeleton Loader for the Grid
-function GridSkeleton() {
-    return (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3].map((i) => (
-                <div key={i} className="h-[500px] bg-white/5 rounded-sm animate-pulse flex flex-col items-center justify-center border border-white/10">
-                    <span className="text-vsoe-gold/20 text-4xl font-serif">VSOE</span>
-                </div>
-            ))}
-        </div>
-    );
-}
-
-// Helper to fetch for calendar independently
-async function CalendarWrapper() {
-    const journeys = await getAvailableJourneys();
-    return <AvailabilityCalendar journeys={journeys} />;
+export interface Journey {
+    id: string;
+    name: string;
+    departureDate: string;
+    price: number;
+    image: string;
+    description: string;
+    availableCabins: number;
+    options?: {
+        historic?: { id: string; price: number; cabinId: string; cabin: { type: string } };
+        suite?: { id: string; price: number; cabinId: string; cabin: { type: string } };
+        grand_suite?: { id: string; price: number; cabinId: string; cabin: { type: string } };
+    };
 }
 
 export default function BookingPage() {
+    const [journeys, setJourneys] = useState<Journey[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch('/api/journeys')
+            .then(r => r.json())
+            .then(data => {
+                setJourneys(data.journeys ?? []);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error('Failed to fetch journeys:', err);
+                setError('Could not load journeys. Please try again.');
+                setLoading(false);
+            });
+    }, []);
+
     return (
-        <BookPageClient 
-            journeyList={
-                <Suspense fallback={<GridSkeleton />}>
-                    <JourneyListFetcher />
-                </Suspense>
-            } 
-            calendar={
-                <Suspense fallback={<div className="h-64 bg-white/5 animate-pulse rounded-sm" />}>
-                    <CalendarWrapper />
-                </Suspense>
-            } 
-            skeleton={<GridSkeleton />} 
+        <BookPageClient
+            journeyList={<JourneyGrid journeys={journeys} loading={loading} error={error} />}
+            calendar={null}
+            skeleton={null}
         />
     );
 }

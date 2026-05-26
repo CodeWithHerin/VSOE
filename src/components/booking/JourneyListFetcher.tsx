@@ -1,11 +1,3 @@
-import React from 'react';
-import JourneyGrid from '@/components/booking/JourneyGrid';
-import { getAvailableJourneys } from '@/lib/data/journeys';
-
-export default async function JourneyListFetcher() {
-    // This await is what was blocking the whole page.
-    // Now it only blocks this component.
-    const journeys = await getAvailableJourneys();
-
-    return <JourneyGrid journeys={journeys} />;
-}
+// This file is kept for reference but is no longer used in the /book route.
+// The /book page now uses client-side fetch via /api/journeys instead.
+export {};

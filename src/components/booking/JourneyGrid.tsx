@@ -1,68 +1,72 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import Image from 'next/image';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { Calendar, ArrowRight } from 'lucide-react';
-import { useTranslation } from '@/lib/i18n/useTranslation';
+import type { Journey } from '@/app/[lang]/book/page';
 
-interface Journey {
-    id: string;
-    name: string;
-    date: string;  // ISO 8601 string from server — always use new Date(journey.date)
-    price: number;
-    image: string;
-    description: string;
-    availableCabins: number;
+interface JourneyGridProps {
+    journeys: Journey[];
+    loading: boolean;
+    error: string | null;
 }
 
-// Separate component to isolate the hydration-unsafe locale-dependent date rendering
-function JourneyDate({ date }: { date: string }) {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => { setMounted(true); }, []);
-
-    const dateObj = new Date(date);
-    // Always render a stable UTC string on server; switch to locale string after mount
-    const formatted = mounted
-        ? dateObj.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
-        : dateObj.toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
-
-    return <span suppressHydrationWarning>{formatted}</span>;
+function formatDate(isoString: string): string {
+    try {
+        return new Date(isoString).toLocaleDateString('en', {
+            month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'
+        });
+    } catch {
+        return isoString;
+    }
 }
 
-// Separate component to isolate locale-dependent price rendering
-function JourneyPrice({ price }: { price: number }) {
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => { setMounted(true); }, []);
-
-    const formatted = mounted
-        ? `€${Number(price).toLocaleString()}`
-        : `€${Number(price).toLocaleString('en')}`;
-
-    return <span className="text-xl font-serif text-vsoe-cream" suppressHydrationWarning>{formatted}</span>;
+function formatPrice(price: number): string {
+    try {
+        return `€${Number(price).toLocaleString('en')}`;
+    } catch {
+        return `€${price}`;
+    }
 }
 
-export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
-    const { t } = useTranslation();
+function Skeleton() {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map(i => (
+                <div key={i} className="h-[600px] bg-white/5 rounded-sm animate-pulse flex items-center justify-center border border-white/10">
+                    <span className="text-vsoe-gold/20 text-4xl font-serif">VSOE</span>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+export default function JourneyGrid({ journeys, loading, error }: JourneyGridProps) {
+    if (loading) return <Skeleton />;
+
+    if (error) {
+        return (
+            <div className="text-center py-20 border border-white/10 rounded-sm">
+                <p className="text-xl text-red-400 font-serif italic">{error}</p>
+            </div>
+        );
+    }
 
     if (!journeys || journeys.length === 0) {
         return (
             <div className="text-center py-20 border border-white/10 rounded-sm">
-                <p className="text-xl text-vsoe-cream/60 font-serif italic">{t.booking.noJourneys}</p>
-                <p className="text-sm text-vsoe-gold mt-4 uppercase tracking-widest">{t.booking.checkBack}</p>
+                <p className="text-xl text-vsoe-cream/60 font-serif italic">No upcoming journeys scheduled at this time.</p>
+                <p className="text-sm text-vsoe-gold mt-4 uppercase tracking-widest">Please check back later</p>
             </div>
-        )
+        );
     }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {journeys.map((journey, index) => (
-                <motion.div
+            {journeys.map((journey) => (
+                <div
                     key={journey.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
                     className="group relative h-[600px] rounded-sm overflow-hidden cursor-pointer border border-white/5 hover:border-vsoe-gold/50 transition-colors duration-500"
                 >
                     <Link href={`/book/${journey.id}`} className="block w-full h-full">
@@ -83,7 +87,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                             <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="flex items-center gap-2 text-vsoe-gold mb-2 text-xs tracking-[0.2em] uppercase font-bold">
                                     <Calendar size={12} />
-                                    <JourneyDate date={journey.date} />
+                                    <span>{formatDate(journey.departureDate)}</span>
                                 </div>
 
                                 <h2 className="text-3xl font-serif text-white mb-4 group-hover:text-vsoe-gold transition-colors duration-300">
@@ -96,16 +100,15 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
 
                                 {journey.availableCabins < 5 && (
                                     <p className="text-red-400 text-[10px] uppercase tracking-widest mb-4 animate-pulse">
-                                        {t.booking.cabinsLeft.replace('{count}', journey.availableCabins.toString())}
+                                        Only {journey.availableCabins} cabins left
                                     </p>
                                 )}
 
                                 <div className="flex items-center justify-between border-t border-white/10 pt-6">
                                     <div className="flex flex-col">
-                                        <span className="text-[10px] uppercase tracking-widest text-white/40">{t.booking.startingFrom}</span>
-                                        <JourneyPrice price={journey.price} />
+                                        <span className="text-[10px] uppercase tracking-widest text-white/40">Starting from</span>
+                                        <span className="text-xl font-serif text-vsoe-cream">{formatPrice(journey.price)}</span>
                                     </div>
-
                                     <div className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:bg-vsoe-gold group-hover:border-vsoe-gold group-hover:text-vsoe-midnight transition-all duration-300">
                                         <ArrowRight size={20} />
                                     </div>
@@ -113,7 +116,7 @@ export default function JourneyGrid({ journeys }: { journeys: Journey[] }) {
                             </div>
                         </div>
                     </Link>
-                </motion.div>
+                </div>
             ))}
         </div>
     );
