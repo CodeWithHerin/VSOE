@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getJourneyMeta } from '@/lib/journeyImages';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60; // Cache for 60 seconds
 export const runtime = 'nodejs'; // Ensure Prisma works, Edge runtime doesn't support Prisma
 
 export async function GET() {
@@ -45,14 +45,7 @@ export async function GET() {
             };
         });
 
-        return NextResponse.json(
-            { journeys: data },
-            {
-                headers: {
-                    'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300'
-                }
-            }
-        );
+        return NextResponse.json({ journeys: data });
     } catch (error: any) {
         console.error('[API/journeys] FULL ERROR:', error);
         console.error('[API/journeys] Error message:', error?.message);
