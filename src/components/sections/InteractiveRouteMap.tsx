@@ -25,11 +25,11 @@ const VB_H = 600;
 const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
-const PALETTES: Record<TimeOfDay, ModePalette> = {
-  dawn:  { bg: '#2D1B14', bgCenter: '#3A2820', accent: '#FFB87C', overlay: 'rgba(255,180,140, 0.15)' },
-  day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)'  },
-  dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)'   },
-  night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)'   },
+const PALETTES: Record<TimeOfDay, ModePalette & { coast: string }> = {
+  dawn:  { bg: '#1F0A05', bgCenter: '#5B2A1A', accent: '#FFD4A0', overlay: 'rgba(255,145,90, 0.18)', coast: '#C57B59' },
+  day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)', coast: CREAM },
+  dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)', coast: CREAM },
+  night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)', coast: CREAM },
 };
 
 const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
@@ -62,13 +62,14 @@ const COASTLINES = [
 ];
 
 // Seeded deterministic particles (cut to 12 for performance)
+// Randomize starting delays significantly (-2s to -10s)
 const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   id:       i,
   cx:       80  + (i * 87 + 13) % 1060,
   cy:       40  + (i * 41 + 17) % 520,
   r:        1   + (i % 3) * 0.4,
   duration: 8   + (i % 7),
-  delay:    (i  * 0.4) % 6,
+  delay:    -2  - (i * 1.7) % 8, // negative delay starts animation mid-cycle
   yDrift:   -10 + (i % 5) * 5,
   opacity:  0.15 + (i % 4) * 0.06,
 }));
@@ -80,14 +81,14 @@ const STARS = Array.from({ length: 15 }, (_, i) => ({
   cy:       20  + (i * 53 + 11) % 200,
   r:        0.8 + (i % 3) * 0.3,
   duration: 2   + (i % 3),
-  delay:    (i  * 0.3) % 4,
+  delay:    -2  - (i * 1.3) % 4,
 }));
 
 // Cloud drift positions
 const CLOUDS = [
-  { cx: 280,  cy: 145, rx: 300, ry: 65, dur: 22, drift: 20, delay: 0  },
-  { cx: 700,  cy: 420, rx: 340, ry: 55, dur: 28, drift: 30, delay: 6  },
-  { cx: 1050, cy: 200, rx: 220, ry: 50, dur: 20, drift: 15, delay: 10 },
+  { cx: 280,  cy: 145, rx: 300, ry: 65, dur: 22, drift: 20, delay: -4  },
+  { cx: 700,  cy: 420, rx: 340, ry: 55, dur: 28, drift: 30, delay: -12 },
+  { cx: 1050, cy: 200, rx: 220, ry: 50, dur: 20, drift: 15, delay: -8  },
 ];
 
 const CITY_IMAGES: Record<string, string> = {
@@ -192,7 +193,7 @@ const CompassRose = React.memo(function CompassRose({ accent }: { accent: string
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-component: Static Coastlines (Memoized)
 // ─────────────────────────────────────────────────────────────────────────────
-const StaticCoastlines = React.memo(function StaticCoastlines() {
+const StaticCoastlines = React.memo(function StaticCoastlines({ coastColor }: { coastColor: string }) {
   return (
     <g pointerEvents="none" aria-hidden="true">
       {/* Bloom copy (cheaper than svg filter: just slightly thicker and very low opacity) */}
@@ -200,7 +201,7 @@ const StaticCoastlines = React.memo(function StaticCoastlines() {
         {COASTLINES.map((d, i) => <path key={`bloom-${i}`} d={d} />)}
       </g>
       {/* Primary coastlines */}
-      <g stroke={CREAM} strokeWidth="1.2" fill="none" opacity="0.09" strokeLinejoin="round" strokeLinecap="round">
+      <g stroke={coastColor} strokeWidth="1.2" fill="none" opacity="0.09" strokeLinejoin="round" strokeLinecap="round" style={{ transition: 'stroke 1.5s ease' }}>
         {COASTLINES.map((d, i) => <path key={`main-${i}`} d={d} />)}
       </g>
     </g>
@@ -253,6 +254,22 @@ export default function InteractiveRouteMap() {
       aria-label="Interactive European Route Map"
       style={{ backgroundColor: palette.bg, transition: modeTransition }}
     >
+      {/* Inject pure CSS animations for GPU accelerated particles/clouds */}
+      <style>{`
+        @keyframes vsoeFloatY {
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(0, var(--y-drift), 0); }
+        }
+        @keyframes vsoeFloatX {
+          0%, 100% { transform: translate3d(0, 0, 0); }
+          50% { transform: translate3d(var(--x-drift), 0, 0); }
+        }
+        @keyframes vsoeStarPulse {
+          0%, 100% { opacity: 0; transform: translate3d(0,0,0) scale(0.8); }
+          50% { opacity: 0.6; transform: translate3d(0,0,0) scale(1.1); }
+          75% { opacity: 0.2; transform: translate3d(0,0,0) scale(0.9); }
+        }
+      `}</style>
 
       {/* ══════════════════════════════════════════════════════════════════
           SECTION HEADER
@@ -346,30 +363,45 @@ export default function InteractiveRouteMap() {
               
               {/* Sun-glow for dawn */}
               <div 
-                className="absolute bottom-0 left-0 w-[600px] h-[400px] pointer-events-none transition-opacity duration-1000"
+                className="absolute bottom-0 left-0 w-[800px] h-[500px] pointer-events-none transition-opacity duration-1000"
                 style={{
-                  background: 'radial-gradient(circle at bottom left, rgba(255, 180, 140, 0.25) 0%, transparent 70%)',
+                  background: 'radial-gradient(circle at bottom left, rgba(255, 145, 90, 0.25) 0%, transparent 60%)',
+                  opacity: mode === 'dawn' ? 1 : 0
+                }}
+              />
+              
+              {/* Warm fog overlay for dawn */}
+              <div 
+                className="absolute bottom-0 left-0 w-full h-[33%] pointer-events-none transition-opacity duration-1000"
+                style={{
+                  background: 'linear-gradient(to top, rgba(255, 145, 90, 0.15) 0%, transparent 100%)',
                   opacity: mode === 'dawn' ? 1 : 0
                 }}
               />
 
-              {CITY_DATA.map((city) => (
-                <div
-                  key={city.id}
-                  className="absolute inset-0 will-change-opacity"
-                  style={{ opacity: hoveredCity === city.id ? 0.40 : 0, transition: 'opacity 700ms ease-in-out' }}
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={CITY_IMAGES[city.id]}
-                    alt=""
-                    aria-hidden="true"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                    style={{ filter: 'sepia(0.25) saturate(0.75)', mixBlendMode: 'luminosity' }}
-                  />
-                </div>
-              ))}
+              <AnimatePresence>
+                {hoveredCity && (
+                  <motion.div
+                    key={hoveredCity}
+                    className="absolute inset-0"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.40 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.5, ease: 'easeInOut' }}
+                    style={{ zIndex: 2 }}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={CITY_IMAGES[hoveredCity]}
+                      alt=""
+                      aria-hidden="true"
+                      className="w-full h-full object-cover"
+                      loading="eager"
+                      style={{ filter: 'sepia(0.25) saturate(0.75)', mixBlendMode: 'luminosity' }}
+                    />
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               {/* Lighter vignette overlay */}
               <div
@@ -416,19 +448,22 @@ export default function InteractiveRouteMap() {
               {!reducedMotion && (
                 <g aria-hidden="true" pointerEvents="none" className="will-change-transform">
                   {CLOUDS.map((c, i) => (
-                    <motion.ellipse
+                    <ellipse
                       key={i}
                       cx={c.cx} cy={c.cy} rx={c.rx} ry={c.ry}
                       fill={CREAM} opacity={0.025}
-                      animate={hoveredCity ? { x: [-c.drift, c.drift, -c.drift] } : { x: 0 }}
-                      transition={{ duration: c.dur, repeat: Infinity, ease: 'easeInOut', delay: c.delay }}
+                      style={{
+                        '--x-drift': `${c.drift}px`,
+                        animation: `vsoeFloatX ${c.dur}s ease-in-out ${c.delay}s infinite`,
+                        animationPlayState: hoveredCity ? 'running' : 'paused',
+                      } as React.CSSProperties}
                     />
                   ))}
                 </g>
               )}
 
               {/* ── Coastlines (Memoized, no expensive filters) ── */}
-              <StaticCoastlines />
+              <StaticCoastlines coastColor={palette.coast} />
 
               {/* ── Route Lines ── */}
               {/* London → Paris — thin dashed */}
@@ -525,33 +560,33 @@ export default function InteractiveRouteMap() {
 
               {/* ── Atmospheric particles (Layer 3 front) ── */}
               {!reducedMotion && PARTICLES.map((p) => (
-                <motion.circle
+                <circle
                   key={p.id}
                   cx={p.cx} cy={p.cy} r={p.r}
                   fill="currentColor" opacity={p.opacity}
-                  animate={{ y: [0, p.yDrift, 0] }}
-                  transition={{ duration: p.duration, repeat: Infinity, ease: 'easeInOut', delay: p.delay }}
                   aria-hidden="true"
-                  className="will-change-transform"
+                  style={{
+                    '--y-drift': `${p.yDrift}px`,
+                    animation: `vsoeFloatY ${p.duration}s ease-in-out ${p.delay}s infinite`,
+                    willChange: 'transform',
+                  } as React.CSSProperties}
                 />
               ))}
 
               {/* ── Night stars ── */}
-              <AnimatePresence>
-                {mode === 'night' && !reducedMotion && STARS.map((s) => (
-                  <motion.circle
-                    key={s.id}
-                    cx={s.cx} cy={s.cy} r={s.r}
-                    fill={CREAM}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 0.6, 0.2, 0.6] }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: s.duration, repeat: Infinity, ease: 'easeInOut', delay: s.delay }}
-                    aria-hidden="true"
-                    className="will-change-opacity"
-                  />
-                ))}
-              </AnimatePresence>
+              {mode === 'night' && !reducedMotion && STARS.map((s) => (
+                <circle
+                  key={s.id}
+                  cx={s.cx} cy={s.cy} r={s.r}
+                  fill={CREAM}
+                  aria-hidden="true"
+                  style={{
+                    opacity: 0, // baseline handled by keyframe
+                    animation: `vsoeStarPulse ${s.duration}s ease-in-out ${s.delay}s infinite`,
+                    willChange: 'opacity, transform',
+                  }}
+                />
+              ))}
 
               {/* ── Compass rose (Static now) ── */}
               <CompassRose accent={palette.accent} />
@@ -586,15 +621,11 @@ export default function InteractiveRouteMap() {
                   style={{
                     left:      leftPct,
                     top:       topPct,
-                    // Centre hit zone on marker, then add padding that extends
-                    // upward to enclose the tooltip (no gap = no hover break)
-                    transform:    'translate(-50%, -50%)',
-                    paddingTop:   '140px',  // covers tooltip height above marker
-                    paddingBottom:'28px',
-                    paddingLeft:  '72px',
-                    paddingRight: '72px',
-                    cursor:  'pointer',
-                    zIndex:  15,
+                    transform: 'translate(-50%, -50%)',
+                    width:     '32px',
+                    height:    '32px',
+                    cursor:    'pointer',
+                    zIndex:    15,
                   }}
                   onMouseEnter={() => handleCityEnter(city.id)}
                   onMouseLeave={handleCityLeave}
@@ -651,6 +682,11 @@ export default function InteractiveRouteMap() {
                             borderRight: '6px solid transparent',
                             borderTop:   `6px solid ${palette.accent}55`,
                           }}
+                        />
+                        {/* The Umbilical Cord (Invisible bridge linking tooltip directly to marker) */}
+                        <div 
+                          className="absolute left-1/2 top-full -translate-x-1/2 bg-transparent"
+                          style={{ width: '40px', height: '34px' }}
                         />
                       </motion.div>
                     )}
