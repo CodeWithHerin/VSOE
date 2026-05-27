@@ -2,8 +2,13 @@
 
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import HighEnergyMap from '../ui/HighEnergyMap';
+import dynamic from 'next/dynamic';
 import GrandTourSection from './GrandTourSection';
+
+const InteractiveRouteMap = dynamic(
+    () => import('@/components/sections/InteractiveRouteMap'),
+    { ssr: false }
+);
 
 export default function RouteExperience() {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -20,8 +25,8 @@ export default function RouteExperience() {
             <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-vsoe-gold via-transparent to-transparent pointer-events-none" />
 
             <div className="relative pt-12">
-                {/* 1. The Interactive Map */}
-                <HighEnergyMap />
+                {/* 1. The Interactive Route Map */}
+                <InteractiveRouteMap />
 
                 {/* 2. Visual Connector */}
                 <div className="w-full flex justify-center -mt-12 mb-12 relative z-20">

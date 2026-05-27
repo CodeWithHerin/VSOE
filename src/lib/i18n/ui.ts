@@ -31,6 +31,7 @@ export const uiTranslations = {
             article3Cat: 'Heritage'
         },
         footer: { join: 'Join our world', newsletter: 'Sign up for our newsletter to receive exclusive offers, travel inspiration, and the latest news from Belmond.', subscribe: 'Subscribe', follow: 'Follow us', about: 'About Belmond', story: 'Our Story', sustainability: 'Sustainability', support: 'Support', contact: 'Contact Us', legal: 'Legal', privacy: 'Privacy Policy', cookies: 'Cookie Policy', terms: 'Terms & Conditions', accessibility: 'Accessibility', language: 'Language', copyright: '© 2026 Belmond Management Limited', lvmh: 'LVMH Maisons', sitemap: 'Sitemap' },
+        routeMap: { londonLabel: 'London', londonSub: 'Belmond British Pullman departure', parisLabel: 'Paris', parisSub: 'Classic departure city', veniceLabel: 'Venice', veniceSub: 'The Floating City', istanbulLabel: 'Istanbul', istanbulSub: 'Continental terminus', viewJourneys: 'View Journeys', grandTour: 'European Grand Tour', network: 'Venice Simplon-Orient-Express Network' },
         destinations: { title: 'Destinations', subtitle: "Europe's Most Captivating Cities", viewJourney: 'View Journey' },
         bookingCta: { ready: 'Ready to Depart?', secure: 'Secure your cabin on this historic route. Availability is limited for the upcoming season.', perPassenger: 'per passenger', reserve: 'Reserve Cabin', grandTour: 'The Grand Tour' },
         bookTheScene: { title: 'Book the Scene', reserve: 'Reserve Now', perPerson: 'per person' },
@@ -159,6 +160,7 @@ export const uiTranslations = {
             article3Cat: 'Héritage'
         },
         footer: { join: 'Rejoignez notre monde', newsletter: 'Inscrivez-vous à notre newsletter pour recevoir des offres exclusives, de l\'inspiration et les dernières nouvelles.', subscribe: 'S\'abonner', follow: 'Suivez-nous', about: 'À propos de Belmond', story: 'Notre Histoire', sustainability: 'Développement Durable', support: 'Assistance', contact: 'Nous Contacter', legal: 'Légal', privacy: 'Politique de Confidentialité', cookies: 'Politique des Cookies', terms: 'Conditions Générales', accessibility: 'Accessibilité', language: 'Langue', copyright: '© 2026 Belmond Management Limited', lvmh: 'Maisons LVMH', sitemap: 'Plan du site' },
+        routeMap: { londonLabel: 'Londres', londonSub: 'Départ du Belmond British Pullman', parisLabel: 'Paris', parisSub: 'Ville de départ classique', veniceLabel: 'Venise', veniceSub: 'La Cité Flottante', istanbulLabel: 'Istanbul', istanbulSub: 'Terminus continental', viewJourneys: 'Voir les Voyages', grandTour: 'Grand Tour Européen', network: 'Réseau Venice Simplon-Orient-Express' },
         destinations: { title: 'Destinations', subtitle: "Les Villes les Plus Captivantes d'Europe", viewJourney: 'Voir le Voyage' },
         bookingCta: { ready: 'Prêt à Partir ?', secure: 'Réservez votre cabine sur cet itinéraire historique. Les places sont limitées.', perPassenger: 'par passager', reserve: 'Réserver', grandTour: 'Le Grand Tour' },
         bookTheScene: { title: 'Réserver la Scène', reserve: 'Réserver Maintenant', perPerson: 'par personne' },
@@ -287,6 +289,7 @@ export const uiTranslations = {
             article3Cat: 'Eredità'
         },
         footer: { join: 'Entra nel nostro mondo', newsletter: 'Iscriviti alla nostra newsletter per ricevere offerte esclusive, ispirazione di viaggio e le ultime notizie.', subscribe: 'Iscriviti', follow: 'Seguici', about: 'Informazioni su Belmond', story: 'La Nostra Storia', sustainability: 'Sostenibilità', support: 'Supporto', contact: 'Contattaci', legal: 'Legale', privacy: 'Informativa sulla Privacy', cookies: 'Informativa sui Cookie', terms: 'Termini e Condizioni', accessibility: 'Accessibilità', language: 'Lingua', copyright: '© 2026 Belmond Management Limited', lvmh: 'LVMH Maisons', sitemap: 'Mappa del sito' },
+        routeMap: { londonLabel: 'Londra', londonSub: 'Partenza del Belmond British Pullman', parisLabel: 'Parigi', parisSub: 'Città di partenza classica', veniceLabel: 'Venezia', veniceSub: 'La Città Galleggiante', istanbulLabel: 'Istanbul', istanbulSub: 'Terminus continentale', viewJourneys: 'Vedi i Viaggi', grandTour: 'Grand Tour Europeo', network: 'Rete Venice Simplon-Orient-Express' },
         destinations: { title: 'Destinazioni', subtitle: "Le Città Più Affascinanti d'Europa", viewJourney: 'Vedi il Viaggio' },
         bookingCta: { ready: 'Pronto a Partire?', secure: 'Prenota la tua cabina su questo percorso storico. La disponibilità è limitata.', perPassenger: 'per passeggero', reserve: 'Prenota Cabina', grandTour: 'Il Grand Tour' },
         bookTheScene: { title: 'Prenota la Scena', reserve: 'Prenota Ora', perPerson: 'per persona' },
@@ -415,6 +418,7 @@ export const uiTranslations = {
             article3Cat: 'Erbe'
         },
         footer: { join: 'Treten Sie unserer Welt bei', newsletter: 'Melden Sie sich für unseren Newsletter an, um exklusive Angebote, Reiseinspirationen und die neuesten Nachrichten zu erhalten.', subscribe: 'Abonnieren', follow: 'Folgen Sie uns', about: 'Über Belmond', story: 'Unsere Geschichte', sustainability: 'Nachhaltigkeit', support: 'Unterstützung', contact: 'Kontakt', legal: 'Rechtliches', privacy: 'Datenschutzrichtlinie', cookies: 'Cookie-Richtlinie', terms: 'Geschäftsbedingungen', accessibility: 'Barrierefreiheit', language: 'Sprache', copyright: '© 2026 Belmond Management Limited', lvmh: 'LVMH Maisons', sitemap: 'Seitenverzeichnis' },
+        routeMap: { londonLabel: 'London', londonSub: 'Abfahrt des Belmond British Pullman', parisLabel: 'Paris', parisSub: 'Klassische Abfahrtsstadt', veniceLabel: 'Venedig', veniceSub: 'Die schwimmende Stadt', istanbulLabel: 'Istanbul', istanbulSub: 'Kontinentaler Endbahnhof', viewJourneys: 'Reisen Ansehen', grandTour: 'Europäische Grand Tour', network: 'Venice Simplon-Orient-Express Netzwerk' },
         destinations: { title: 'Reiseziele', subtitle: "Die faszinierendsten Städte Europas", viewJourney: 'Reise ansehen' },
         bookingCta: { ready: 'Bereit zur Abfahrt?', secure: 'Sichern Sie sich Ihre Kabine auf dieser historischen Route. Die Verfügbarkeit ist begrenzt.', perPassenger: 'pro Passagier', reserve: 'Kabine Reservieren', grandTour: 'The Grand Tour' },
         bookTheScene: { title: 'Die Szene buchen', reserve: 'Jetzt Reservieren', perPerson: 'pro Person' },
