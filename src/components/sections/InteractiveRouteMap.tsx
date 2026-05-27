@@ -26,7 +26,7 @@ const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
 const PALETTES: Record<TimeOfDay, ModePalette> = {
-  dawn:  { bg: '#1A0E08', bgCenter: '#2A1812', accent: '#E8B87C', overlay: 'rgba(240,160,80, 0.10)'  },
+  dawn:  { bg: '#2D1B14', bgCenter: '#3A2820', accent: '#FFB87C', overlay: 'rgba(255,180,140, 0.15)' },
   day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)'  },
   dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)'   },
   night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)'   },
@@ -61,11 +61,11 @@ const COASTLINES = [
   'M 450 0 C 462 28 468 58 460 82 C 454 98 438 108 420 105',
 ];
 
-// Seeded deterministic particles (no Math.random — avoids hydration mismatch)
-const PARTICLES = Array.from({ length: 24 }, (_, i) => ({
+// Seeded deterministic particles (cut to 12 for performance)
+const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
   id:       i,
-  cx:       80  + (i * 47 + 13) % 1060,
-  cy:       40  + (i * 31 + 17) % 520,
+  cx:       80  + (i * 87 + 13) % 1060,
+  cy:       40  + (i * 41 + 17) % 520,
   r:        1   + (i % 3) * 0.4,
   duration: 8   + (i % 7),
   delay:    (i  * 0.4) % 6,
@@ -73,11 +73,11 @@ const PARTICLES = Array.from({ length: 24 }, (_, i) => ({
   opacity:  0.15 + (i % 4) * 0.06,
 }));
 
-// Night-sky stars
-const STARS = Array.from({ length: 30 }, (_, i) => ({
+// Night-sky stars (cut to 15 for performance)
+const STARS = Array.from({ length: 15 }, (_, i) => ({
   id:       i,
-  cx:       50  + (i * 67 + 23) % 1100,
-  cy:       20  + (i * 43 + 11) % 200,
+  cx:       50  + (i * 97 + 23) % 1100,
+  cy:       20  + (i * 53 + 11) % 200,
   r:        0.8 + (i % 3) * 0.3,
   duration: 2   + (i % 3),
   delay:    (i  * 0.3) % 4,
@@ -150,19 +150,13 @@ function SteamLocomotive({ accent }: { accent: string }) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sub-component: CompassRose
+// Sub-component: CompassRose (Static for performance)
 // ─────────────────────────────────────────────────────────────────────────────
-function CompassRose({ accent, reducedMotion }: { accent: string; reducedMotion: boolean }) {
+const CompassRose = React.memo(function CompassRose({ accent }: { accent: string }) {
   return (
-    <g opacity={0.48}>
-      {/* Outer dashed ring — slow rotation */}
-      <motion.g
-        animate={reducedMotion ? {} : { rotate: 360 }}
-        transition={{ duration: 120, repeat: Infinity, ease: 'linear' }}
-        style={{ transformOrigin: `${CX}px ${CY}px` }}
-      >
-        <circle cx={CX} cy={CY} r={29} fill="none" stroke={accent} strokeWidth="0.6" strokeDasharray="3 4" />
-      </motion.g>
+    <g opacity={0.48} style={{ willChange: 'color' }}>
+      {/* Outer dashed ring */}
+      <circle cx={CX} cy={CY} r={29} fill="none" stroke={accent} strokeWidth="0.6" strokeDasharray="3 4" />
 
       {/* Spokes */}
       {COMPASS_ANGLES.map((angle) => {
@@ -193,7 +187,25 @@ function CompassRose({ accent, reducedMotion }: { accent: string; reducedMotion:
       <circle cx={CX} cy={CY} r={1.5} fill={accent}                                    />
     </g>
   );
-}
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sub-component: Static Coastlines (Memoized)
+// ─────────────────────────────────────────────────────────────────────────────
+const StaticCoastlines = React.memo(function StaticCoastlines() {
+  return (
+    <g pointerEvents="none" aria-hidden="true">
+      {/* Bloom copy (cheaper than svg filter: just slightly thicker and very low opacity) */}
+      <g stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.04">
+        {COASTLINES.map((d, i) => <path key={`bloom-${i}`} d={d} />)}
+      </g>
+      {/* Primary coastlines */}
+      <g stroke={CREAM} strokeWidth="1.2" fill="none" opacity="0.09" strokeLinejoin="round" strokeLinecap="round">
+        {COASTLINES.map((d, i) => <path key={`main-${i}`} d={d} />)}
+      </g>
+    </g>
+  );
+});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main component
@@ -224,10 +236,10 @@ export default function InteractiveRouteMap() {
   }, []);
 
   const CITY_DATA = [
-    { id: 'london',   x: 185, y: 118, slug: 'london',        label: t.routeMap?.londonLabel   ?? 'London',   sub: t.routeMap?.londonSub   ?? 'Belmond British Pullman departure' },
-    { id: 'paris',    x: 270, y: 200, slug: 'paris-venice',  label: t.routeMap?.parisLabel    ?? 'Paris',    sub: t.routeMap?.parisSub    ?? 'Classic departure city'             },
-    { id: 'venice',   x: 590, y: 295, slug: 'paris-venice',  label: t.routeMap?.veniceLabel   ?? 'Venice',   sub: t.routeMap?.veniceSub   ?? 'The Floating City'                  },
-    { id: 'istanbul', x: 980, y: 330, slug: 'paris-istanbul', label: t.routeMap?.istanbulLabel ?? 'Istanbul', sub: t.routeMap?.istanbulSub ?? 'Continental terminus'               },
+    { id: 'london',   x: 185, y: 118, routeQuery: '?route=gateway',  label: t.routeMap?.londonLabel   ?? 'London',   sub: t.routeMap?.londonSub   ?? 'Belmond British Pullman departure' },
+    { id: 'paris',    x: 270, y: 200, routeQuery: '?route=classic',  label: t.routeMap?.parisLabel    ?? 'Paris',    sub: t.routeMap?.parisSub    ?? 'Classic departure city'             },
+    { id: 'venice',   x: 590, y: 295, routeQuery: '?route=venice',   label: t.routeMap?.veniceLabel   ?? 'Venice',   sub: t.routeMap?.veniceSub   ?? 'The Floating City'                  },
+    { id: 'istanbul', x: 980, y: 330, routeQuery: '?route=istanbul', label: t.routeMap?.istanbulLabel ?? 'Istanbul', sub: t.routeMap?.istanbulSub ?? 'Continental terminus'               },
   ];
 
   // Shared transition value for time-of-day palette changes
@@ -321,14 +333,31 @@ export default function InteractiveRouteMap() {
           <div className="relative w-full overflow-hidden" style={{ aspectRatio: '2 / 1' }}>
 
             {/* ══════════════════════════════════════════════
-                LAYER 1 — Destination background images
+                LAYER 1 — Destination background images & Gradients
             ══════════════════════════════════════════════ */}
-            <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+            <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ backgroundColor: palette.bgCenter }}>
+              {/* Base gradient layer so SVG doesn't need to render an opaque rect */}
+              <div 
+                className="absolute inset-0 transition-colors duration-1000 ease-in-out" 
+                style={{ 
+                  background: `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)` 
+                }} 
+              />
+              
+              {/* Sun-glow for dawn */}
+              <div 
+                className="absolute bottom-0 left-0 w-[600px] h-[400px] pointer-events-none transition-opacity duration-1000"
+                style={{
+                  background: 'radial-gradient(circle at bottom left, rgba(255, 180, 140, 0.25) 0%, transparent 70%)',
+                  opacity: mode === 'dawn' ? 1 : 0
+                }}
+              />
+
               {CITY_DATA.map((city) => (
                 <div
                   key={city.id}
-                  className="absolute inset-0"
-                  style={{ opacity: hoveredCity === city.id ? 0.30 : 0, transition: 'opacity 700ms ease-in-out' }}
+                  className="absolute inset-0 will-change-opacity"
+                  style={{ opacity: hoveredCity === city.id ? 0.40 : 0, transition: 'opacity 700ms ease-in-out' }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -342,18 +371,17 @@ export default function InteractiveRouteMap() {
                 </div>
               ))}
 
-              {/* Heavy radial vignette (always above images) */}
+              {/* Lighter vignette overlay */}
               <div
-                className="absolute inset-0 pointer-events-none"
+                className="absolute inset-0 pointer-events-none transition-colors duration-1000"
                 style={{
-                  background: `radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, ${palette.bg} 83%)`,
-                  transition: modeTransition,
+                  background: `radial-gradient(ellipse 65% 65% at 50% 50%, transparent 0%, ${palette.bg} 90%)`,
                 }}
               />
               {/* Time-of-day atmospheric tint */}
               <div
-                className="absolute inset-0 pointer-events-none"
-                style={{ backgroundColor: palette.overlay, transition: modeTransition }}
+                className="absolute inset-0 pointer-events-none transition-colors duration-1000"
+                style={{ backgroundColor: palette.overlay }}
               />
             </div>
 
@@ -370,64 +398,37 @@ export default function InteractiveRouteMap() {
             >
               <defs>
                 <path id="vsoe-train-route" d={TRAIN_PATH} />
-
                 {/* Grid */}
                 <pattern id="vsoe-grid" width="80" height="80" patternUnits="userSpaceOnUse">
                   <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.055" />
                 </pattern>
-
-                {/* Radial background gradient */}
-                <radialGradient id="vsoe-bg-grad" cx="50%" cy="50%" r="60%">
-                  <stop offset="0%"   stopColor={palette.bgCenter} />
-                  <stop offset="100%" stopColor={palette.bg}       />
+                {/* Vignette (Top overlay) */}
+                <radialGradient id="vsoe-vignette-svg" cx="50%" cy="50%" r="65%">
+                  <stop offset="40%"  stopColor="transparent"  stopOpacity="0"    />
+                  <stop offset="100%" stopColor={palette.bg}   stopOpacity="0.5" />
                 </radialGradient>
-
-                {/* Vignette */}
-                <radialGradient id="vsoe-vignette" cx="50%" cy="50%" r="65%">
-                  <stop offset="30%"  stopColor="transparent"  stopOpacity="0"    />
-                  <stop offset="100%" stopColor={palette.bg}   stopOpacity="0.78" />
-                </radialGradient>
-
-                {/* Coastline glow/bloom filter */}
-                <filter id="vsoe-coast-glow" x="-15%" y="-15%" width="130%" height="130%">
-                  <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur"         />
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
-                </filter>
               </defs>
 
-              {/* Background */}
-              <rect width={VB_W} height={VB_H} fill="url(#vsoe-bg-grad)" />
-              <rect width={VB_W} height={VB_H} fill="url(#vsoe-grid)"    />
+              {/* Grid (No opaque rect here, so layer 1 shows through) */}
+              <rect width={VB_W} height={VB_H} fill="url(#vsoe-grid)" />
 
               {/* ── Cloud drift (atmospheric depth, Layer 1 back) ── */}
               {!reducedMotion && (
-                <g aria-hidden="true" pointerEvents="none">
+                <g aria-hidden="true" pointerEvents="none" className="will-change-transform">
                   {CLOUDS.map((c, i) => (
                     <motion.ellipse
                       key={i}
                       cx={c.cx} cy={c.cy} rx={c.rx} ry={c.ry}
                       fill={CREAM} opacity={0.025}
-                      animate={{ x: [-c.drift, c.drift, -c.drift] }}
+                      animate={hoveredCity ? { x: [-c.drift, c.drift, -c.drift] } : { x: 0 }}
                       transition={{ duration: c.dur, repeat: Infinity, ease: 'easeInOut', delay: c.delay }}
                     />
                   ))}
                 </g>
               )}
 
-              {/* ── Coastlines (Layer 2 mid — bloom + main) ── */}
-              {/* Bloom copy (blurred, accent-tinted) */}
-              <g stroke="currentColor" strokeWidth="2" fill="none" opacity="0.05"
-                filter="url(#vsoe-coast-glow)" pointerEvents="none" aria-hidden="true">
-                {COASTLINES.map((d, i) => <path key={i} d={d} />)}
-              </g>
-              {/* Primary coastlines (cream) */}
-              <g stroke={CREAM} strokeWidth="1.2" fill="none" opacity="0.09"
-                strokeLinejoin="round" strokeLinecap="round" pointerEvents="none" aria-hidden="true">
-                {COASTLINES.map((d, i) => <path key={i} d={d} />)}
-              </g>
+              {/* ── Coastlines (Memoized, no expensive filters) ── */}
+              <StaticCoastlines />
 
               {/* ── Route Lines ── */}
               {/* London → Paris — thin dashed */}
@@ -531,6 +532,7 @@ export default function InteractiveRouteMap() {
                   animate={{ y: [0, p.yDrift, 0] }}
                   transition={{ duration: p.duration, repeat: Infinity, ease: 'easeInOut', delay: p.delay }}
                   aria-hidden="true"
+                  className="will-change-transform"
                 />
               ))}
 
@@ -546,12 +548,13 @@ export default function InteractiveRouteMap() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: s.duration, repeat: Infinity, ease: 'easeInOut', delay: s.delay }}
                     aria-hidden="true"
+                    className="will-change-opacity"
                   />
                 ))}
               </AnimatePresence>
 
-              {/* ── Compass rose (top-right ornament) ── */}
-              <CompassRose accent={palette.accent} reducedMotion={reducedMotion} />
+              {/* ── Compass rose (Static now) ── */}
+              <CompassRose accent={palette.accent} />
 
               {/* ── Bottom labels ── */}
               <text x={22} y={VB_H - 18} fill="currentColor" fontSize="8.5" fontFamily="sans-serif" letterSpacing="3" opacity="0.45">
@@ -562,7 +565,7 @@ export default function InteractiveRouteMap() {
               </text>
 
               {/* Vignette overlay (top of SVG stack) */}
-              <rect width={VB_W} height={VB_H} fill="url(#vsoe-vignette)" pointerEvents="none" />
+              <rect width={VB_W} height={VB_H} fill="url(#vsoe-vignette-svg)" pointerEvents="none" />
             </svg>
 
             {/* ══════════════════════════════════════════════
@@ -627,7 +630,7 @@ export default function InteractiveRouteMap() {
                             {city.sub}
                           </p>
                           <Link
-                            href={`/destinations/${city.slug}`}
+                            href={`/book${city.routeQuery}`}
                             className="text-[9px] uppercase tracking-[0.18em] font-sans border px-3 py-1 inline-block whitespace-nowrap"
                             style={{
                               color:           palette.accent,

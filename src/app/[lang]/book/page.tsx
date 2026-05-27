@@ -45,27 +45,29 @@ function BookingPageContent() {
 
     const filteredJourneys = journeys.filter(j => {
         if (!routeParam) return true;
-        if (routeParam === 'classic') return j.name === 'Paris to Venice';
-        if (routeParam === 'gateway') return j.name === 'London to Venice';
-        if (routeParam === 'italian') return j.name === 'Paris to Istanbul';
+        if (routeParam === 'gateway') return j.name.startsWith('London');
+        if (routeParam === 'classic') return j.name.startsWith('Paris');
+        if (routeParam === 'venice')  return j.name.endsWith('Venice');
+        if (routeParam === 'istanbul') return j.name.endsWith('Istanbul');
         return true;
     });
 
     const getRouteName = (param: string) => {
-        if (param === 'classic') return 'The Classic Route (Paris to Venice)';
-        if (param === 'gateway') return 'The Gateway (London to Venice)';
-        if (param === 'italian') return 'The Italian Voyage (Paris to Istanbul)';
+        if (param === 'gateway') return 'departing from London';
+        if (param === 'classic') return 'departing from Paris';
+        if (param === 'venice')  return 'arriving in Venice';
+        if (param === 'istanbul') return 'arriving in Istanbul';
         return param;
     };
 
-    const showFilterHeader = routeParam && ['classic', 'gateway', 'italian'].includes(routeParam);
+    const showFilterHeader = routeParam && ['gateway', 'classic', 'venice', 'istanbul'].includes(routeParam);
 
     const journeyListContent = (
         <div className="space-y-8">
             {showFilterHeader && !loading && !error && (
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-white/10 pb-6 mb-8 gap-4">
                     <p className="text-sm text-vsoe-cream/80">
-                        Showing <strong className="text-vsoe-gold">{filteredJourneys.length}</strong> {filteredJourneys.length === 1 ? 'journey' : 'journeys'} for <span className="italic font-serif text-white">{getRouteName(routeParam)}</span>
+                        Showing <strong className="text-vsoe-gold">{filteredJourneys.length}</strong> {filteredJourneys.length === 1 ? 'journey' : 'journeys'} <span className="italic font-serif text-white">{getRouteName(routeParam)}</span>
                     </p>
                     <Link href="/book" className="text-xs uppercase tracking-widest text-vsoe-gold hover:text-white transition-colors self-start sm:self-auto">
                         View all journeys
