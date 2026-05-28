@@ -25,8 +25,8 @@ const VB_H = 600;
 const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
-const PALETTES: Record<TimeOfDay, ModePalette & { coast: string }> = {
-  dawn:  { bg: '#1F0A05', bgCenter: '#5B2A1A', accent: '#FFD4A0', overlay: 'rgba(255,145,90, 0.18)', coast: '#C57B59' },
+const PALETTES: Record<TimeOfDay, ModePalette & { coast: string, particleColor?: string }> = {
+  dawn:  { bg: '#1A1228', bgCenter: '#2D2444', accent: '#FFD4A0', overlay: 'rgba(255,145,90, 0)', coast: '#C57B59', particleColor: '#FFB88C' },
   day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)', coast: CREAM },
   dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)', coast: CREAM },
   night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)', coast: CREAM },
@@ -42,7 +42,8 @@ const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
 const PATH_LONDON_PARIS    = 'M 185 118 C 208 145 245 174 270 200';
 const PATH_PARIS_VENICE    = 'M 270 200 C 368 232 495 272 590 295';
 const PATH_VENICE_ISTANBUL = 'M 590 295 C 700 308 848 320 980 330';
-const TRAIN_PATH = 'M 185 118 C 208 145 245 174 270 200 C 368 232 495 272 590 295 C 700 308 848 320 980 330';
+const TRAIN_PATH = `path('${PATH_LONDON_PARIS.slice(2)} C 368 232 495 272 590 295 C 700 308 848 320 980 330')`; // offset-path compatible
+const TRAIN_PATH_SVG = 'M 185 118 C 208 145 245 174 270 200 C 368 232 495 272 590 295 C 700 308 848 320 980 330';
 
 const COASTLINES = [
   'M 108 50 C 128 28 165 5 192 8 C 215 22 220 52 218 80 C 215 100 222 118 220 128 C 185 130 108 138 34 148 C 26 162 32 185 40 198 C 52 198 72 190 84 184 C 98 176 108 162 110 148 C 113 132 112 118 108 108 Z',
@@ -61,17 +62,17 @@ const COASTLINES = [
   'M 450 0 C 462 28 468 58 460 82 C 454 98 438 108 420 105',
 ];
 
-// Seeded deterministic particles (cut to 12 for performance)
+// Seeded deterministic particles (cut to 8 for performance)
 // Randomize starting delays significantly (-2s to -10s)
-const PARTICLES = Array.from({ length: 12 }, (_, i) => ({
+const PARTICLES = Array.from({ length: 8 }, (_, i) => ({
   id:       i,
-  cx:       80  + (i * 87 + 13) % 1060,
-  cy:       40  + (i * 41 + 17) % 520,
-  r:        1   + (i % 3) * 0.4,
+  cx:       80  + (i * 127 + 13) % 1060,
+  cy:       40  + (i * 61 + 17) % 520,
+  r:        1.2 + (i % 3) * 0.4,
   duration: 8   + (i % 7),
   delay:    -2  - (i * 1.7) % 8, // negative delay starts animation mid-cycle
-  yDrift:   -10 + (i % 5) * 5,
-  opacity:  0.15 + (i % 4) * 0.06,
+  yDrift:   -15 + (i % 5) * 6,
+  opacity:  0.25 + (i % 4) * 0.08,
 }));
 
 // Night-sky stars (cut to 15 for performance)
@@ -252,9 +253,9 @@ export default function InteractiveRouteMap() {
       className="w-full relative z-10"
       id="interactive-route-map"
       aria-label="Interactive European Route Map"
-      style={{ backgroundColor: palette.bg, transition: modeTransition }}
+      style={{ backgroundColor: palette.bg, transition: modeTransition, contain: 'layout style paint' }}
     >
-      {/* Inject pure CSS animations for GPU accelerated particles/clouds */}
+      {/* Inject pure CSS animations for GPU accelerated particles/clouds/train */}
       <style>{`
         @keyframes vsoeFloatY {
           0%, 100% { transform: translate3d(0, 0, 0); }
@@ -265,9 +266,15 @@ export default function InteractiveRouteMap() {
           50% { transform: translate3d(var(--x-drift), 0, 0); }
         }
         @keyframes vsoeStarPulse {
-          0%, 100% { opacity: 0; transform: translate3d(0,0,0) scale(0.8); }
-          50% { opacity: 0.6; transform: translate3d(0,0,0) scale(1.1); }
-          75% { opacity: 0.2; transform: translate3d(0,0,0) scale(0.9); }
+          0%, 100% { opacity: 0; transform: translateZ(0) scale(0.8); }
+          50% { opacity: 0.6; transform: translateZ(0) scale(1.1); }
+          75% { opacity: 0.2; transform: translateZ(0) scale(0.9); }
+        }
+        @keyframes vsoeTrainJourney {
+          0%   { offset-distance: 0%; opacity: 0; }
+          3%   { opacity: 1; }
+          95%  { opacity: 1; }
+          100% { offset-distance: 100%; opacity: 0; }
         }
       `}</style>
 
@@ -353,29 +360,23 @@ export default function InteractiveRouteMap() {
                 LAYER 1 — Destination background images & Gradients
             ══════════════════════════════════════════════ */}
             <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ backgroundColor: palette.bgCenter }}>
-              {/* Base gradient layer so SVG doesn't need to render an opaque rect */}
+              {/* Base gradient layer */}
               <div 
                 className="absolute inset-0 transition-colors duration-1000 ease-in-out" 
                 style={{ 
-                  background: `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)` 
+                  background: mode === 'dawn' 
+                    ? `linear-gradient(to top, #FFB88C 0%, #E89B8B 30%, #2D2444 100%)`
+                    : `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)` 
                 }} 
               />
               
               {/* Sun-glow for dawn */}
               <div 
-                className="absolute bottom-0 left-0 w-[800px] h-[500px] pointer-events-none transition-opacity duration-1000"
+                className="absolute bottom-0 left-0 w-[600px] h-[500px] pointer-events-none transition-opacity duration-1000"
                 style={{
-                  background: 'radial-gradient(circle at bottom left, rgba(255, 145, 90, 0.25) 0%, transparent 60%)',
-                  opacity: mode === 'dawn' ? 1 : 0
-                }}
-              />
-              
-              {/* Warm fog overlay for dawn */}
-              <div 
-                className="absolute bottom-0 left-0 w-full h-[33%] pointer-events-none transition-opacity duration-1000"
-                style={{
-                  background: 'linear-gradient(to top, rgba(255, 145, 90, 0.15) 0%, transparent 100%)',
-                  opacity: mode === 'dawn' ? 1 : 0
+                  background: 'radial-gradient(circle at 20% 100%, #FFE0B0 0%, transparent 60%)',
+                  opacity: mode === 'dawn' ? 1 : 0,
+                  transform: 'translateZ(0)'
                 }}
               />
 
@@ -388,7 +389,7 @@ export default function InteractiveRouteMap() {
                     animate={{ opacity: 0.40 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
-                    style={{ zIndex: 2 }}
+                    style={{ zIndex: 2, transform: 'translateZ(0)' }}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -397,7 +398,8 @@ export default function InteractiveRouteMap() {
                       aria-hidden="true"
                       className="w-full h-full object-cover"
                       loading="eager"
-                      style={{ filter: 'sepia(0.25) saturate(0.75)', mixBlendMode: 'luminosity' }}
+                      /* Removed mixBlendMode and filter for performance */
+                      style={{ opacity: 0.5 }}
                     />
                   </motion.div>
                 )}
@@ -429,7 +431,7 @@ export default function InteractiveRouteMap() {
               style={{ color: palette.accent, transition: modeTransition }}
             >
               <defs>
-                <path id="vsoe-train-route" d={TRAIN_PATH} />
+                <path id="vsoe-train-route" d={TRAIN_PATH_SVG} />
                 {/* Grid */}
                 <pattern id="vsoe-grid" width="80" height="80" patternUnits="userSpaceOnUse">
                   <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.055" />
@@ -496,19 +498,18 @@ export default function InteractiveRouteMap() {
               <text x={395} y={222} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.50" transform="rotate(-7, 395, 222)">THE CLASSIC ROUTE</text>
               <text x={760} y={288} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.40" transform="rotate(-3, 760, 288)">THE GRAND EXPRESS</text>
 
-              {/* ── Steam locomotive (SMIL motion + Framer Motion opacity) ── */}
+              {/* ── Steam locomotive (CSS offset-path animation for GPU perf) ── */}
               {isInView && !trainDone && (
-                <motion.g
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: [0, 1, 1, 0] }}
-                  transition={{ duration: 7, times: [0, 0.05, 0.88, 1], ease: 'easeInOut' }}
-                  onAnimationComplete={() => setTrainDone(true)}
+                <g
+                  style={{
+                    offsetPath: TRAIN_PATH,
+                    animation: 'vsoeTrainJourney 7s ease-in-out forwards',
+                    willChange: 'offset-distance, opacity',
+                  }}
+                  onAnimationEnd={() => setTrainDone(true)}
                 >
-                  <animateMotion dur="7s" fill="freeze" rotate="auto">
-                    <mpath href="#vsoe-train-route" />
-                  </animateMotion>
                   <SteamLocomotive accent={palette.accent} />
-                </motion.g>
+                </g>
               )}
 
               {/* ── City marker visuals (pointer-events off; HTML handles interaction) ── */}
@@ -563,7 +564,7 @@ export default function InteractiveRouteMap() {
                 <circle
                   key={p.id}
                   cx={p.cx} cy={p.cy} r={p.r}
-                  fill="currentColor" opacity={p.opacity}
+                  fill={palette.particleColor || 'currentColor'} opacity={p.opacity}
                   aria-hidden="true"
                   style={{
                     '--y-drift': `${p.yDrift}px`,
