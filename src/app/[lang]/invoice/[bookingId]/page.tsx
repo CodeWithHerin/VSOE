@@ -37,19 +37,35 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                 }
             `}} />
 
-            <div className="max-w-4xl mx-auto border border-gray-200 p-12 shadow-lg print:shadow-none print:border-none">
+            <div className="max-w-4xl mx-auto relative border border-gray-200 p-12 shadow-lg print:shadow-none print:border-none">
+                {/* Watermark */}
+                <div 
+                    className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0"
+                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' }}
+                >
+                    <div className="text-[5rem] md:text-[6rem] font-bold text-gray-400 opacity-10 -rotate-[30deg] whitespace-nowrap select-none font-sans">
+                        PORTFOLIO DEMO — NOT A REAL BOOKING
+                    </div>
+                </div>
+
+                {/* Top Disclaimer Bar */}
+                <div 
+                    className="w-full relative z-10 bg-gray-100 border border-gray-300 text-gray-600 text-[10px] font-bold uppercase tracking-widest text-center py-2 mb-8"
+                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' }}
+                >
+                    PORTFOLIO DEMONSTRATION — NOT A REAL BOOKING. NO PAYMENT HAS BEEN TAKEN. NOT AN OFFICIAL BELMOND / VENICE SIMPLON-ORIENT-EXPRESS DOCUMENT.
+                </div>
 
                 {/* Header */}
-                <div className="flex justify-between items-start border-b border-gray-200 pb-8 mb-8">
+                <div className="flex justify-between items-start border-b border-gray-200 pb-8 mb-8 relative z-10">
                     <div>
                         <h1 className="text-4xl font-serif text-[#1e293b] mb-2">INVOICE</h1>
                         <p className="text-sm text-gray-500 uppercase tracking-widest">Venice Simplon-Orient-Express</p>
                     </div>
                     <div className="text-right">
-                        <h2 className="text-xl font-serif text-[#1e293b] mb-1">VSOE Ltd.</h2>
-                        <p className="text-sm text-gray-500">123 Luxury Rail Way</p>
-                        <p className="text-sm text-gray-500">London, UK</p>
-                        <p className="text-sm text-gray-500 mt-2">VAT: GB 123 456 789</p>
+                        <h2 className="text-xl font-serif text-[#1e293b] mb-1">Project Vitesse</h2>
+                        <p className="text-sm text-gray-500">Portfolio demonstration — not a real booking</p>
+                        <p className="text-sm text-gray-500 mt-2">Not affiliated with Belmond Management Limited or LVMH</p>
                     </div>
                 </div>
 
@@ -73,14 +89,14 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                         <div className="flex justify-between">
                             <span className="text-gray-500">Status:</span>
                             <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded uppercase font-bold tracking-wider">
-                                {booking.status}
+                                DEMO — {booking.status}
                             </span>
                         </div>
                     </div>
                 </div>
 
                 {/* Journey Details */}
-                <div className="bg-gray-50 p-6 rounded-sm mb-12">
+                <div className="bg-gray-50 p-6 rounded-sm mb-12 relative z-10">
                     <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-6">Journey Details</h3>
                     <div className="flex justify-between items-center">
                         <div>
@@ -93,7 +109,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                 </div>
 
                 {/* Line Items */}
-                <table className="w-full mb-12">
+                <table className="w-full mb-12 relative z-10">
                     <thead>
                         <tr className="border-b border-gray-200 text-left">
                             <th className="pb-4 text-xs font-bold uppercase tracking-widest text-gray-400">Description</th>
@@ -124,9 +140,10 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                 </table>
 
                 {/* Footer */}
-                <div className="border-t border-gray-200 pt-8 text-center text-sm text-gray-500">
+                <div className="border-t border-gray-200 pt-8 text-center text-sm text-gray-500 relative z-10">
                     <p className="mb-2">Thank you for travelling with Venice Simplon-Orient-Express.</p>
                     <p className="italic">This is a computer generated invoice.</p>
+                    <p className="mt-4 text-xs font-bold text-gray-400">Project Vitesse is an independent portfolio recreation and is not affiliated with, endorsed by, or connected to Belmond Management Limited or LVMH.</p>
                 </div>
 
                 {/* Print Button Component */}
