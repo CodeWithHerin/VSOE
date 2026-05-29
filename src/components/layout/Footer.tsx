@@ -54,10 +54,10 @@ export default function Footer() {
                     <div className="lg:text-right">
                         <h3 className="font-serif text-2xl mb-6">{t.footer.follow}</h3>
                         <div className="flex gap-6 lg:justify-end text-white/60">
-                            <a href="https://www.instagram.com/vsoetrain" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
-                            <a href="https://www.facebook.com/VSOEtrain" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
-                            <a href="https://twitter.com/BelmondVSOE" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
-                            <a href="https://www.youtube.com/belmond" target="_blank" rel="noopener noreferrer" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
+                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
+                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
+                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
+                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
                         </div>
                     </div>
                 </div>
@@ -95,13 +95,15 @@ export default function Footer() {
                     </div>
                 </div>
 
+                {/* Bottom Section: Legal Disclaimer */}
+                <div className="border-t border-white/10 pt-10 pb-6 text-center text-[10px] uppercase tracking-widest text-white/40 font-sans">
+                    <p>{t.footer.disclaimer}</p>
+                </div>
+
                 {/* Bottom Section: Copyright */}
-                <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-widest text-white/40 font-sans text-center md:text-left">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-widest text-white/40 font-sans text-center md:text-left">
                     <p>{t.footer.copyright}</p>
-                    <div className="flex gap-8">
-                        <span>{t.footer.lvmh}</span>
-                        <span>{t.footer.sitemap}</span>
-                    </div>
+                    <span>{t.footer.sitemap}</span>
                 </div>
             </div>
         </footer>

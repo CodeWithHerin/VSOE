@@ -353,10 +353,10 @@ export default function Navbar() {
                         isScrolled ? "opacity-0 pointer-events-none translate-y-[-20px] blur-sm" : "opacity-100 translate-y-0 blur-0"
                     )}>
                         <div className="font-display text-lg md:text-2xl font-bold text-white tracking-wider group-hover:text-vsoe-gold transition-colors duration-500 whitespace-nowrap">
-                            BELMOND
+                            PROJECT VITESSE
                         </div>
                         <div className="hidden md:block text-[10px] text-vsoe-gold tracking-[0.4em] uppercase mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
-                            Venice Simplon-Orient-Express
+                            An Independent Portfolio Recreation
                         </div>
                     </Link>
 
