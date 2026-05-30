@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from '@/lib/i18n/useTranslation';
 
 interface PaymentFormProps {
     onSuccess: () => void;
@@ -12,6 +13,7 @@ interface PaymentFormProps {
 }
 
 export default function PaymentForm({ onSuccess, amount, amountStr, validate, orderID }: PaymentFormProps) {
+    const { t } = useTranslation();
     const [name, setName] = useState('');
     const [cardNumber, setCardNumber] = useState('');
     const [expiry, setExpiry] = useState('');
@@ -123,6 +125,10 @@ export default function PaymentForm({ onSuccess, amount, amountStr, validate, or
 
     return (
         <div className="space-y-8">
+            <div className="border border-vsoe-gold/30 bg-vsoe-gold/5 px-5 py-4 rounded-sm">
+                <p className="text-[11px] uppercase tracking-widest text-vsoe-gold/90 leading-relaxed">{t.wizard.mockPaymentNotice}</p>
+            </div>
+
             <div className="flex justify-between items-center pb-6 border-b border-white/10">
                 <span className="text-xs uppercase tracking-widest text-white/50">Total Due</span>
                 <span className="text-2xl font-serif text-vsoe-gold">€{amount.toLocaleString()}</span>

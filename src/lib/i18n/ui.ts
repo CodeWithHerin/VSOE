@@ -125,7 +125,8 @@ export const uiTranslations = {
             welcomeAboard: 'Welcome aboard, {name}. Your carriage awaits.',
             confirmationSent: 'A confirmation has been sent to {email}.',
             returnHome: 'Return Home',
-            viewInvoice: 'View Invoice'
+            viewInvoice: 'View Invoice',
+            mockPaymentNotice: 'This is a mock payment for a portfolio demonstration. Do not enter real card details.'
         }
     },
     fr: {
@@ -254,7 +255,8 @@ export const uiTranslations = {
             welcomeAboard: 'Bienvenue à bord, {name}. Votre voiture vous attend.',
             confirmationSent: 'Une confirmation a été envoyée à {email}.',
             returnHome: 'Retour à l\'Accueil',
-            viewInvoice: 'Voir la Facture'
+            viewInvoice: 'Voir la Facture',
+            mockPaymentNotice: 'Ceci est un paiement fictif à des fins de démonstration de portfolio. N\'entrez pas de véritables informations de carte bancaire.'
         }
     },
     it: {
@@ -383,7 +385,8 @@ export const uiTranslations = {
             welcomeAboard: 'Benvenuto a bordo, {name}. La tua carrozza ti aspetta.',
             confirmationSent: 'Una conferma è stata inviata a {email}.',
             returnHome: 'Torna alla Home',
-            viewInvoice: 'Visualizza Fattura'
+            viewInvoice: 'Visualizza Fattura',
+            mockPaymentNotice: 'Questo è un pagamento fittizio a scopo dimostrativo per un portfolio. Non inserire i dati di una carta reale.'
         }
     },
     de: {
@@ -512,7 +515,8 @@ export const uiTranslations = {
             welcomeAboard: 'Willkommen an Bord, {name}. Ihr Wagen erwartet Sie.',
             confirmationSent: 'Eine Bestätigung wurde an {email} gesendet.',
             returnHome: 'Zurück zur Startseite',
-            viewInvoice: 'Rechnung Anzeigen'
+            viewInvoice: 'Rechnung Anzeigen',
+            mockPaymentNotice: 'Dies ist eine fiktive Zahlung zu Demonstrationszwecken für ein Portfolio. Geben Sie keine echten Kartendaten ein.'
         }
     }
 };
