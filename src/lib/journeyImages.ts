@@ -52,7 +52,7 @@ export function getJourneyMeta(name: string): { image: string; description: stri
     if (n.includes('london')) {
         return {
             image: '/images/vsoe/vsoe-bar-car.jpg',
-            description: 'Begin your journey aboard the Belmond British Pullman before joining the legendary blue and gold carriages.',
+            description: 'Begin your journey aboard a vintage luxury Pullman carriage before joining the legendary blue and gold carriages.',
         };
     }
     if (n.includes('venice')) {

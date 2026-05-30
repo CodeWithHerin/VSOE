@@ -144,6 +144,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                     <p className="mb-2">Thank you for travelling with Venice Simplon-Orient-Express.</p>
                     <p className="italic">This is a computer generated invoice.</p>
                     <p className="mt-4 text-xs font-bold text-gray-400">Project Vitesse is an independent portfolio recreation and is not affiliated with, endorsed by, or connected to Belmond Management Limited or LVMH.</p>
+                    <p className="mt-2 text-xs text-gray-400">Demo bookings are not stored permanently and may be deleted at any time.</p>
                 </div>
 
                 {/* Print Button Component */}

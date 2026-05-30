@@ -11,7 +11,7 @@ export default function SustainabilityPage() {
         >
             <h3>Think Global, Act Local</h3>
             <p>
-                At Belmond, we are custodians of timeless heritage. This responsibility extends beyond our historic carriages to the communities we visit and the environment we traverse.
+                At Project Vitesse, we are custodians of timeless heritage. This responsibility extends beyond our historic carriages to the communities we visit and the environment we traverse.
             </p>
 
             <h3>Our Commitments</h3>

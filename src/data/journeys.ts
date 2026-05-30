@@ -104,7 +104,7 @@ export const journeys = [
         id: 'london-venice',
         name: 'London to Venice',
         duration: '1 Night',
-        description: 'Begin your journey in London aboard the Belmond British Pullman before boarding the VSOE in Calais.',
+        description: 'Begin your journey in London aboard a vintage luxury Pullman carriage before boarding the train in Calais.',
         stops: ['London', 'Calais', 'Paris', 'Venice'],
         image: '/images/vsoe/vsoe-bar-car.jpg', // London
         heroVideo: 'https://cdn.coverr.co/videos/coverr-people-walking-in-london-4621/1080p.mp4',

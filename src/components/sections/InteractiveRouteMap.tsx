@@ -238,7 +238,7 @@ export default function InteractiveRouteMap() {
   }, []);
 
   const CITY_DATA = [
-    { id: 'london',   x: 185, y: 118, routeQuery: '?route=gateway',  label: t.routeMap?.londonLabel   ?? 'London',   sub: t.routeMap?.londonSub   ?? 'Belmond British Pullman departure' },
+    { id: 'london',   x: 185, y: 118, routeQuery: '?route=gateway',  label: t.routeMap?.londonLabel   ?? 'London',   sub: t.routeMap?.londonSub   ?? 'The grand departure' },
     { id: 'paris',    x: 270, y: 200, routeQuery: '?route=classic',  label: t.routeMap?.parisLabel    ?? 'Paris',    sub: t.routeMap?.parisSub    ?? 'Classic departure city'             },
     { id: 'venice',   x: 590, y: 295, routeQuery: '?route=venice',   label: t.routeMap?.veniceLabel   ?? 'Venice',   sub: t.routeMap?.veniceSub   ?? 'The Floating City'                  },
     { id: 'istanbul', x: 980, y: 330, routeQuery: '?route=istanbul', label: t.routeMap?.istanbulLabel ?? 'Istanbul', sub: t.routeMap?.istanbulSub ?? 'Continental terminus'               },

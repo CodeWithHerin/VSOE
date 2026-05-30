@@ -104,7 +104,7 @@ export default function StoryDetail({ params }: { params: Promise<{ slug: string
 
                 {/* Design My Trip CTA */}
                 <div className="mt-24 bg-vsoe-midnight text-vsoe-cream p-12 text-center rounded-sm border border-vsoe-gold/30">
-                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">Belmond Concierge</span>
+                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">Vitesse Concierge</span>
                     <h3 className="text-3xl font-serif mb-6">{t.storyDetail.inspired}</h3>
                     <p className="text-white/70 mb-8 max-w-md mx-auto">
                         {t.storyDetail.bespoke}

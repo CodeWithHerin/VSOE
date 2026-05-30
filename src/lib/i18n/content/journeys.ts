@@ -94,7 +94,7 @@ export const journeysContent = {
             ]
         },
         'london-venice': { 
-            name: 'London nach Venedig', duration: '1 Nacht', price: 'Ab 4.100 £', description: 'Beginnen Sie Ihre Reise in London an Bord des Belmond British Pullman, bevor Sie in Calais in den VSOE einsteigen.', stops: ['London', 'Calais', 'Paris', 'Venedig'],
+            name: 'London nach Venedig', duration: '1 Nacht', price: 'Ab 4.100 £', description: 'Beginnen Sie Ihre Reise in London an Bord eines historischen Luxus-Pullmanwagens, bevor Sie in Calais in den Zug einsteigen.', stops: ['London', 'Calais', 'Paris', 'Venedig'],
             timeline: [
                 { day: 'Tag 1', title: 'Victoria Station', location: 'London', description: 'Steigen Sie in den British Pullman ein. Der Brunch wird serviert, während Sie durch Kent reisen.' },
                 { day: 'Tag 1', title: 'Die Überquerung', location: 'Calais', description: 'Transfer zum Continental-Zug. Die blau-goldenen Wagen warten.' }

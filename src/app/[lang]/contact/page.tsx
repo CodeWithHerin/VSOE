@@ -19,15 +19,14 @@ export default function ContactPage() {
             <p>
                 <strong>{t.contactPage.telUK}:</strong> +44 (0) 20 1234 5678<br />
                 <strong>{t.contactPage.telUS}:</strong> +1 800 123 4567<br />
-                <strong>{t.contactPage.email}:</strong> reservations@vsoe.com
+                <strong>{t.contactPage.email}:</strong> reservations@projectvitesse.com
             </p>
 
             <h3>{t.contactPage.officeTitle}</h3>
             <p>
-                Belmond Management Limited<br />
-                Shackleton House<br />
-                4 Battle Bridge Lane<br />
-                London, SE1 2HP<br />
+                Project Vitesse<br />
+                1 Heritage Lane<br />
+                London, EC1A 1BB<br />
                 United Kingdom
             </p>
 
