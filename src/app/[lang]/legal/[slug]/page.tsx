@@ -12,7 +12,9 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
 
     const data = t.legalData[slug as keyof typeof t.legalData] || {
         title: t.legalPage.notFoundTitle,
-        content: t.legalPage.notFoundDesc
+        lastUpdated: '',
+        intro: t.legalPage.notFoundDesc,
+        sections: [] as { heading: string; body: string }[]
     };
 
     return (
@@ -25,11 +27,11 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
             />
             <div className="max-w-4xl mx-auto px-6 py-24">
                 <div className="prose prose-lg prose-headings:font-serif prose-headings:text-vsoe-blue prose-p:text-vsoe-blue/80 font-sans">
-                    {'lastUpdated' in data && data.lastUpdated && (
+                    {data.lastUpdated && (
                         <p className="text-sm text-vsoe-blue/50 !mt-0">{data.lastUpdated}</p>
                     )}
-                    <p className="lead">{'intro' in data ? data.intro : data.content}</p>
-                    {'sections' in data && data.sections?.map((section: { heading: string; body: string }) => (
+                    <p className="lead">{data.intro}</p>
+                    {data.sections?.map((section: { heading: string; body: string }) => (
                         <div key={section.heading}>
                             <h3>{section.heading}</h3>
                             <p>{section.body}</p>
