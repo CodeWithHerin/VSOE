@@ -21,7 +21,7 @@ export default function TermsPage() {
 
             <h3>3. Travel Documents</h3>
             <p>
-                It is the responsibility of the guest to ensure they hold valid passports and any necessary visas for all countries traversed during the journey. The Venice Simplon-Orient-Express cannot be held liable for guests refused entry due to incorrect documentation.
+                It is the responsibility of the guest to ensure they hold valid passports and any necessary visas for all countries traversed during the journey. Project Vitesse cannot be held liable for guests refused entry due to incorrect documentation.
             </p>
 
             <h3>4. Conduct</h3>

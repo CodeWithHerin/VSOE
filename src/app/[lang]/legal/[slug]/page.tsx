@@ -25,16 +25,16 @@ export default function LegalPage({ params }: { params: Promise<{ slug: string }
             />
             <div className="max-w-4xl mx-auto px-6 py-24">
                 <div className="prose prose-lg prose-headings:font-serif prose-headings:text-vsoe-blue prose-p:text-vsoe-blue/80 font-sans">
-                    <p>{data.content}</p>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                    <h3>{t.legalPage.introTitle}</h3>
-                    <p>
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
+                    {'lastUpdated' in data && data.lastUpdated && (
+                        <p className="text-sm text-vsoe-blue/50 !mt-0">{data.lastUpdated}</p>
+                    )}
+                    <p className="lead">{'intro' in data ? data.intro : data.content}</p>
+                    {'sections' in data && data.sections?.map((section: { heading: string; body: string }) => (
+                        <div key={section.heading}>
+                            <h3>{section.heading}</h3>
+                            <p>{section.body}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
             
