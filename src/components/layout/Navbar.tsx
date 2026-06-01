@@ -86,6 +86,7 @@ const NAV_ITEMS: NavItem[] = [
                         { label: 'Signature Suites', href: '/suites', desc: 'Your private sanctuary on rails' },
                         { label: 'Bar Car 3674', href: '/bar-car', desc: 'Cocktails and conversation' },
                         { label: 'Celia', href: '/celia', desc: 'Private dining by Baz Luhrmann' },
+                        { label: "L'Observatoire", href: '/observatoire', desc: 'A carriage designed by artist JR' },
                     ]
                 },
                 {
