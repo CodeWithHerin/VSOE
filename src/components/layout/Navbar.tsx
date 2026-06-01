@@ -86,6 +86,13 @@ const NAV_ITEMS: NavItem[] = [
                         { label: 'Signature Suites', href: '/suites', desc: 'Your private sanctuary on rails' },
                         { label: 'Bar Car 3674', href: '/bar-car', desc: 'Cocktails and conversation' },
                     ]
+                },
+                {
+                    heading: 'Before You Travel',
+                    links: [
+                        { label: 'Departure Information', href: '/departure-info', desc: 'What to expect on the day' },
+                        { label: 'FAQ', href: '/faq', desc: 'Your questions answered' },
+                    ]
                 }
             ],
             images: [

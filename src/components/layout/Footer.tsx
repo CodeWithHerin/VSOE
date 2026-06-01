@@ -76,6 +76,7 @@ export default function Footer() {
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
                             <li><Link href="/contact" className="hover:text-white transition-colors">{t.footer.contact}</Link></li>
                             <li><Link href="/faq" className="hover:text-white transition-colors">{t.footer.faq}</Link></li>
+                            <li><Link href="/departure-info" className="hover:text-white transition-colors">{t.footer.departureInfo}</Link></li>
                         </ul>
                     </div>
                     <div className="space-y-6">
