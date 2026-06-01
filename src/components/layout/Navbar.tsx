@@ -213,6 +213,7 @@ const NAV_ITEMS: NavItem[] = [
                         { label: 'Travel Tales', href: '/stories', desc: 'Dispatches from the golden rails' },
                         { label: 'Gastronomy', href: '/stories', desc: 'The art of dining at speed' },
                         { label: 'History', href: '/stories', desc: 'A century of extraordinary journeys' },
+                        { label: 'The Gallery', href: '/gallery', desc: 'Portraits of the journey' },
                     ]
                 }
             ],
