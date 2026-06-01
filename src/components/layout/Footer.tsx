@@ -75,6 +75,7 @@ export default function Footer() {
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.support}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
                             <li><Link href="/contact" className="hover:text-white transition-colors">{t.footer.contact}</Link></li>
+                            <li><Link href="/faq" className="hover:text-white transition-colors">{t.footer.faq}</Link></li>
                         </ul>
                     </div>
                     <div className="space-y-6">
