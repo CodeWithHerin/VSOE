@@ -1,31 +1,22 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
-
-export async function getUserBookings(email: string = 'john@example.com') {
+export async function getUserBookings(userId: string) {
     try {
         const bookings = await prisma.booking.findMany({
-            where: {
-                email: email
-            },
-            orderBy: {
-                createdAt: 'desc'
-            },
+            where: { userId },
+            orderBy: { createdAt: 'desc' },
             include: {
                 journey: true,
                 passengers: {
-                    include: {
-                        cabin: true
-                    }
+                    include: { cabin: true }
                 }
             }
         });
-
         return bookings;
     } catch (error) {
-        console.error("Failed to fetch user bookings:", error);
+        console.error('Failed to fetch user bookings:', error);
         return [];
     }
 }

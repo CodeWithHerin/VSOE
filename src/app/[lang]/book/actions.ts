@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
 import { revalidatePath } from 'next/cache';
 
 export async function createBooking(prevState: any, formData: FormData) {
@@ -13,6 +14,10 @@ export async function createBooking(prevState: any, formData: FormData) {
     const email = formData.get('email') as string;
     const phone = formData.get('phone') as string;
 
+    // Attach booking to logged-in user if session exists
+    const session = await auth();
+    const userId = session?.user?.id ?? null;
+
     try {
         const booking = await prisma.booking.create({
             data: {
@@ -23,6 +28,7 @@ export async function createBooking(prevState: any, formData: FormData) {
                 lastName,
                 email,
                 phone,
+                userId,
                 passengers: {
                     create: [
                         {
