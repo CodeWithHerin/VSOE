@@ -1,21 +1,27 @@
 import React from 'react';
-
-// Force server-render on every request — booking history must be live
 export const dynamic = 'force-dynamic';
 
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
 import { getUserBookings } from './actions';
 import Link from 'next/link';
 import { Ticket, Calendar, Clock, MapPin, User } from 'lucide-react';
 
 export default async function ProfilePage() {
-    // For demo, we fetch for the default test user
-    const bookings = await getUserBookings('john@example.com');
+    const session = await auth();
+
+    if (!session?.user?.id) {
+        redirect('/login');
+    }
+
+    const bookings = await getUserBookings(session.user.id);
+    const userName = session.user.name ?? 'Guest';
+    const userEmail = session.user.email ?? '';
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            
-
             <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+
                 {/* Header */}
                 <div className="mb-16 border-b border-white/10 pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
                     <div>
@@ -27,8 +33,8 @@ export default async function ProfilePage() {
                             <User size={20} />
                         </div>
                         <div>
-                            <p className="text-white">John Doe</p>
-                            <p className="text-xs opacity-70">john@example.com</p>
+                            <p className="text-white">{userName}</p>
+                            <p className="text-xs opacity-70">{userEmail}</p>
                         </div>
                     </div>
                 </div>
@@ -39,7 +45,7 @@ export default async function ProfilePage() {
                         <Ticket className="w-12 h-12 text-white/20 mx-auto mb-6" />
                         <h3 className="text-2xl font-serif text-white mb-4">No Journeys Found</h3>
                         <p className="text-white/60 mb-8 max-w-md mx-auto">
-                            You haven't booked any grand tours with us yet. The rails are calling.
+                            You haven&apos;t booked any grand tours with us yet. The rails are calling.
                         </p>
                         <Link
                             href="/book"
@@ -56,17 +62,15 @@ export default async function ProfilePage() {
                                     {/* Left: Journey Info */}
                                     <div className="flex-1">
                                         <div className="flex items-start justify-between mb-4">
-                                            <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full 
+                                            <span className={`text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full
                                                 ${booking.status === 'confirmed' ? 'bg-green-900/40 text-green-300' : 'bg-yellow-900/40 text-yellow-300'}`}>
                                                 {booking.status}
                                             </span>
                                             <span className="text-white/40 text-xs font-mono">#{booking.id.slice(0, 8)}</span>
                                         </div>
-
                                         <h3 className="text-2xl md:text-3xl font-serif text-vsoe-gold mb-2 group-hover:text-white transition-colors">
                                             {booking.journey.name}
                                         </h3>
-
                                         <div className="flex flex-wrap gap-6 mt-6 text-sm text-white/70">
                                             <div className="flex items-center gap-2">
                                                 <Calendar size={16} className="text-vsoe-gold" />
@@ -91,7 +95,7 @@ export default async function ProfilePage() {
                                         <div>
                                             <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Accommodation</p>
                                             <p className="text-lg font-serif text-vsoe-cream">
-                                                {booking.passengers[0]?.cabin.type.replace('_', ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Cabin'}
+                                                {booking.passengers[0]?.cabin.type.replace('_', ' ').replace(/\b\w/g, (c: string) => c.toUpperCase()) ?? 'Cabin'}
                                             </p>
                                             <p className="text-xs text-vsoe-gold mt-1">
                                                 Cabin {booking.passengers[0]?.cabin.number}
@@ -106,7 +110,7 @@ export default async function ProfilePage() {
                                         <div>
                                             <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Total Paid</p>
                                             <p className="text-xl font-serif text-white">
-                                                €{booking.totalPrice.toLocaleString()}
+                                                €{Number(booking.totalPrice).toLocaleString()}
                                             </p>
                                         </div>
                                     </div>
@@ -116,8 +120,6 @@ export default async function ProfilePage() {
                     </div>
                 )}
             </div>
-
-            
         </main>
     );
 }
