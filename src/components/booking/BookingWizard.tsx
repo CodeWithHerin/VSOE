@@ -6,6 +6,7 @@ import { createBooking } from '@/app/[lang]/book/actions';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { Check, Star, Train, ChevronRight, FileText } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 
 const PaymentForm = dynamic(() => import('./PaymentForm'), {
@@ -37,6 +38,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     const [completedBookingId, setCompletedBookingId] = useState<string | null>(null);
 
     const router = useRouter();
+    const { data: session } = useSession();
 
     // Cabin Options Data 
     const options = [
@@ -100,9 +102,9 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     // Animation Variants
     const containerVariants = {
         hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] as const } },
         exit: { opacity: 0, y: -20, transition: { duration: 0.4 } }
-    } as const;
+    };
 
     const steps = [
         { id: 1, label: t.wizard.step1 },
@@ -246,15 +248,15 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                             <div className="grid md:grid-cols-2 gap-8">
                                 <div className="space-y-2 group">
                                     <label className="text-[10px] uppercase tracking-widest text-vsoe-gold/80 block group-focus-within:text-vsoe-gold transition-colors">{t.wizard.firstName}</label>
-                                    <input required name="firstName" className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="e.g. Alexander" />
+                                    <input required name="firstName" defaultValue={session?.user?.name?.split(' ')[0] ?? ''} className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="e.g. Alexander" />
                                 </div>
                                 <div className="space-y-2 group">
                                     <label className="text-[10px] uppercase tracking-widest text-vsoe-gold/80 block group-focus-within:text-vsoe-gold transition-colors">{t.wizard.lastName}</label>
-                                    <input required name="lastName" className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="e.g. Hamilton" />
+                                    <input required name="lastName" defaultValue={session?.user?.name?.split(' ').slice(1).join(' ') ?? ''} className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="e.g. Hamilton" />
                                 </div>
                                 <div className="space-y-2 group md:col-span-2">
                                     <label className="text-[10px] uppercase tracking-widest text-vsoe-gold/80 block group-focus-within:text-vsoe-gold transition-colors">{t.wizard.email}</label>
-                                    <input required type="email" name="email" className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="alexander@example.com" />
+                                    <input required type="email" name="email" defaultValue={session?.user?.email ?? ''} className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="alexander@example.com" />
                                 </div>
                                 <div className="space-y-2 group md:col-span-2">
                                     <label className="text-[10px] uppercase tracking-widest text-vsoe-gold/80 block group-focus-within:text-vsoe-gold transition-colors">{t.wizard.phone}</label>
@@ -361,7 +363,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
 
                                 {completedBookingId && (
                                     <a
-                                        href={`/invoice/${completedBookingId}`}
+                                        href={`/${language}/invoice/${completedBookingId}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="px-6 py-4 bg-vsoe-gold text-vsoe-midnight text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors flex items-center justify-center gap-2"
