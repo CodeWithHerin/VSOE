@@ -1,11 +1,13 @@
 'use server';
 
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/auth';
 
 export async function getBookingDetails(bookingId: string) {
     if (!bookingId) return null;
+
+    const session = await auth();
+    if (!session?.user?.id) return null;
 
     try {
         const booking = await prisma.booking.findUnique({
@@ -30,9 +32,12 @@ export async function getBookingDetails(bookingId: string) {
             }
         });
 
+        if (!booking) return null;
+        if (booking.userId !== session.user.id) return null;
+
         return booking;
     } catch (error) {
-        console.error("Failed to fetch booking details:", error);
+        console.error('Failed to fetch booking details:', error);
         return null;
     }
 }
