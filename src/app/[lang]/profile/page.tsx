@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { getUserBookings } from './actions';
 import Link from 'next/link';
 import { Ticket, Calendar, Clock, MapPin, User, FileText } from 'lucide-react';
+import SignOutButton from '@/components/ui/SignOutButton';
 
 export default async function ProfilePage({ params }: { params: Promise<{ lang: string }> }) {
     const { lang } = await params;
@@ -37,6 +38,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ lang: 
                             <p className="text-white">{userName}</p>
                             <p className="text-xs opacity-70">{userEmail}</p>
                         </div>
+                        <SignOutButton lang={lang} />
                     </div>
                 </div>
 
