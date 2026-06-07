@@ -4,7 +4,7 @@ import { getBookingDetails } from '../actions';
 import { format } from 'date-fns';
 import InvoiceActions from '@/components/invoice/InvoiceActions';
 
-export default async function InvoicePage({ params }: { params: { bookingId: string } }) {
+export default async function InvoicePage({ params }: { params: Promise<{ bookingId: string }> }) {
     const { bookingId } = await params;
     const booking = await getBookingDetails(bookingId);
 
@@ -14,24 +14,14 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
 
     return (
         <main className="min-h-screen bg-white text-black p-8 md:p-16 pt-32 print:p-0">
-            {/* INJECTED PRINT STYLESHEET */}
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @media print {
-                    /* Hide custom cursor */
                     * { cursor: none !important; }
                     .custom-cursor { display: none !important; }
-                    
-                    /* Hide global UI components (Navbar, Footer, Cookie Banner) */
                     nav, footer, header { display: none !important; }
-                    
-                    /* Hide all fixed overlays (Audio Controller, AI Concierge, Back Button) */
                     div[class*="fixed"], button[class*="fixed"] { display: none !important; }
-                    
-                    /* Force clean page styling */
                     body { background: white !important; color: black !important; }
-                    
-                    /* Full width content, remove box shadow */
                     main { padding: 0 !important; width: 100% !important; max-width: none !important; }
                     .shadow-lg { box-shadow: none !important; border: none !important; }
                 }
@@ -39,21 +29,21 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
 
             <div className="max-w-4xl mx-auto relative border border-gray-200 p-12 shadow-lg print:shadow-none print:border-none">
                 {/* Watermark */}
-                <div 
+                <div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0"
-                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' }}
+                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' } as React.CSSProperties}
                 >
                     <div className="text-[5rem] md:text-[6rem] font-bold text-gray-400 opacity-10 -rotate-[30deg] whitespace-nowrap select-none font-sans">
-                        PORTFOLIO DEMO — NOT A REAL BOOKING
+                        PORTFOLIO DEMO &mdash; NOT A REAL BOOKING
                     </div>
                 </div>
 
                 {/* Top Disclaimer Bar */}
-                <div 
+                <div
                     className="w-full relative z-10 bg-gray-100 border border-gray-300 text-gray-600 text-[10px] font-bold uppercase tracking-widest text-center py-2 mb-8"
-                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' }}
+                    style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' } as React.CSSProperties}
                 >
-                    PORTFOLIO DEMONSTRATION — NOT A REAL BOOKING. NO PAYMENT HAS BEEN TAKEN. NOT AN OFFICIAL BELMOND / VENICE SIMPLON-ORIENT-EXPRESS DOCUMENT.
+                    PORTFOLIO DEMONSTRATION &mdash; NOT A REAL BOOKING. NO PAYMENT HAS BEEN TAKEN. NOT AN OFFICIAL VENICE SIMPLON-ORIENT-EXPRESS DOCUMENT.
                 </div>
 
                 {/* Header */}
@@ -64,7 +54,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                     </div>
                     <div className="text-right">
                         <h2 className="text-xl font-serif text-[#1e293b] mb-1">Project Vitesse</h2>
-                        <p className="text-sm text-gray-500">Portfolio demonstration — not a real booking</p>
+                        <p className="text-sm text-gray-500">Portfolio demonstration &mdash; not a real booking</p>
                         <p className="text-sm text-gray-500 mt-2">Not affiliated with Belmond Management Limited or LVMH</p>
                     </div>
                 </div>
@@ -89,7 +79,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                         <div className="flex justify-between">
                             <span className="text-gray-500">Status:</span>
                             <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded uppercase font-bold tracking-wider">
-                                DEMO — {booking.status}
+                                DEMO &mdash; {booking.status}
                             </span>
                         </div>
                     </div>
@@ -117,16 +107,16 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                         </tr>
                     </thead>
                     <tbody className="text-sm">
-                        {booking.passengers.map((p, i) => (
+                        {booking.passengers.map((p) => (
                             <tr key={p.id} className="border-b border-gray-100">
                                 <td className="py-4">
                                     <p className="font-medium text-gray-900">Passenger: {p.firstName} {p.lastName}</p>
                                     <p className="text-gray-500 text-xs">
-                                        Accomodation: {p.cabin.car.name} - Cabin {p.cabin.number} ({p.cabin.type.replace('_', ' ')})
+                                        Accommodation: {p.cabin.car.name} &mdash; Cabin {p.cabin.number} ({p.cabin.type.replace('_', ' ')})
                                     </p>
                                 </td>
                                 <td className="py-4 text-right font-mono text-gray-700">
-                                    €{booking.totalPrice.toLocaleString()} {/* Assuming total price for now as we don't have individual breakdown stored per passenger reliably here */}
+                                    &euro;{Number(booking.totalPrice).toLocaleString()}
                                 </td>
                             </tr>
                         ))}
@@ -134,7 +124,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                     <tfoot>
                         <tr>
                             <td className="pt-6 text-right font-serif text-lg text-[#1e293b]">Total</td>
-                            <td className="pt-6 text-right font-serif text-2xl text-[#1e293b]">€{booking.totalPrice.toLocaleString()}</td>
+                            <td className="pt-6 text-right font-serif text-2xl text-[#1e293b]">&euro;{Number(booking.totalPrice).toLocaleString()}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -147,7 +137,7 @@ export default async function InvoicePage({ params }: { params: { bookingId: str
                     <p className="mt-2 text-xs text-gray-400">Demo bookings are not stored permanently and may be deleted at any time.</p>
                 </div>
 
-                {/* Print Button Component */}
+                {/* Print Button */}
                 <InvoiceActions />
             </div>
         </main>

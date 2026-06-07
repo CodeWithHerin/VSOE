@@ -5,13 +5,14 @@ import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { getUserBookings } from './actions';
 import Link from 'next/link';
-import { Ticket, Calendar, Clock, MapPin, User } from 'lucide-react';
+import { Ticket, Calendar, Clock, MapPin, User, FileText } from 'lucide-react';
 
-export default async function ProfilePage() {
+export default async function ProfilePage({ params }: { params: Promise<{ lang: string }> }) {
+    const { lang } = await params;
     const session = await auth();
 
     if (!session?.user?.id) {
-        redirect('/login');
+        redirect(`/${lang}/login`);
     }
 
     const bookings = await getUserBookings(session.user.id);
@@ -48,7 +49,7 @@ export default async function ProfilePage() {
                             You haven&apos;t booked any grand tours with us yet. The rails are calling.
                         </p>
                         <Link
-                            href="/book"
+                            href={`/${lang}/book`}
                             className="inline-block bg-vsoe-gold text-vsoe-midnight px-8 py-3 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors"
                         >
                             Book a Journey
@@ -90,7 +91,7 @@ export default async function ProfilePage() {
                                     {/* Divider */}
                                     <div className="w-full h-px md:w-px md:h-auto bg-white/10" />
 
-                                    {/* Right: Passenger & Cabin */}
+                                    {/* Right: Passenger, Cabin, Invoice */}
                                     <div className="md:w-1/3 space-y-4">
                                         <div>
                                             <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Accommodation</p>
@@ -110,8 +111,17 @@ export default async function ProfilePage() {
                                         <div>
                                             <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Total Paid</p>
                                             <p className="text-xl font-serif text-white">
-                                                €{Number(booking.totalPrice).toLocaleString()}
+                                                &euro;{Number(booking.totalPrice).toLocaleString()}
                                             </p>
+                                        </div>
+                                        <div className="pt-2">
+                                            <Link
+                                                href={`/${lang}/invoice/${booking.id}`}
+                                                className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-vsoe-gold hover:text-white transition-colors border border-vsoe-gold/30 hover:border-white/30 px-4 py-2 rounded-sm"
+                                            >
+                                                <FileText size={12} />
+                                                View Invoice
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
