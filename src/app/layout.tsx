@@ -12,6 +12,7 @@ import AIConcierge from '@/components/ui/AIConcierge';
 import { AudioProvider } from '@/components/audio/AudioContext';
 import FloatingBackButton from '@/components/ui/FloatingBackButton';
 import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
+import { SessionProvider } from 'next-auth/react';
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -52,7 +53,9 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
-        {children}
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );
