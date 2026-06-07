@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { useLanguageStore } from '@/lib/store/useLanguageStore';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { useSession, signOut } from 'next-auth/react';
+import { LogOut } from 'lucide-react';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -247,6 +249,7 @@ export default function Navbar() {
     // Search & Language state
     const { language: storeLang, setLanguage: setStoreLang } = useLanguageStore();
     const { t } = useTranslation();
+    const { data: session } = useSession();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
 
     // Sync store with URL params if available
@@ -287,7 +290,7 @@ export default function Navbar() {
             case 'Offers': label = t.nav.offers; break;
             case 'Membership': label = t.nav.membership; break;
             case 'Stories': label = t.nav.stories; break;
-            case 'My Bookings': label = t.nav.myBookings; break;
+            case 'My Bookings': label = session?.user ? (session.user.name?.split(' ')[0] ?? 'Account') : t.nav.myBookings; break;
         }
         return { ...item, label, originalLabel: item.label };
     });
@@ -434,7 +437,7 @@ export default function Navbar() {
                 </div>
 
                 {/* ─── Desktop Nav Links ─────────────────────────────────────────── */}
-                <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1" onMouseLeave={handleMouseLeave}>
+                <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1 items-center" onMouseLeave={handleMouseLeave}>
                     {translatedNavItems.map((item) => (
                         <div key={item.label} className="relative py-2" onMouseEnter={() => handleMouseEnter(item.label)}>
                             <Link
@@ -454,6 +457,15 @@ export default function Navbar() {
                             </Link>
                         </div>
                     ))}
+                    {session?.user && (
+                        <button
+                            onClick={() => signOut({ callbackUrl: '/login' })}
+                            className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-white/50 hover:text-red-400 transition-colors py-2 font-medium"
+                            title="Sign out"
+                        >
+                            <LogOut size={13} />
+                        </button>
+                    )}
                 </div>
 
                 {/* ─── Dynamic Mega Menu Panel ──────────────────────────────────── */}
