@@ -61,9 +61,9 @@ const NAV_ITEMS: NavItem[] = [
                 {
                     heading: 'Popular Routes',
                     links: [
-                        { label: 'Paris to Venice', href: '/destinations/paris-venice', desc: '2 nights · From €4,500' },
-                        { label: 'London to Venice', href: '/destinations/london-venice', desc: '2 nights · From €3,800' },
-                        { label: 'Paris to Istanbul', href: '/destinations/paris-istanbul', desc: '3 nights · From €6,200' },
+                        { label: 'Paris to Venice', href: '/destinations/paris-venice', desc: '2 nights \u00B7 From \u20AC4,500' },
+                        { label: 'London to Venice', href: '/destinations/london-venice', desc: '2 nights \u00B7 From \u20AC3,800' },
+                        { label: 'Paris to Istanbul', href: '/destinations/paris-istanbul', desc: '3 nights \u00B7 From \u20AC6,200' },
                     ]
                 }
             ],
