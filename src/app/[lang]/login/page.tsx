@@ -4,6 +4,7 @@ import { useActionState } from 'react';
 import { authenticate } from './actions';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 
 export default function LoginPage() {
     const { t } = useTranslation();
@@ -63,6 +64,13 @@ export default function LoginPage() {
 
                     <p className="text-center text-xs text-white/40 mt-4">
                         Demo access: <span className="text-white/80">john@example.com</span> / <span className="text-white/80">password123</span>
+                    </p>
+
+                    <p className="text-center text-xs text-white/40 mt-2">
+                        New here?{' '}
+                        <Link href="/signup" className="text-vsoe-gold hover:text-white transition-colors">
+                            Create an account
+                        </Link>
                     </p>
                 </form>
             </div>
