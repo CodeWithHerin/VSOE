@@ -64,11 +64,20 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
 
     // Payment step bypassed; directly rendering Order Summary on step 3
 
+    const [phoneError, setPhoneError] = useState<string | null>(null);
+
     const handleDetailsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
+        const phone = (data.get('phone') as string)?.trim();
+        const phoneRegex = /^\+?[\d\s\-\(\)]{7,20}$/;
+        if (!phoneRegex.test(phone)) {
+            setPhoneError('Please enter a valid phone number (e.g. +44 20 7946 0958)');
+            return;
+        }
+        setPhoneError(null);
         setFormDataState(data);
-        setStep(3); // Go to Payment
+        setStep(3);
     };
 
     const finalizeBooking = async () => {
@@ -265,7 +274,8 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                                 </div>
                                 <div className="space-y-2 group md:col-span-2">
                                     <label className="text-[10px] uppercase tracking-widest text-vsoe-gold/80 block group-focus-within:text-vsoe-gold transition-colors">{t.wizard.phone}</label>
-                                    <input required type="tel" name="phone" className="w-full bg-transparent border-b border-white/20 py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10" placeholder="+1 234 567 8900" />
+                                    <input required type="tel" name="phone" onChange={() => setPhoneError(null)} className={`w-full bg-transparent border-b py-3 text-white text-lg focus:border-vsoe-gold outline-none transition-all placeholder:text-white/10 ${phoneError ? 'border-red-400/60' : 'border-white/20'}`} placeholder="+1 234 567 8900" />
+                                    {phoneError && <p className="text-red-400 text-[11px] mt-1">{phoneError}</p>}
                                 </div>
                             </div>
 
