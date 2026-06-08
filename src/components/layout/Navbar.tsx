@@ -490,11 +490,11 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
-                            className="absolute top-full left-0 w-full bg-vsoe-midnight border-t border-white/10 shadow-2xl z-40"
+                            className="absolute top-full left-1/2 -translate-x-1/2 w-[860px] max-w-[95vw] bg-vsoe-midnight border border-white/10 shadow-2xl z-40 rounded-sm"
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div className="max-w-5xl mx-auto px-12 py-10">
+                            <div className="px-8 py-8">
                                 <div className={cn(
                                     "grid gap-8",
                                     // Adapt grid: links column + image columns based on image count
