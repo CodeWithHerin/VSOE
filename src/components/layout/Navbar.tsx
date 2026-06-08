@@ -433,7 +433,7 @@ export default function Navbar() {
                 </div>
 
                 {/* ─── Desktop Nav Links ─────────────────────────────────────────── */}
-                <div className="hidden lg:flex justify-center gap-8 mt-2 pb-1" onMouseLeave={handleMouseLeave}>
+                <div className={cn("hidden lg:flex mt-2 pb-1 items-center", isScrolled ? "justify-between px-6 md:px-12" : "justify-center gap-8")} onMouseLeave={handleMouseLeave}>
                     {translatedNavItems.map((item) => (
                         <div key={item.label} className="relative py-2" onMouseEnter={() => handleMouseEnter(item.label)}>
                             <Link
@@ -453,19 +453,17 @@ export default function Navbar() {
                             </Link>
                         </div>
                     ))}
+                    {isScrolled && (
+                        <div className="flex items-center gap-5 flex-shrink-0 pl-8 border-l border-white/10">
+                            <NavUserStatus />
+                            <Link href="/book" className="whitespace-nowrap">
+                                <MagneticButton className="border border-vsoe-gold/70 text-vsoe-gold bg-transparent px-5 py-2 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-vsoe-gold hover:text-vsoe-midnight transition-all duration-300 inline-block whitespace-nowrap">
+                                    {t.nav.bookJourney}
+                                </MagneticButton>
+                            </Link>
+                        </div>
+                    )}
                 </div>
-
-                {/* ─── Compact scrolled CTAs (only visible when scrolled) ─── */}
-                {isScrolled && (
-                    <div className="hidden lg:flex items-center gap-3 absolute right-6 top-1/2 -translate-y-1/2">
-                        <NavUserStatus />
-                        <Link href="/book">
-                            <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-4 py-2 text-[9px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block whitespace-nowrap">
-                                {t.nav.bookJourney}
-                            </MagneticButton>
-                        </Link>
-                    </div>
-                )}
 
                 {/* ─── Dynamic Mega Menu Panel ──────────────────────────────────── */}
                 <AnimatePresence>
