@@ -1,18 +1,8 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
-
-import CustomCursor from "@/components/ui/CustomCursor";
-import Preloader from "@/components/ui/Preloader";
-import AudioAmbience from "@/components/layout/AudioAmbience";
-import SmoothScroll from "@/components/ui/SmoothScroll";
-import CookieConsent from '@/components/ui/CookieConsent';
-import BookTheScene from '@/components/ui/BookTheScene';
-import AIConcierge from '@/components/ui/AIConcierge';
-import { AudioProvider } from '@/components/audio/AudioContext';
-import FloatingBackButton from '@/components/ui/FloatingBackButton';
-import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
 import { SessionProvider } from 'next-auth/react';
+import { auth } from '@/auth';
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -43,17 +33,19 @@ export const metadata: Metadata = {
   description: "A next-generation journey through the golden age of travel.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
-        <SessionProvider>
+        <SessionProvider session={session}>
           {children}
         </SessionProvider>
       </body>

@@ -424,10 +424,9 @@ export default function Navbar() {
                             <NavUserStatus />
                         </div>
 
-                        <Link href="/book" className={cn("transition-all duration-500", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
-                            <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-4 md:px-8 py-3 text-[10px] md:text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block">
-                                <span className="hidden md:inline">{t.nav.bookJourney}</span>
-                                <span className="md:hidden">{t.nav.book}</span>
+                        <Link href="/book" className={cn("transition-all duration-500 whitespace-nowrap", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
+                            <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block whitespace-nowrap">
+                                {t.nav.bookJourney}
                             </MagneticButton>
                         </Link>
                     </div>
