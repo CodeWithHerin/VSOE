@@ -1,6 +1,6 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import { authenticate } from './actions';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -9,7 +9,15 @@ import Image from 'next/image';
 
 export default function LoginPage() {
     const { t } = useTranslation();
-    const [errorMessage, dispatch, isPending] = useActionState(authenticate, undefined);
+    const [state, dispatch, isPending] = useActionState(authenticate, undefined);
+
+    useEffect(() => {
+        if (state === null) {
+            window.location.href = '/profile';
+        }
+    }, [state]);
+
+    const errorMessage = state === null ? undefined : state;
 
     return (
         <main className="min-h-screen bg-vsoe-midnight flex overflow-hidden">
@@ -81,10 +89,10 @@ export default function LoginPage() {
                             <MagneticButton className="w-full bg-vsoe-gold text-vsoe-midnight py-4 text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors flex justify-center">
                                 <button
                                     type="submit"
-                                    disabled={isPending}
+                                    disabled={isPending || state === null}
                                     className="w-full h-full disabled:opacity-60"
                                 >
-                                    {isPending ? 'Signing in...' : t.forms.signIn}
+                                    {isPending || state === null ? 'Signing in...' : t.forms.signIn}
                                 </button>
                             </MagneticButton>
                         </div>

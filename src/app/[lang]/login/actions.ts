@@ -2,18 +2,18 @@
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-import { redirect } from 'next/navigation';
 
 export async function authenticate(
-    prevState: string | undefined,
+    prevState: string | null | undefined,
     formData: FormData
-): Promise<string | undefined> {
+): Promise<string | null> {
     try {
         await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get('password'),
             redirect: false,
         });
+        return null;
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -25,5 +25,4 @@ export async function authenticate(
         }
         throw error;
     }
-    redirect('/profile');
 }
