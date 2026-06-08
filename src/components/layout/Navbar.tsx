@@ -490,34 +490,24 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
-                            className="absolute top-full left-1/2 -translate-x-1/2 w-[860px] max-w-[95vw] bg-vsoe-midnight border border-white/10 shadow-2xl z-40 rounded-sm"
+                            className="absolute top-full left-0 w-full bg-vsoe-midnight border-t border-white/10 shadow-2xl z-40"
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div className="px-8 py-8">
-                                <div className={cn(
-                                    "grid gap-8",
-                                    // Adapt grid: links column + image columns based on image count
-                                    activeMegaMenu.images.length >= 3
-                                        ? "grid-cols-4"
-                                        : activeMegaMenu.images.length === 2
-                                            ? "grid-cols-3"
-                                            : "grid-cols-2"
-                                )}>
-                                    {/* ── Left Column: Heading + Links ────────── */}
-                                    <div className="space-y-6">
-                                        {activeMegaMenu.columns.map((col) => (
-                                            <div key={col.heading}>
-                                                <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-6">
-                                                    {col.heading}
-                                                </h4>
-                                                <ul className="space-y-4">
-                                                    {col.links.map((link) => (
-                                                        <li key={link.label}>
-                                                            <Link
-                                                                href={link.href}
-                                                                className="group/link block"
-                                                            >
+                            <div className="max-w-[1920px] mx-auto px-12 py-10">
+                                {activeMegaMenu.columns.length > 1 ? (
+                                    /* ── Experiences: 2-col links + compact images ── */
+                                    <div className="grid grid-cols-3 gap-8 items-start">
+                                        {/* Links: 2 columns side by side */}
+                                        <div className="col-span-1 space-y-8">
+                                            {activeMegaMenu.columns.map((col) => (
+                                                <div key={col.heading}>
+                                                    <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-4">
+                                                        {col.heading}
+                                                    </h4>
+                                                    <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                                                        {col.links.map((link) => (
+                                                            <Link key={link.label} href={link.href} className="group/link block">
                                                                 <span className="text-sm text-white/90 group-hover/link:text-vsoe-gold transition-colors duration-300 relative">
                                                                     {link.label}
                                                                     <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300 group-hover/link:w-full" />
@@ -526,43 +516,87 @@ export default function Navbar() {
                                                                     {link.desc}
                                                                 </span>
                                                             </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                            </div>
-                                        ))}
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        {/* Images: 3 compact thumbnails */}
+                                        <div className="col-span-2 grid grid-cols-3 gap-3">
+                                            {activeMegaMenu.images.map((img) => (
+                                                <Link key={img.label} href={img.href} className="relative aspect-[4/3] group/img cursor-pointer overflow-hidden rounded-sm">
+                                                    <Image
+                                                        src={img.src}
+                                                        alt={img.label}
+                                                        fill
+                                                        className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                                                        sizes="220px"
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
+                                                    <span className="absolute bottom-3 left-3 text-white font-serif text-base drop-shadow-lg">
+                                                        {img.label}
+                                                    </span>
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
-
-                                    {/* ── Right Columns: Image Grid ───────────── */}
+                                ) : (
+                                    /* ── All other menus: original layout ── */
                                     <div className={cn(
-                                        "grid gap-4",
+                                        "grid gap-8",
                                         activeMegaMenu.images.length >= 3
-                                            ? "col-span-3 grid-cols-3"
+                                            ? "grid-cols-4"
                                             : activeMegaMenu.images.length === 2
-                                                ? "col-span-2 grid-cols-2"
-                                                : "col-span-1 grid-cols-1"
+                                                ? "grid-cols-3"
+                                                : "grid-cols-2"
                                     )}>
-                                        {activeMegaMenu.images.map((img) => (
-                                            <Link
-                                                key={img.label}
-                                                href={img.href}
-                                                className="relative aspect-video group/img cursor-pointer overflow-hidden"
-                                            >
-                                                <Image
-                                                    src={img.src}
-                                                    alt={img.label}
-                                                    fill
-                                                    className="object-cover transition-transform duration-700 group-hover/img:scale-110"
-                                                    sizes="(max-width: 768px) 100vw, 33vw"
-                                                />
-                                                <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
-                                                <span className="absolute bottom-4 left-4 text-white font-serif text-xl drop-shadow-lg">
-                                                    {img.label}
-                                                </span>
-                                            </Link>
-                                        ))}
+                                        <div className="space-y-6">
+                                            {activeMegaMenu.columns.map((col) => (
+                                                <div key={col.heading}>
+                                                    <h4 className="text-vsoe-gold text-xs font-bold tracking-[0.2em] uppercase mb-6">
+                                                        {col.heading}
+                                                    </h4>
+                                                    <ul className="space-y-4">
+                                                        {col.links.map((link) => (
+                                                            <li key={link.label}>
+                                                                <Link href={link.href} className="group/link block">
+                                                                    <span className="text-sm text-white/90 group-hover/link:text-vsoe-gold transition-colors duration-300 relative">
+                                                                        {link.label}
+                                                                        <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300 group-hover/link:w-full" />
+                                                                    </span>
+                                                                    <span className="block text-[11px] text-vsoe-cream/50 mt-0.5 leading-relaxed">
+                                                                        {link.desc}
+                                                                    </span>
+                                                                </Link>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            ))}
+                                        </div>
+                                        <div className={cn(
+                                            "grid gap-4",
+                                            activeMegaMenu.images.length >= 3
+                                                ? "col-span-3 grid-cols-3"
+                                                : activeMegaMenu.images.length === 2
+                                                    ? "col-span-2 grid-cols-2"
+                                                    : "col-span-1 grid-cols-1"
+                                        )}>
+                                            {activeMegaMenu.images.map((img) => (
+                                                <Link key={img.label} href={img.href} className="relative aspect-video group/img cursor-pointer overflow-hidden">
+                                                    <Image src={img.src} alt={img.label} fill
+                                                        className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                                                        sizes="(max-width: 768px) 100vw, 33vw"
+                                                    />
+                                                    <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
+                                                    <span className="absolute bottom-4 left-4 text-white font-serif text-xl drop-shadow-lg">
+                                                        {img.label}
+                                                    </span>
+                                                </Link>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                         </motion.div>
                         </>
