@@ -38,7 +38,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     const [completedBookingId, setCompletedBookingId] = useState<string | null>(null);
 
     const router = useRouter();
-    const { data: session } = useSession();
+    const { data: session, status: sessionStatus } = useSession();
 
     // Cabin Options Data 
     const options = [
@@ -240,6 +240,11 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                             <p className="text-white/60">{t.wizard.travellingWho}</p>
                         </div>
 
+                        {sessionStatus === 'loading' ? (
+                            <div className="h-40 flex items-center justify-center">
+                                <div className="w-6 h-6 border-2 border-vsoe-gold border-t-transparent rounded-full animate-spin" />
+                            </div>
+                        ) : (
                         <form onSubmit={handleDetailsSubmit} className="space-y-8 bg-white/5 p-10 rounded-sm border border-white/10 backdrop-blur-sm">
                             <input type="hidden" name="journeyId" value={journey.id} />
                             <input type="hidden" name="cabinId" value={selectedCabin?.data.cabinId} />
@@ -272,6 +277,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                                 </button>
                             </div>
                         </form>
+                        )}
                     </motion.div>
                 )}
 
