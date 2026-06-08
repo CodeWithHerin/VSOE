@@ -2,6 +2,7 @@
 
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export async function authenticate(
     prevState: string | undefined,
@@ -11,7 +12,7 @@ export async function authenticate(
         await signIn('credentials', {
             email: formData.get('email'),
             password: formData.get('password'),
-            redirectTo: '/profile',
+            redirect: false,
         });
     } catch (error) {
         if (error instanceof AuthError) {
@@ -24,4 +25,5 @@ export async function authenticate(
         }
         throw error;
     }
+    redirect('/profile');
 }
