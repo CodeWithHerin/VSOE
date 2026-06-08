@@ -298,7 +298,7 @@ export default function Navbar() {
     const handleMouseLeave = () => {
         closeTimeoutRef.current = setTimeout(() => {
             setActiveMenu(null);
-        }, 300); // 300ms delay
+        }, 500);
     };
 
     useMotionValueEvent(scrollY, "change", (latest) => {
@@ -468,6 +468,13 @@ export default function Navbar() {
                 {/* ─── Dynamic Mega Menu Panel ──────────────────────────────────── */}
                 <AnimatePresence>
                     {activeMenu && activeMegaMenu && (
+                        <>
+                        <div
+                            className="absolute left-0 w-full z-30"
+                            style={{ top: 'calc(100% - 8px)', height: '16px' }}
+                            onMouseEnter={() => handleMouseEnter(activeMenu)}
+                            onMouseLeave={handleMouseLeave}
+                        />
                         <motion.div
                             key={activeMenu}
                             initial={{ opacity: 0, y: -10 }}
@@ -549,6 +556,7 @@ export default function Navbar() {
                                 </div>
                             </div>
                         </motion.div>
+                        </>
                     )}
                 </AnimatePresence>
             </motion.nav>
