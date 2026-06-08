@@ -240,6 +240,7 @@ export default function Navbar() {
     const [activeMenu, setActiveMenu] = useState<string | null>(null);
     const { scrollY } = useScroll();
     const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const openTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     // Search & Language state
     const { language: storeLang, setLanguage: setStoreLang } = useLanguageStore();
@@ -292,10 +293,18 @@ export default function Navbar() {
         if (closeTimeoutRef.current) {
             clearTimeout(closeTimeoutRef.current);
         }
-        setActiveMenu(menu);
+        if (openTimeoutRef.current) {
+            clearTimeout(openTimeoutRef.current);
+        }
+        openTimeoutRef.current = setTimeout(() => {
+            setActiveMenu(menu);
+        }, 200);
     };
 
     const handleMouseLeave = () => {
+        if (openTimeoutRef.current) {
+            clearTimeout(openTimeoutRef.current);
+        }
         closeTimeoutRef.current = setTimeout(() => {
             setActiveMenu(null);
         }, 500);
