@@ -10,6 +10,7 @@ import { cn } from '@/lib/utils';
 import MagneticButton from '@/components/ui/MagneticButton';
 import { useLanguageStore } from '@/lib/store/useLanguageStore';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import NavUserStatus from '@/components/ui/NavUserStatus';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -224,10 +225,6 @@ const NAV_ITEMS: NavItem[] = [
             ]
         }
     },
-    {
-        label: 'My Bookings',
-        href: '/profile',
-    },
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -287,7 +284,6 @@ export default function Navbar() {
             case 'Offers': label = t.nav.offers; break;
             case 'Membership': label = t.nav.membership; break;
             case 'Stories': label = t.nav.stories; break;
-            case 'My Bookings': label = t.nav.myBookings; break;
         }
         return { ...item, label, originalLabel: item.label };
     });
@@ -454,6 +450,9 @@ export default function Navbar() {
                             </Link>
                         </div>
                     ))}
+                    <div className="relative py-2">
+                        <NavUserStatus />
+                    </div>
                 </div>
 
                 {/* ─── Dynamic Mega Menu Panel ──────────────────────────────────── */}
@@ -632,6 +631,7 @@ export default function Navbar() {
                                         {item.label}
                                     </Link>
                                 ))}
+                                <NavUserStatus />
                             </div>
                         </motion.div>
                     )
