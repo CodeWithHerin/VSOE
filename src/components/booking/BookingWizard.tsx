@@ -369,7 +369,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
 
                                 {completedBookingId && (
                                     <a
-                                        href={`/${language}/invoice/${completedBookingId}`}
+                                        href={`/${language.toLowerCase()}/invoice/${completedBookingId}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="px-6 py-4 bg-vsoe-gold text-vsoe-midnight text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors flex items-center justify-center gap-2"
