@@ -1,21 +1,40 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
+const HOME_PATHS = ['/', '/en', '/fr', '/it', '/de', '/en/', '/fr/', '/it/', '/de/'];
+
 export default function FloatingBackButton() {
     const router = useRouter();
     const pathname = usePathname();
-    const [hasHistory, setHasHistory] = useState(false);
+    const [canGoBack, setCanGoBack] = useState(false);
+    const prevPathRef = useRef<string | null>(null);
 
     useEffect(() => {
-        setHasHistory(window.history.length > 1);
+        const isHome = HOME_PATHS.includes(pathname);
+        if (isHome) {
+            setCanGoBack(false);
+            prevPathRef.current = pathname;
+            return;
+        }
+
+        if (prevPathRef.current !== null && prevPathRef.current !== pathname) {
+            setCanGoBack(true);
+        } else {
+            const fromSameSite =
+                document.referrer.length > 0 &&
+                document.referrer.includes(window.location.hostname) &&
+                !document.referrer.endsWith(pathname);
+            setCanGoBack(fromSameSite);
+        }
+
+        prevPathRef.current = pathname;
     }, [pathname]);
 
-    if (pathname === '/') return null;
-    if (!hasHistory) return null;
+    if (!canGoBack) return null;
 
     return (
         <AnimatePresence>
