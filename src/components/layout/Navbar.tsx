@@ -298,7 +298,7 @@ export default function Navbar() {
         }
         openTimeoutRef.current = setTimeout(() => {
             setActiveMenu(menu);
-        }, 200);
+        }, 175);
     };
 
     const handleMouseLeave = () => {
@@ -494,7 +494,7 @@ export default function Navbar() {
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
-                            <div className="max-w-[1920px] mx-auto px-12 py-12">
+                            <div className="max-w-5xl mx-auto px-12 py-10">
                                 <div className={cn(
                                     "grid gap-8",
                                     // Adapt grid: links column + image columns based on image count
