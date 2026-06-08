@@ -32,7 +32,7 @@ export default function SignupPage() {
             </div>
 
             {/* Right: Form */}
-            <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-20 pt-32 pb-16 lg:py-20">
+            <div className="w-full lg:w-1/2 flex flex-col justify-center px-8 md:px-16 lg:px-20 pt-32 pb-16 lg:pt-32 lg:pb-20">
                 <div className="w-full max-w-md mx-auto lg:mx-0">
                     <div className="w-10 h-[2px] bg-vsoe-gold mb-8" />
                     <h1 className="text-4xl md:text-5xl font-serif text-vsoe-cream mb-3">

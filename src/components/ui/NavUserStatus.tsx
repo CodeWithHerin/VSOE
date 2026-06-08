@@ -13,7 +13,7 @@ export default function NavUserStatus() {
         return (
             <Link
                 href="/login"
-                className="text-xs uppercase tracking-[0.15em] text-white/80 hover:text-vsoe-gold transition-colors font-medium py-1"
+                className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-vsoe-midnight bg-vsoe-cream/90 hover:bg-white px-5 py-2.5 transition-colors duration-300 whitespace-nowrap"
             >
                 Sign In
             </Link>
@@ -25,9 +25,9 @@ export default function NavUserStatus() {
     return (
         <Link
             href="/profile"
-            className="flex items-center gap-1.5 text-xs uppercase tracking-[0.15em] text-vsoe-gold hover:text-white transition-colors font-medium py-1"
+            className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-vsoe-midnight bg-vsoe-gold hover:bg-white px-5 py-2.5 transition-colors duration-300 whitespace-nowrap"
         >
-            <User size={12} />
+            <User size={11} />
             {firstName}
         </Link>
     );

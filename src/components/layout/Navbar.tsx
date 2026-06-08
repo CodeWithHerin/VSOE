@@ -420,7 +420,7 @@ export default function Navbar() {
                             </AnimatePresence>
                         </div>
 
-                        <div className={cn("hidden lg:flex items-center transition-all duration-500", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
+                        <div className={cn("hidden lg:flex items-center transition-all duration-500 whitespace-nowrap", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
                             <NavUserStatus />
                         </div>
 
