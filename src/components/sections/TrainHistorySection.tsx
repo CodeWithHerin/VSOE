@@ -12,11 +12,23 @@ export default function TrainHistorySection() {
     const containerRef = useRef(null);
     const { scrollYProgress } = useScroll({
         target: containerRef,
-        offset: ["start end", "end start"]
+        offset: ['start end', 'end start']
     });
 
-    const y1 = useTransform(scrollYProgress, [0, 1], [100, -100]);
-    const y2 = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+    // Amplified parallax ranges
+    const y1 = useTransform(scrollYProgress, [0, 1], [160, -160]);
+    const y2 = useTransform(scrollYProgress, [0, 1], [-160, 160]);
+
+    // Counter-rotation for cinematic depth
+    const rotate1 = useTransform(scrollYProgress, [0, 1], [-3, 2]);
+    const rotate2 = useTransform(scrollYProgress, [0, 1], [3, -3]);
+
+    // Gold line draws itself in as section enters
+    const lineWidth = useTransform(scrollYProgress, [0, 0.25], ['0%', '100%']);
+
+    // Text and stats fade in staggered
+    const textOpacity = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
+    const textY = useTransform(scrollYProgress, [0.05, 0.3], [40, 0]);
 
     return (
         <section ref={containerRef} className="relative py-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
@@ -25,38 +37,54 @@ export default function TrainHistorySection() {
             </div>
 
             <div id="track-heritage" className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
                 {/* Content */}
                 <motion.div
-                    initial={{ opacity: 0, x: -40 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
+                    style={{ opacity: textOpacity, y: textY }}
                     className="space-y-8 relative z-10"
                 >
-                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">{t.history.legend}</span>
+                    {/* Self-drawing gold line */}
+                    <motion.div
+                        style={{ width: lineWidth }}
+                        className="h-[1px] bg-vsoe-gold mb-2 origin-left"
+                    />
+
+                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">
+                        {t.history.legend}
+                    </span>
                     <h2 className="text-5xl md:text-6xl font-serif leading-tight">
-                        {t.history.title1} <br /> <span className="text-vsoe-gold">{t.history.title2}</span>
+                        {t.history.title1} <br />
+                        <span className="text-vsoe-gold">{t.history.title2}</span>
                     </h2>
                     <p className="text-white/70 leading-relaxed font-sans text-lg">
                         {t.history.desc}
                     </p>
                     <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
                         <div>
-                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">{t.history.restored}</span>
-                            <span className="text-xs uppercase tracking-widest text-white/60">{t.history.restoredSub}</span>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">
+                                {t.history.restored}
+                            </span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">
+                                {t.history.restoredSub}
+                            </span>
                         </div>
                         <div>
-                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">{t.history.era}</span>
-                            <span className="text-xs uppercase tracking-widest text-white/60">{t.history.eraSub}</span>
+                            <span className="block text-3xl font-serif text-vsoe-gold mb-2">
+                                {t.history.era}
+                            </span>
+                            <span className="text-xs uppercase tracking-widest text-white/60">
+                                {t.history.eraSub}
+                            </span>
                         </div>
                     </div>
                 </motion.div>
 
                 {/* Visuals */}
                 <div className="relative h-[600px] grid grid-cols-2 gap-8">
-                    {/* Image 1: Detail (Parallax Up) */}
+
+                    {/* Image 1: Parallax Up + Rotate */}
                     <motion.div
-                        style={{ y: y1 }}
+                        style={{ y: y1, rotate: rotate1 }}
                         className="relative h-[80%] mt-auto self-end group"
                     >
                         <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105" />
@@ -71,9 +99,9 @@ export default function TrainHistorySection() {
                         </div>
                     </motion.div>
 
-                    {/* Image 2: Interior (Parallax Down) */}
+                    {/* Image 2: Parallax Down + Counter-Rotate */}
                     <motion.div
-                        style={{ y: y2 }}
+                        style={{ y: y2, rotate: rotate2 }}
                         className="relative h-[80%] group"
                     >
                         <div className="absolute -inset-4 border border-vsoe-gold/30 z-0 transition-transform duration-500 group-hover:scale-105 delay-75" />
