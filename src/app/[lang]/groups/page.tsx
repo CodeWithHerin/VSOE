@@ -8,24 +8,39 @@ export default function GroupsPage() {
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
 
             {/* Hero */}
-            <section className="relative h-[85vh] min-h-[600px] flex items-end pb-24">
+            <section className="relative h-screen min-h-[700px] flex items-center">
                 <Image
                     src="/images/vsoe/vsoe-exterior-night.jpg"
                     alt="Venice Simplon-Orient-Express by night"
                     fill
-                    className="object-cover"
+                    className="object-cover scale-105"
                     priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-vsoe-midnight/90 via-vsoe-midnight/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight/60 via-transparent to-transparent" />
                 <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
-                    <div className="w-12 h-[1px] bg-vsoe-gold mb-8" />
-                    <p className="text-vsoe-gold text-xs font-bold uppercase tracking-[0.3em] mb-4">Exclusive Hire</p>
-                    <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 max-w-3xl leading-tight">
-                        The Entire Train.<br />Exclusively Yours.
-                    </h1>
-                    <p className="text-white/60 text-lg max-w-xl leading-relaxed">
-                        For those who demand the extraordinary — a private journey across Europe aboard one of the world&apos;s most legendary trains.
-                    </p>
+                    <div className="max-w-2xl">
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="w-12 h-[1px] bg-vsoe-gold" />
+                            <p className="text-vsoe-gold text-[10px] font-bold uppercase tracking-[0.4em]">Exclusive Hire</p>
+                        </div>
+                        <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.05] tracking-tight">
+                            The Entire<br />
+                            <span className="text-vsoe-gold italic">Train.</span><br />
+                            Exclusively<br />Yours.
+                        </h1>
+                        <p className="text-white/60 text-base md:text-lg max-w-md leading-relaxed mb-12">
+                            For those who demand the extraordinary — a private journey across Europe aboard one of the world&apos;s most legendary trains.
+                        </p>
+                        <div className="flex items-center gap-6">
+                            <a href="#enquire" className="inline-flex items-center gap-3 bg-vsoe-gold text-vsoe-midnight px-8 py-4 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors">
+                                Begin Enquiry
+                            </a>
+                            <a href="#charter" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/60 hover:text-vsoe-gold transition-colors">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -57,7 +72,7 @@ export default function GroupsPage() {
             {/* Two Feature Sections */}
             <section className="border-t border-white/10">
                 {/* Private Charter */}
-                <div className="max-w-7xl mx-auto px-6 md:px-12 py-24">
+                <div id="charter" className="max-w-7xl mx-auto px-6 md:px-12 py-24">
                     <div className="grid md:grid-cols-2 gap-16 items-center">
                         <div className="relative h-[480px] rounded-sm overflow-hidden order-2 md:order-1">
                             <Image
@@ -138,7 +153,7 @@ export default function GroupsPage() {
             </section>
 
             {/* Inquiry Form */}
-            <section className="max-w-7xl mx-auto px-6 md:px-12 py-24">
+            <section id="enquire" className="max-w-7xl mx-auto px-6 md:px-12 py-24">
                 <div className="max-w-2xl mx-auto">
                     <div className="text-center mb-16">
                         <div className="w-12 h-[1px] bg-vsoe-gold mx-auto mb-8" />
