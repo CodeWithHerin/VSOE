@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { useTrackInterest } from '@/lib/profiling';
 import { useTranslation } from '@/lib/i18n/useTranslation';
@@ -15,20 +15,50 @@ export default function TrainHistorySection() {
         offset: ['start end', 'end start']
     });
 
-    // Amplified parallax ranges
+    // Amplified parallax
     const y1 = useTransform(scrollYProgress, [0, 1], [160, -160]);
     const y2 = useTransform(scrollYProgress, [0, 1], [-160, 160]);
 
-    // Counter-rotation for cinematic depth
-    const rotate1 = useTransform(scrollYProgress, [0, 1], [-3, 2]);
-    const rotate2 = useTransform(scrollYProgress, [0, 1], [3, -3]);
+    // Rotation starts at 40% scroll progress — subtle, delayed
+    const rotate1 = useTransform(scrollYProgress, [0.4, 1], [-2, 2]);
+    const rotate2 = useTransform(scrollYProgress, [0.4, 1], [2, -2]);
 
-    // Gold line draws itself in as section enters
-    const lineWidth = useTransform(scrollYProgress, [0, 0.25], ['0%', '100%']);
+    // Stagger config for text children
+    const containerVariants: Variants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.12,
+                delayChildren: 0.1,
+            }
+        }
+    };
 
-    // Text and stats fade in staggered
-    const textOpacity = useTransform(scrollYProgress, [0.05, 0.3], [0, 1]);
-    const textY = useTransform(scrollYProgress, [0.05, 0.3], [40, 0]);
+    const lineVariants: Variants = {
+        hidden: { scaleX: 0, originX: 0 },
+        visible: {
+            scaleX: 1,
+            transition: { duration: 0.8, ease: [0.25, 1, 0.5, 1] }
+        }
+    };
+
+    const itemVariants: Variants = {
+        hidden: { opacity: 0, y: 32 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.7, ease: [0.25, 1, 0.5, 1] }
+        }
+    };
+
+    const statVariants: Variants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.6, ease: [0.25, 1, 0.5, 1] }
+        }
+    };
 
     return (
         <section ref={containerRef} className="relative py-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
@@ -38,51 +68,72 @@ export default function TrainHistorySection() {
 
             <div id="track-heritage" className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
 
-                {/* Content */}
+                {/* Content — staggered whileInView entrance */}
                 <motion.div
-                    style={{ opacity: textOpacity, y: textY }}
+                    variants={containerVariants}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-80px' }}
                     className="space-y-8 relative z-10"
                 >
-                    {/* Self-drawing gold line */}
+                    {/* Gold line draws first */}
                     <motion.div
-                        style={{ width: lineWidth }}
-                        className="h-[1px] bg-vsoe-gold mb-2 origin-left"
+                        variants={lineVariants}
+                        className="h-[1px] bg-vsoe-gold w-full"
                     />
 
-                    <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">
+                    {/* Label */}
+                    <motion.span
+                        variants={itemVariants}
+                        className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block"
+                    >
                         {t.history.legend}
-                    </span>
-                    <h2 className="text-5xl md:text-6xl font-serif leading-tight">
+                    </motion.span>
+
+                    {/* Headline */}
+                    <motion.h2
+                        variants={itemVariants}
+                        className="text-5xl md:text-6xl font-serif leading-tight"
+                    >
                         {t.history.title1} <br />
                         <span className="text-vsoe-gold">{t.history.title2}</span>
-                    </h2>
-                    <p className="text-white/70 leading-relaxed font-sans text-lg">
+                    </motion.h2>
+
+                    {/* Body */}
+                    <motion.p
+                        variants={itemVariants}
+                        className="text-white/70 leading-relaxed font-sans text-lg"
+                    >
                         {t.history.desc}
-                    </p>
-                    <div className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10">
-                        <div>
+                    </motion.p>
+
+                    {/* Stats */}
+                    <motion.div
+                        variants={itemVariants}
+                        className="grid grid-cols-2 gap-8 pt-8 border-t border-white/10"
+                    >
+                        <motion.div variants={statVariants}>
                             <span className="block text-3xl font-serif text-vsoe-gold mb-2">
                                 {t.history.restored}
                             </span>
                             <span className="text-xs uppercase tracking-widest text-white/60">
                                 {t.history.restoredSub}
                             </span>
-                        </div>
-                        <div>
+                        </motion.div>
+                        <motion.div variants={statVariants}>
                             <span className="block text-3xl font-serif text-vsoe-gold mb-2">
                                 {t.history.era}
                             </span>
                             <span className="text-xs uppercase tracking-widest text-white/60">
                                 {t.history.eraSub}
                             </span>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
                 </motion.div>
 
-                {/* Visuals */}
+                {/* Visuals — scroll-driven parallax + delayed rotation */}
                 <div className="relative h-[600px] grid grid-cols-2 gap-8">
 
-                    {/* Image 1: Parallax Up + Rotate */}
                     <motion.div
                         style={{ y: y1, rotate: rotate1 }}
                         className="relative h-[80%] mt-auto self-end group"
@@ -99,7 +150,6 @@ export default function TrainHistorySection() {
                         </div>
                     </motion.div>
 
-                    {/* Image 2: Parallax Down + Counter-Rotate */}
                     <motion.div
                         style={{ y: y2, rotate: rotate2 }}
                         className="relative h-[80%] group"
