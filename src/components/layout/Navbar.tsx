@@ -158,6 +158,7 @@ const NAV_ITEMS: NavItem[] = [
                         { label: 'Anniversaries', href: '/occasions', desc: 'Milestone moments on rails' },
                         { label: 'Corporate Events', href: '/occasions', desc: 'Impress beyond the boardroom' },
                         { label: 'Private Dining', href: '/occasions', desc: 'Exclusive carriage hire' },
+                        { label: 'Groups & Charters', href: '/groups', desc: 'The entire train, exclusively yours' },
                     ]
                 }
             ],
