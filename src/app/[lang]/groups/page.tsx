@@ -8,7 +8,7 @@ export default function GroupsPage() {
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream">
 
             {/* Hero */}
-            <section className="relative h-screen min-h-[700px] flex items-center">
+            <section className="relative h-screen min-h-[700px] flex items-center overflow-hidden">
                 <Image
                     src="/images/vsoe/vsoe-exterior-night.jpg"
                     alt="Venice Simplon-Orient-Express by night"
@@ -18,7 +18,7 @@ export default function GroupsPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-vsoe-midnight/90 via-vsoe-midnight/50 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight/60 via-transparent to-transparent" />
-                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full pt-32">
+                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full pt-24">
                     <div className="max-w-2xl">
                         <div className="flex items-center gap-4 mb-6">
                             <div className="w-12 h-[1px] bg-vsoe-gold" />
