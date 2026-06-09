@@ -491,7 +491,7 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
-                            className="absolute top-full left-4 right-4 bg-vsoe-midnight border border-white/10 shadow-2xl z-40 rounded-sm"
+                            className="absolute top-full left-8 right-8 bg-vsoe-midnight border border-white/10 shadow-2xl z-40 rounded-sm"
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
@@ -508,7 +508,7 @@ export default function Navbar() {
                                                     </h4>
                                                     <div className="grid grid-cols-2 gap-x-6 gap-y-3">
                                                         {col.links.map((link) => (
-                                                            <Link key={link.label} href={link.href} className="group/link block">
+                                                            <Link key={link.label} href={link.href} className="group/link block" onClick={() => setActiveMenu(null)}>
                                                                 <span className="text-sm text-white/90 group-hover/link:text-vsoe-gold transition-colors duration-300 relative">
                                                                     {link.label}
                                                                     <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300 group-hover/link:w-full" />
@@ -525,12 +525,12 @@ export default function Navbar() {
                                         {/* Images: 3 compact thumbnails */}
                                         <div className="col-span-2 grid grid-cols-3 gap-3">
                                             {activeMegaMenu.images.map((img) => (
-                                                <Link key={img.label} href={img.href} className="relative aspect-[4/3] group/img cursor-pointer overflow-hidden rounded-sm">
+                                                <Link key={img.label} href={img.href} className="relative aspect-[4/3] group/img cursor-pointer overflow-hidden rounded-sm" onClick={() => setActiveMenu(null)}>
                                                     <Image
                                                         src={img.src}
                                                         alt={img.label}
                                                         fill
-                                                        className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                                                        className="object-cover scale-110 transition-transform duration-700 group-hover/img:scale-125"
                                                         sizes="220px"
                                                     />
                                                     <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
@@ -560,7 +560,7 @@ export default function Navbar() {
                                                     <ul className="space-y-4">
                                                         {col.links.map((link) => (
                                                             <li key={link.label}>
-                                                                <Link href={link.href} className="group/link block">
+                                                                <Link href={link.href} className="group/link block" onClick={() => setActiveMenu(null)}>
                                                                     <span className="text-sm text-white/90 group-hover/link:text-vsoe-gold transition-colors duration-300 relative">
                                                                         {link.label}
                                                                         <span className="absolute -bottom-0.5 left-0 w-0 h-[1px] bg-vsoe-gold transition-all duration-300 group-hover/link:w-full" />
@@ -584,9 +584,9 @@ export default function Navbar() {
                                                     : "col-span-1 grid-cols-1"
                                         )}>
                                             {activeMegaMenu.images.map((img) => (
-                                                <Link key={img.label} href={img.href} className="relative aspect-video group/img cursor-pointer overflow-hidden">
+                                                <Link key={img.label} href={img.href} className="relative aspect-video group/img cursor-pointer overflow-hidden" onClick={() => setActiveMenu(null)}>
                                                     <Image src={img.src} alt={img.label} fill
-                                                        className="object-cover transition-transform duration-700 group-hover/img:scale-110"
+                                                        className="object-cover scale-110 transition-transform duration-700 group-hover/img:scale-125"
                                                         sizes="(max-width: 768px) 100vw, 33vw"
                                                     />
                                                     <div className="absolute inset-0 bg-black/30 group-hover/img:bg-black/10 transition-colors duration-500" />
