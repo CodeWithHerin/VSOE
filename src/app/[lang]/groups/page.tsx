@@ -18,18 +18,18 @@ export default function GroupsPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-r from-vsoe-midnight/90 via-vsoe-midnight/50 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-vsoe-midnight/60 via-transparent to-transparent" />
-                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full">
+                <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 w-full pt-32">
                     <div className="max-w-2xl">
-                        <div className="flex items-center gap-4 mb-8">
+                        <div className="flex items-center gap-4 mb-6">
                             <div className="w-12 h-[1px] bg-vsoe-gold" />
                             <p className="text-vsoe-gold text-[10px] font-bold uppercase tracking-[0.4em]">Exclusive Hire</p>
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-serif text-white mb-8 leading-[1.05] tracking-tight">
+                        <h1 className="text-5xl md:text-7xl font-serif text-white mb-6 leading-[1.05] tracking-tight">
                             The Entire<br />
                             <span className="text-vsoe-gold italic">Train.</span><br />
                             Exclusively<br />Yours.
                         </h1>
-                        <p className="text-white/60 text-base md:text-lg max-w-md leading-relaxed mb-12">
+                        <p className="text-white/60 text-sm md:text-base max-w-md leading-relaxed mb-8">
                             For those who demand the extraordinary — a private journey across Europe aboard one of the world&apos;s most legendary trains.
                         </p>
                         <div className="flex items-center gap-6">
