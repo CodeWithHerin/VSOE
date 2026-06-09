@@ -443,7 +443,7 @@ export default function Navbar() {
                 </div>
 
                 {/* ─── Desktop Nav Links ─────────────────────────────────────────── */}
-                <div className={cn("hidden lg:flex mt-2 pb-1 items-center", isScrolled ? "justify-between px-6 md:px-12" : "justify-center gap-6 max-w-5xl mx-auto w-full")} onMouseLeave={handleMouseLeave}>
+                <div className={cn("hidden lg:flex mt-2 pb-1 items-center", isScrolled ? "justify-between px-6 md:px-12" : "justify-center gap-8")} onMouseLeave={handleMouseLeave}>
                     {translatedNavItems.map((item) => (
                         <div key={item.label} className="relative py-2 px-2" onMouseEnter={() => handleMouseEnter(item.label)}>
                             <Link
@@ -491,7 +491,7 @@ export default function Navbar() {
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
                             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] as const }}
-                            className="absolute top-full left-0 w-full bg-vsoe-midnight border-t border-white/10 shadow-2xl z-40"
+                            className="absolute top-full left-4 right-4 bg-vsoe-midnight border border-white/10 shadow-2xl z-40 rounded-sm"
                             onMouseEnter={() => handleMouseEnter(activeMenu)}
                             onMouseLeave={handleMouseLeave}
                         >
