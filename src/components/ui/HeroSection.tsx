@@ -144,15 +144,18 @@ export default function HeroSection({
 
                 {/* Subtitle */}
                 {subtitle && (
-                    <motion.span
-                        style={{ y: subtitleY, opacity: subtitleOpacity }}
+                    <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.4 }}
-                        className="mb-6 block font-sans text-sm md:text-base font-medium tracking-[0.2em] uppercase text-vsoe-gold drop-shadow-md"
                     >
-                        {subtitle}
-                    </motion.span>
+                        <motion.span
+                            style={{ y: subtitleY, opacity: subtitleOpacity }}
+                            className="mb-6 block font-sans text-sm md:text-base font-medium tracking-[0.2em] uppercase text-vsoe-gold drop-shadow-md"
+                        >
+                            {subtitle}
+                        </motion.span>
+                    </motion.div>
                 )}
 
                 {/* Title — each word exits at a different speed */}
@@ -161,16 +164,20 @@ export default function HeroSection({
                         {words.map((word, i) => {
                             const transform = wordTransforms[Math.min(i, wordTransforms.length - 1)];
                             return (
-                                <motion.span
+                                <motion.div
                                     key={i}
-                                    style={{ y: transform.y, opacity: transform.opacity }}
                                     initial={{ opacity: 0, y: 40 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 1, delay: 0.6 + i * 0.15 }}
-                                    className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-vsoe-cream drop-shadow-lg inline-block"
+                                    className="inline-block"
                                 >
-                                    {word}
-                                </motion.span>
+                                    <motion.span
+                                        style={{ y: transform.y, opacity: transform.opacity }}
+                                        className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-vsoe-cream drop-shadow-lg inline-block"
+                                    >
+                                        {word}
+                                    </motion.span>
+                                </motion.div>
                             );
                         })}
                     </div>
