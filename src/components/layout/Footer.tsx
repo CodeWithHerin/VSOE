@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
-import { Facebook, Instagram, Twitter, Youtube, Globe } from 'lucide-react';
+import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function Footer() {
@@ -64,13 +64,31 @@ export default function Footer() {
 
                 {/* Middle Section: Links */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-12 border-t border-white/10 pt-16 mb-16">
+                    {/* Column 1: Explore */}
+                    <div className="space-y-6">
+                        <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">Explore</h4>
+                        <ul className="space-y-3 text-sm text-white/60 font-sans">
+                            <li><Link href="/journeys" className="hover:text-white transition-colors">Journeys</Link></li>
+                            <li><Link href="/suites" className="hover:text-white transition-colors">Signature Suites</Link></li>
+                            <li><Link href="/dining" className="hover:text-white transition-colors">Fine Dining</Link></li>
+                            <li><Link href="/gallery" className="hover:text-white transition-colors">Gallery</Link></li>
+                            <li><Link href="/bar-car" className="hover:text-white transition-colors">Bar Car 3674</Link></li>
+                            <li><Link href="/celia" className="hover:text-white transition-colors">Celia</Link></li>
+                            <li><Link href="/observatoire" className="hover:text-white transition-colors">L&apos;Observatoire</Link></li>
+                            <li><Link href="/experiences" className="hover:text-white transition-colors">Experiences</Link></li>
+                        </ul>
+                    </div>
+                    {/* Column 2: About */}
                     <div className="space-y-6">
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.about}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
                             <li><Link href="/about" className="hover:text-white transition-colors">{t.footer.story}</Link></li>
                             <li><Link href="/sustainability" className="hover:text-white transition-colors">{t.footer.sustainability}</Link></li>
+                            <li><Link href="/membership" className="hover:text-white transition-colors">Membership</Link></li>
+                            <li><Link href="/groups" className="hover:text-white transition-colors">Groups &amp; Charters</Link></li>
                         </ul>
                     </div>
+                    {/* Column 3: Support */}
                     <div className="space-y-6">
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.support}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
@@ -79,6 +97,7 @@ export default function Footer() {
                             <li><Link href="/departure-info" className="hover:text-white transition-colors">{t.footer.departureInfo}</Link></li>
                         </ul>
                     </div>
+                    {/* Column 4: Legal */}
                     <div className="space-y-6">
                         <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.legal}</h4>
                         <ul className="space-y-3 text-sm text-white/60 font-sans">
@@ -87,13 +106,6 @@ export default function Footer() {
                             <li><Link href="/legal/terms" className="hover:text-white transition-colors">{t.footer.terms}</Link></li>
                             <li><Link href="/legal/accessibility" className="hover:text-white transition-colors">{t.footer.accessibility}</Link></li>
                         </ul>
-                    </div>
-                    <div className="space-y-6">
-                        <h4 className="text-xs uppercase tracking-widest text-vsoe-gold mb-4">{t.footer.language}</h4>
-                        <button className="flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors">
-                            <Globe size={16} />
-                            <span>Language Selection in Navbar</span>
-                        </button>
                     </div>
                 </div>
 
