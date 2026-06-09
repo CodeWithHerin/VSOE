@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect } from 'react';
 import Lenis from 'lenis';
 
@@ -13,6 +12,10 @@ export default function SmoothScroll() {
             smoothWheel: true,
             wheelMultiplier: 1,
             touchMultiplier: 2,
+        });
+
+        lenis.on('scroll', () => {
+            window.dispatchEvent(new Event('scroll'));
         });
 
         function raf(time: number) {
