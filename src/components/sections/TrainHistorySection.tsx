@@ -17,8 +17,8 @@ export default function TrainHistorySection() {
 
     const y1 = useTransform(scrollYProgress, [0, 1], [160, -160]);
     const y2 = useTransform(scrollYProgress, [0, 1], [-160, 160]);
-    const rotate1 = useTransform(scrollYProgress, [0.4, 1], [-0.8, 0.8]);
-    const rotate2 = useTransform(scrollYProgress, [0.4, 1], [0.8, -0.8]);
+    const rotate1 = useTransform(scrollYProgress, [0.4, 1], [-0.4, 0.4]);
+    const rotate2 = useTransform(scrollYProgress, [0.4, 1], [0.4, -0.4]);
 
     const vp = { once: true, margin: '-60px' };
     const ease = [0.25, 1, 0.5, 1] as const;

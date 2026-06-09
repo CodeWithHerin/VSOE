@@ -13,6 +13,7 @@ const RouteExperience = dynamic(() => import('@/components/sections/RouteExperie
 const JournalSection = dynamic(() => import('@/components/sections/JournalSection'));
 const GrandSuitesExperience = dynamic(() => import('@/components/sections/GrandSuitesExperience'));
 const DiningSection = dynamic(() => import('@/components/sections/DiningSection'));
+const JourneyWindows = dynamic(() => import('@/components/sections/JourneyWindows'));
 
 export default function Home() {
   const { t } = useTranslation();
@@ -67,8 +68,9 @@ export default function Home() {
 
       {/* 4. The Experience: Suites (Sanctuaries) */}
       <GrandSuitesExperience />
-
-      {/* 5. The Experience: Dining (Gastronomy) */}
+      {/* 5. The Journey: Pinned scroll storytelling */}
+      <JourneyWindows />
+      {/* 6. The Experience: Dining (Gastronomy) */}
       <DiningSection />
 
       {/* 6. Social Proof: Partners & Brands */}
