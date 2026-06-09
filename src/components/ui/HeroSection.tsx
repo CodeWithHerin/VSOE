@@ -31,20 +31,20 @@ export default function HeroSection({
     });
 
     // Each word exits at a different speed — depth illusion
-    const subtitleY = useTransform(scrollYProgress, [0, 0.4], [0, -200]);
-    const subtitleOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+    const subtitleY = useTransform(scrollYProgress, [0, 0.6], [0, -200]);
+    const subtitleOpacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
 
-    const word1Y = useTransform(scrollYProgress, [0, 0.6], [0, -500]);
-    const word1Opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
+    const word1Y = useTransform(scrollYProgress, [0, 0.85], [0, -500]);
+    const word1Opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
 
-    const word2Y = useTransform(scrollYProgress, [0, 0.6], [0, -350]);
-    const word2Opacity = useTransform(scrollYProgress, [0.05, 0.45], [1, 0]);
+    const word2Y = useTransform(scrollYProgress, [0, 0.85], [0, -350]);
+    const word2Opacity = useTransform(scrollYProgress, [0.05, 0.65], [1, 0]);
 
-    const word3Y = useTransform(scrollYProgress, [0, 0.6], [0, -200]);
-    const word3Opacity = useTransform(scrollYProgress, [0.1, 0.5], [1, 0]);
+    const word3Y = useTransform(scrollYProgress, [0, 0.85], [0, -200]);
+    const word3Opacity = useTransform(scrollYProgress, [0.1, 0.7], [1, 0]);
 
-    const word4Y = useTransform(scrollYProgress, [0, 0.6], [0, -100]);
-    const word4Opacity = useTransform(scrollYProgress, [0.15, 0.55], [1, 0]);
+    const word4Y = useTransform(scrollYProgress, [0, 0.85], [0, -100]);
+    const word4Opacity = useTransform(scrollYProgress, [0.15, 0.75], [1, 0]);
 
     // Scroll indicator fades out quickly
     const indicatorOpacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
