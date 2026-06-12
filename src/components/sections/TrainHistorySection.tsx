@@ -24,7 +24,7 @@ export default function TrainHistorySection() {
     const ease = [0.25, 1, 0.5, 1] as const;
 
     return (
-        <section ref={containerRef} className="relative py-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
+        <section ref={containerRef} className="relative pt-8 pb-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
             <div className="absolute inset-0 opacity-10 pointer-events-none">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-50" />
             </div>
