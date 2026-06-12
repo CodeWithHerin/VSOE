@@ -11,7 +11,7 @@ const ease = [0.25, 1, 0.5, 1] as const;
 
 export default function ChapterTransition({ chapter, location }: ChapterTransitionProps) {
   return (
-    <div className="relative w-full bg-vsoe-midnight py-16 flex flex-col items-center justify-center overflow-hidden">
+    <div className="relative w-full bg-vsoe-midnight py-10 flex flex-col items-center justify-center overflow-hidden">
 
       {/* Full-width gold line — draws across */}
       <motion.div
@@ -29,7 +29,7 @@ export default function ChapterTransition({ chapter, location }: ChapterTransiti
         <motion.span
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '0px' }}
           transition={{ duration: 0.7, ease, delay: 0.3 }}
           className="text-[9px] uppercase tracking-[0.5em] text-vsoe-gold font-bold"
         >
@@ -40,7 +40,7 @@ export default function ChapterTransition({ chapter, location }: ChapterTransiti
         <motion.h2
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
+          viewport={{ once: true, margin: '-20px' }}
           transition={{ duration: 0.7, ease, delay: 0.55 }}
           className="font-serif text-2xl md:text-3xl text-vsoe-cream tracking-wide"
         >
