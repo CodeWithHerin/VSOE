@@ -6,6 +6,7 @@ import HeroSection from '@/components/ui/HeroSection';
 import Preloader from '@/components/ui/Preloader';
 import { getRecommendedContent } from '@/lib/profiling';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import ChapterTransition from '@/components/ui/ChapterTransition';
 
 const Marquee = dynamic(() => import('@/components/ui/Marquee'), { ssr: false });
 const TrainHistorySection = dynamic(() => import('@/components/sections/TrainHistorySection'));
@@ -48,38 +49,44 @@ export default function Home() {
 
   return (
     <main className="relative w-full bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-      {/* <Preloader /> */}
 
-      {/* 1. The Dream: Hero Section */}
+      {/* PROLOGUE — The Station */}
       <HeroSection
-        // Cinematic Fast-Forward Train Journey: Westminster/Travel vibe matching the map
         videoSrc="/hero-train.webm"
         backgroundImage="/images/vsoe/vsoe-countryside-window.jpg"
         title={t.hero.title}
         subtitle={content.subtitle}
       />
 
-      {/* 2. The Legend: History & Context */}
+      {/* CHAPTER I — The Legend */}
+      <ChapterTransition chapter="I" location="The Legend" />
       <TrainHistorySection />
 
-      {/* 3. The Journey: Map + Destinations (Unified) */}
+      {/* BOARDING — The Train */}
       <Marquee />
+
+      {/* CHAPTER II — The Route */}
+      <ChapterTransition chapter="II" location="The Simplon Route" />
       <RouteExperience />
 
-      {/* 4. The Experience: Suites (Sanctuaries) */}
+      {/* CHAPTER III — On Board */}
+      <ChapterTransition chapter="III" location="On Board" />
       <GrandSuitesExperience />
-      {/* 5. The Journey: Pinned scroll storytelling */}
+
+      {/* CHAPTER IV — The Journey */}
+      <ChapterTransition chapter="IV" location="The Journey" />
       <JourneyWindows />
-      {/* 6. The Experience: Dining (Gastronomy) */}
+
+      {/* CHAPTER V — At Table */}
+      <ChapterTransition chapter="V" location="At Table" />
       <DiningSection />
 
-      {/* 6. Social Proof: Partners & Brands */}
-      <Marquee />
-
-      {/* 7. The Narrative: Journal */}
+      {/* CHAPTER VI — Stories */}
+      <ChapterTransition chapter="VI" location="Stories" />
       <JournalSection />
 
-      {/* Footer */}
-          </main>
+      {/* Second Marquee removed — redundant after chapter structure added */}
+
+    </main>
   );
 }
