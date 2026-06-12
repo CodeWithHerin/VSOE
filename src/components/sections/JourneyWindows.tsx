@@ -56,7 +56,7 @@ export default function JourneyWindows() {
 
   // ─── Scene opacities ──────────────────────────────────────────────────────
   // Each scene occupies ~25% of scroll range with overlap for crossfade
-  const scene0Opacity = useTransform(scrollYProgress, [0, 0.02, 0.20, 0.28], [0, 1, 1, 0]);
+  const scene0Opacity = useTransform(scrollYProgress, [0, 0, 0.20, 0.28], [0, 1, 1, 0]);
   const scene1Opacity = useTransform(scrollYProgress, [0.20, 0.28, 0.45, 0.53], [0, 1, 1, 0]);
   const scene2Opacity = useTransform(scrollYProgress, [0.45, 0.53, 0.70, 0.78], [0, 1, 1, 0]);
   const scene3Opacity = useTransform(scrollYProgress, [0.70, 0.78, 1.00, 1.00], [0, 1, 1, 1]);
