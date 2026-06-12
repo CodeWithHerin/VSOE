@@ -24,7 +24,7 @@ export default function TrainHistorySection() {
     const ease = [0.25, 1, 0.5, 1] as const;
 
     return (
-        <section ref={containerRef} className="relative py-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
+        <section ref={containerRef} className="relative pt-10 pb-24 bg-vsoe-midnight text-vsoe-cream overflow-hidden">
             <div className="absolute inset-0 opacity-10 pointer-events-none">
                 <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-50" />
             </div>
@@ -34,26 +34,7 @@ export default function TrainHistorySection() {
                 {/* Content — each element animates independently */}
                 <div className="space-y-8 relative z-10">
 
-                    {/* Gold line */}
-                    <motion.div
-                        initial={{ scaleX: 0 }}
-                        whileInView={{ scaleX: 1 }}
-                        viewport={vp}
-                        transition={{ duration: 0.9, ease, delay: 0 }}
-                        style={{ originX: 0 }}
-                        className="h-[1px] bg-vsoe-gold w-full"
-                    />
 
-                    {/* Label */}
-                    <motion.span
-                        initial={{ opacity: 0, y: 24 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={vp}
-                        transition={{ duration: 0.7, ease, delay: 0.15 }}
-                        className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block"
-                    >
-                        {t.history.legend}
-                    </motion.span>
 
                     {/* Headline */}
                     <motion.h2
