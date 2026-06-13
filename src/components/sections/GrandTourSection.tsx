@@ -215,8 +215,8 @@ export default function GrandTourSection() {
               {/* ── SVG Route Map ── */}
               <div className="mb-6">
                 <svg
-                  viewBox="0 0 300 80"
-                  className="w-full max-w-[280px] h-16 overflow-visible"
+                  viewBox="0 0 300 90"
+                  className="w-full max-w-[280px] h-20 overflow-visible"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
@@ -251,29 +251,40 @@ export default function GrandTourSection() {
                     transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] as const, delay: 0.2 }}
                   />
 
-                  {/* Animated train dot — waypoint interpolation, cross-browser safe */}
-                  <motion.circle
+                  {/* Gold train silhouette — slides along route waypoints */}
+                  <motion.g
                     key={`train-${activeJourney.id}`}
-                    r="3.5"
-                    fill="rgba(201,168,76,1)"
                     filter="url(#trainGlow)"
                     initial={{
-                      cx: routeData.waypoints[0].cx,
-                      cy: routeData.waypoints[0].cy,
+                      x: routeData.waypoints[0].cx - 10,
+                      y: routeData.waypoints[0].cy - 6,
                       opacity: 0,
                     }}
                     animate={{
-                      cx: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx),
-                      cy: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy),
+                      x: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx - 10),
+                      y: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy - 6),
                       opacity: [0, 1, 1, 1, 1],
                     }}
                     transition={{
-                      duration: 1.8,
+                      duration: 2.0,
                       ease: 'easeInOut',
-                      delay: 1.4,
+                      delay: 1.3,
                       times: [0, 0.25, 0.5, 0.75, 1],
                     }}
-                  />
+                  >
+                    {/* Train body */}
+                    <rect x="0" y="2" width="18" height="7" rx="1" fill="rgba(201,168,76,0.95)" />
+                    {/* Cab (front) */}
+                    <rect x="14" y="0" width="6" height="9" rx="1" fill="rgba(201,168,76,0.95)" />
+                    {/* Chimney */}
+                    <rect x="2" y="0" width="2.5" height="3" rx="0.5" fill="rgba(201,168,76,0.8)" />
+                    {/* Wheels — left */}
+                    <circle cx="4" cy="10" r="2" fill="rgba(201,168,76,0.7)" />
+                    {/* Wheels — right */}
+                    <circle cx="14" cy="10" r="2" fill="rgba(201,168,76,0.7)" />
+                    {/* Window on cab */}
+                    <rect x="15.5" y="1.5" width="3" height="3" rx="0.5" fill="rgba(0,0,0,0.4)" />
+                  </motion.g>
 
                   {/* Departure city dot */}
                   <motion.circle
