@@ -170,7 +170,7 @@ export default function JourneyWindows() {
                 src={scene.mid}
                 alt=""
                 fill
-                className="object-cover opacity-20"
+                className="object-cover opacity-10"
                 sizes="100vw"
               />
             </motion.div>
@@ -184,7 +184,7 @@ export default function JourneyWindows() {
                 src={scene.fg}
                 alt=""
                 fill
-                className="object-cover opacity-25"
+                className="object-cover opacity-0"
                 sizes="100vw"
               />
             </motion.div>
