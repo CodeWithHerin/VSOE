@@ -19,6 +19,13 @@ const ROUTE_PATHS = {
     to: 'Venice',
     fromX: 20, fromY: 40,
     toX: 280, toY: 45,
+    waypoints: [
+      { cx: 20, cy: 40 },
+      { cx: 80, cy: 25 },
+      { cx: 140, cy: 38 },
+      { cx: 210, cy: 50 },
+      { cx: 280, cy: 45 },
+    ],
   },
   'paris-istanbul': {
     path: 'M 20 40 C 100 15, 200 60, 280 35',
@@ -26,6 +33,13 @@ const ROUTE_PATHS = {
     to: 'Istanbul',
     fromX: 20, fromY: 40,
     toX: 280, toY: 35,
+    waypoints: [
+      { cx: 20, cy: 40 },
+      { cx: 85, cy: 22 },
+      { cx: 150, cy: 42 },
+      { cx: 220, cy: 52 },
+      { cx: 280, cy: 35 },
+    ],
   },
   'venice-paris': {
     path: 'M 20 45 C 80 55, 180 20, 280 40',
@@ -33,6 +47,13 @@ const ROUTE_PATHS = {
     to: 'Paris',
     fromX: 20, fromY: 45,
     toX: 280, toY: 40,
+    waypoints: [
+      { cx: 20, cy: 45 },
+      { cx: 75, cy: 52 },
+      { cx: 140, cy: 35 },
+      { cx: 210, cy: 28 },
+      { cx: 280, cy: 40 },
+    ],
   },
 };
 
@@ -230,23 +251,27 @@ export default function GrandTourSection() {
                     transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] as const, delay: 0.2 }}
                   />
 
-                  {/* Animated train dot — travels along route after path draws */}
+                  {/* Animated train dot — waypoint interpolation, cross-browser safe */}
                   <motion.circle
                     key={`train-${activeJourney.id}`}
-                    cx={0}
-                    cy={0}
                     r="3.5"
                     fill="rgba(201,168,76,1)"
                     filter="url(#trainGlow)"
-                    style={{
-                      offsetPath: `path("${routeData.path}")`,
-                      offsetDistance: '0%',
+                    initial={{
+                      cx: routeData.waypoints[0].cx,
+                      cy: routeData.waypoints[0].cy,
+                      opacity: 0,
                     }}
-                    initial={{ offsetDistance: '0%', opacity: 0 }}
-                    animate={{ offsetDistance: '100%', opacity: 1 }}
+                    animate={{
+                      cx: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx),
+                      cy: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy),
+                      opacity: [0, 1, 1, 1, 1],
+                    }}
                     transition={{
-                      offsetDistance: { duration: 1.8, ease: [0.4, 0, 0.6, 1] as const, delay: 1.4 },
-                      opacity: { duration: 0.2, delay: 1.4 },
+                      duration: 1.8,
+                      ease: 'easeInOut',
+                      delay: 1.4,
+                      times: [0, 0.25, 0.5, 0.75, 1],
                     }}
                   />
 
