@@ -13,6 +13,7 @@ const scenes = [
     bg: '/images/vsoe/vsoe-paris-station.jpg',
     mid: '/images/vsoe/vsoe-sky-night.jpg',
     fg: '/images/vsoe/vsoe-train-exterior.jpg',
+    midOpacity: 0.08,
   },
   {
     city: 'Countryside',
@@ -22,6 +23,7 @@ const scenes = [
     bg: '/images/vsoe/vsoe-countryside-blue.jpg',
     mid: '/images/vsoe/vsoe-countryside-green.jpg',
     fg: '/images/vsoe/vsoe-sunrise-fields.jpg',
+    midOpacity: 0,
   },
   {
     city: 'The Alps',
@@ -31,6 +33,7 @@ const scenes = [
     bg: '/images/vsoe/vsoe-alpine-moonlight.jpg',
     mid: '/images/vsoe/vsoe-alpine-silhouette.jpg',
     fg: '/images/vsoe/vsoe-alpine-silhouette.jpg',
+    midOpacity: 0.06,
   },
   {
     city: 'Venice',
@@ -40,6 +43,7 @@ const scenes = [
     bg: '/images/vsoe/vsoe-venice-dawn.jpg',
     mid: '/images/vsoe/vsoe-sunrise-fields.jpg',
     fg: '/images/vsoe/vsoe-window-detail.jpg',
+    midOpacity: 0,
   },
 ];
 
@@ -170,7 +174,8 @@ export default function JourneyWindows() {
                 src={scene.mid}
                 alt=""
                 fill
-                className="object-cover opacity-10"
+                className="object-cover"
+                style={{ opacity: scene.midOpacity }}
                 sizes="100vw"
               />
             </motion.div>
