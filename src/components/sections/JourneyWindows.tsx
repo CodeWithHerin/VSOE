@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 
 const scenes = [
   {
@@ -246,6 +247,28 @@ export default function JourneyWindows() {
             </motion.div>
           </div>
         ))}
+
+        {/* Venice arrival CTA — appears with scene 4 */}
+        <motion.div
+          style={{ opacity: text3Opacity }}
+          className="absolute inset-x-0 bottom-0 z-30 flex flex-col items-center justify-end pb-6 pointer-events-none"
+        >
+          <motion.div
+            style={{ y: text3Y }}
+            className="flex flex-col items-center gap-3"
+          >
+            <div className="w-px h-6 bg-vsoe-gold/40" />
+            <Link
+              href="/book"
+              className="pointer-events-auto group flex items-center gap-3 px-8 py-3 border border-vsoe-gold/50 text-[9px] uppercase tracking-[0.45em] text-vsoe-gold font-bold hover:bg-vsoe-gold hover:text-vsoe-midnight transition-all duration-500"
+            >
+              Begin Your Journey
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
+                <path d="M 1 6 L 11 6 M 7 2 L 11 6 L 7 10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+          </motion.div>
+        </motion.div>
 
         {/* Progress indicator */}
         <div className="absolute right-8 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
