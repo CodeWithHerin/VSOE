@@ -199,6 +199,15 @@ export default function GrandTourSection() {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
+                  <defs>
+                    <filter id="trainGlow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="2" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
                   {/* Dim base path */}
                   <path
                     d={routeData.path}
@@ -219,6 +228,26 @@ export default function GrandTourSection() {
                     initial={{ pathLength: 0, opacity: 0 }}
                     animate={{ pathLength: 1, opacity: 1 }}
                     transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] as const, delay: 0.2 }}
+                  />
+
+                  {/* Animated train dot — travels along route after path draws */}
+                  <motion.circle
+                    key={`train-${activeJourney.id}`}
+                    cx={0}
+                    cy={0}
+                    r="3.5"
+                    fill="rgba(201,168,76,1)"
+                    filter="url(#trainGlow)"
+                    style={{
+                      offsetPath: `path("${routeData.path}")`,
+                      offsetDistance: '0%',
+                    }}
+                    initial={{ offsetDistance: '0%', opacity: 0 }}
+                    animate={{ offsetDistance: '100%', opacity: 1 }}
+                    transition={{
+                      offsetDistance: { duration: 1.8, ease: [0.4, 0, 0.6, 1] as const, delay: 1.4 },
+                      opacity: { duration: 0.2, delay: 1.4 },
+                    }}
                   />
 
                   {/* Departure city dot */}
