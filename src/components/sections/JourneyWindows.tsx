@@ -149,7 +149,7 @@ export default function JourneyWindows() {
             {/* Background — slowest */}
             <motion.div
               style={{ y: bgYs[i] }}
-              className="absolute inset-0 scale-[1.3]"
+              className="absolute inset-0 scale-110"
             >
               <Image
                 src={scene.bg}
@@ -164,13 +164,13 @@ export default function JourneyWindows() {
             {/* Midground — no blend mode, straight opacity so images stay distinct */}
             <motion.div
               style={{ y: midYs[i] }}
-              className="absolute inset-0 scale-[1.3]"
+              className="absolute inset-0 scale-110"
             >
               <Image
                 src={scene.mid}
                 alt=""
                 fill
-                className="object-cover opacity-35"
+                className="object-cover opacity-20"
                 sizes="100vw"
               />
             </motion.div>
@@ -178,13 +178,13 @@ export default function JourneyWindows() {
             {/* Foreground — texture layer, very subtle */}
             <motion.div
               style={{ y: fgYs[i] }}
-              className="absolute inset-0 scale-[1.4]"
+              className="absolute inset-0 scale-110"
             >
               <Image
                 src={scene.fg}
                 alt=""
                 fill
-                className="object-cover opacity-15"
+                className="object-cover opacity-25"
                 sizes="100vw"
               />
             </motion.div>
@@ -193,7 +193,7 @@ export default function JourneyWindows() {
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_25%,rgba(0,0,0,0.75)_100%)] pointer-events-none" />
 
             {/* Bottom fade for text */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/60 to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-vsoe-midnight via-vsoe-midnight/60 to-transparent pointer-events-none" />
           </motion.div>
         ))}
 
