@@ -251,25 +251,24 @@ export default function GrandTourSection() {
                     transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] as const, delay: 0.2 }}
                   />
 
-                  {/* Gold train silhouette — refined, sits on track line */}
+                  {/* Gold train silhouette — single smooth pass, departure to arrival */}
                   <motion.g
                     key={`train-${activeJourney.id}`}
                     filter="url(#trainGlow)"
                     initial={{
-                      x: routeData.waypoints[0].cx - 12,
-                      y: routeData.waypoints[0].cy - 11,
+                      x: routeData.fromX - 12,
+                      y: routeData.fromY - 11,
                       opacity: 0,
                     }}
                     animate={{
-                      x: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx - 12),
-                      y: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy - 11),
-                      opacity: [0, 1, 1, 1, 1],
+                      x: routeData.toX - 12,
+                      y: routeData.toY - 11,
+                      opacity: [0, 1, 1, 0],
                     }}
                     transition={{
-                      duration: 2.4,
-                      ease: [0.4, 0, 0.2, 1] as const,
-                      delay: 1.3,
-                      times: [0, 0.25, 0.5, 0.75, 1],
+                      x: { duration: 2.2, ease: [0.4, 0, 0.2, 1] as const, delay: 1.3 },
+                      y: { duration: 2.2, ease: [0.4, 0, 0.2, 1] as const, delay: 1.3 },
+                      opacity: { duration: 2.2, ease: 'linear', delay: 1.3, times: [0, 0.1, 0.85, 1] },
                     }}
                   >
                     {/* Train body — long main carriage */}
@@ -278,7 +277,7 @@ export default function GrandTourSection() {
                     <rect x="16" y="1" width="7" height="8" rx="1.5" fill="rgba(201,168,76,0.60)" />
                     {/* Chimney stack */}
                     <rect x="2.5" y="0" width="2" height="4" rx="0.8" fill="rgba(201,168,76,0.45)" />
-                    {/* Smoke puff — tiny circle above chimney */}
+                    {/* Smoke puff */}
                     <circle cx="3.5" cy="-1" r="1" fill="rgba(201,168,76,0.20)" />
                     {/* Cab window */}
                     <rect x="17.5" y="2" width="3.5" height="3" rx="0.5" fill="rgba(0,0,0,0.35)" />
@@ -293,9 +292,9 @@ export default function GrandTourSection() {
                     {/* Wheel — rear */}
                     <circle cx="3" cy="10" r="2.2" fill="rgba(201,168,76,0.40)" />
                     <circle cx="3" cy="10" r="1" fill="rgba(201,168,76,0.20)" />
-                    {/* Connecting rod between wheels */}
+                    {/* Connecting rod */}
                     <line x1="3" y1="10" x2="18" y2="10" stroke="rgba(201,168,76,0.20)" strokeWidth="0.8" />
-                    {/* Cowcatcher — front detail */}
+                    {/* Cowcatcher */}
                     <path d="M 23 7 L 26 9 L 23 9 Z" fill="rgba(201,168,76,0.35)" />
                   </motion.g>
 
