@@ -251,39 +251,52 @@ export default function GrandTourSection() {
                     transition={{ duration: 1.2, ease: [0.4, 0, 0.2, 1] as const, delay: 0.2 }}
                   />
 
-                  {/* Gold train silhouette — slides along route waypoints */}
+                  {/* Gold train silhouette — refined, sits on track line */}
                   <motion.g
                     key={`train-${activeJourney.id}`}
                     filter="url(#trainGlow)"
                     initial={{
-                      x: routeData.waypoints[0].cx - 10,
-                      y: routeData.waypoints[0].cy - 6,
+                      x: routeData.waypoints[0].cx - 12,
+                      y: routeData.waypoints[0].cy - 11,
                       opacity: 0,
                     }}
                     animate={{
-                      x: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx - 10),
-                      y: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy - 6),
+                      x: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cx - 12),
+                      y: routeData.waypoints.map((p: { cx: number; cy: number }) => p.cy - 11),
                       opacity: [0, 1, 1, 1, 1],
                     }}
                     transition={{
-                      duration: 2.0,
-                      ease: 'easeInOut',
+                      duration: 2.4,
+                      ease: [0.4, 0, 0.2, 1] as const,
                       delay: 1.3,
                       times: [0, 0.25, 0.5, 0.75, 1],
                     }}
                   >
-                    {/* Train body */}
-                    <rect x="0" y="2" width="18" height="7" rx="1" fill="rgba(201,168,76,0.95)" />
-                    {/* Cab (front) */}
-                    <rect x="14" y="0" width="6" height="9" rx="1" fill="rgba(201,168,76,0.95)" />
-                    {/* Chimney */}
-                    <rect x="2" y="0" width="2.5" height="3" rx="0.5" fill="rgba(201,168,76,0.8)" />
-                    {/* Wheels — left */}
-                    <circle cx="4" cy="10" r="2" fill="rgba(201,168,76,0.7)" />
-                    {/* Wheels — right */}
-                    <circle cx="14" cy="10" r="2" fill="rgba(201,168,76,0.7)" />
-                    {/* Window on cab */}
-                    <rect x="15.5" y="1.5" width="3" height="3" rx="0.5" fill="rgba(0,0,0,0.4)" />
+                    {/* Train body — long main carriage */}
+                    <rect x="0" y="3" width="20" height="6" rx="1.5" fill="rgba(201,168,76,0.55)" />
+                    {/* Cab — front raised section */}
+                    <rect x="16" y="1" width="7" height="8" rx="1.5" fill="rgba(201,168,76,0.60)" />
+                    {/* Chimney stack */}
+                    <rect x="2.5" y="0" width="2" height="4" rx="0.8" fill="rgba(201,168,76,0.45)" />
+                    {/* Smoke puff — tiny circle above chimney */}
+                    <circle cx="3.5" cy="-1" r="1" fill="rgba(201,168,76,0.20)" />
+                    {/* Cab window */}
+                    <rect x="17.5" y="2" width="3.5" height="3" rx="0.5" fill="rgba(0,0,0,0.35)" />
+                    {/* Body detail line */}
+                    <line x1="0" y1="6" x2="16" y2="6" stroke="rgba(201,168,76,0.25)" strokeWidth="0.5" />
+                    {/* Wheel — front */}
+                    <circle cx="18" cy="10" r="2.2" fill="rgba(201,168,76,0.40)" />
+                    <circle cx="18" cy="10" r="1" fill="rgba(201,168,76,0.20)" />
+                    {/* Wheel — middle */}
+                    <circle cx="10" cy="10" r="2.2" fill="rgba(201,168,76,0.40)" />
+                    <circle cx="10" cy="10" r="1" fill="rgba(201,168,76,0.20)" />
+                    {/* Wheel — rear */}
+                    <circle cx="3" cy="10" r="2.2" fill="rgba(201,168,76,0.40)" />
+                    <circle cx="3" cy="10" r="1" fill="rgba(201,168,76,0.20)" />
+                    {/* Connecting rod between wheels */}
+                    <line x1="3" y1="10" x2="18" y2="10" stroke="rgba(201,168,76,0.20)" strokeWidth="0.8" />
+                    {/* Cowcatcher — front detail */}
+                    <path d="M 23 7 L 26 9 L 23 9 Z" fill="rgba(201,168,76,0.35)" />
                   </motion.g>
 
                   {/* Departure city dot */}
