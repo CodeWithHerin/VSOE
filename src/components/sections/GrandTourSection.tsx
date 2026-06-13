@@ -1,115 +1,156 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Train, Clock, MapPin, ArrowRight, Calendar } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { useTranslation } from '@/lib/i18n/useTranslation';
-
-
-
 import { useTrackInterest } from '@/lib/profiling';
 
+const ease = [0.25, 1, 0.5, 1] as const;
+
 export default function GrandTourSection() {
-    const { t } = useTranslation();
-    useTrackInterest('adventure');
-    
-    const JOURNEYS = [
-        {
-            id: 'paris-venice',
-            routeParam: 'classic',
-            title: t.routes.journey1Title,
-            route: t.routes.journey1Route,
-            duration: t.routes.journey1Duration,
-            image: "/images/vsoe/vsoe-paris-departure.jpg",
-            description: t.routes.journey1Desc,
-            price: t.routes.journey1Price,
-            dates: t.routes.journey1Dates
-        },
-        {
-            id: 'paris-istanbul',
-            routeParam: 'italian',
-            title: t.routes.journey2Title,
-            route: t.routes.journey2Route,
-            duration: t.routes.journey2Duration,
-            image: "/images/vsoe/vsoe-dining-car.jpg",
-            description: t.routes.journey2Desc,
-            price: t.routes.journey2Price,
-            dates: t.routes.journey2Dates
-        },
-        {
-            id: 'venice-paris',
-            routeParam: 'gateway',
-            title: t.routes.journey3Title,
-            route: t.routes.journey3Route,
-            duration: t.routes.journey3Duration,
-            image: "/images/vsoe/vsoe-venice-night.jpg",
-            description: t.routes.journey3Desc,
-            price: t.routes.journey3Price,
-            dates: t.routes.journey3Dates
-        }
-    ];
+  const { t } = useTranslation();
+  useTrackInterest('adventure');
 
-    return (
-        <section id="track-adventure" className="w-full bg-vsoe-midnight py-12 relative z-20">
-            <div className="container mx-auto px-6 md:px-12">
+  const JOURNEYS = [
+    {
+      id: 'paris-venice',
+      routeParam: 'classic',
+      title: t.routes.journey1Title,
+      route: t.routes.journey1Route,
+      duration: t.routes.journey1Duration,
+      image: '/images/vsoe/vsoe-paris-departure.jpg',
+      description: t.routes.journey1Desc,
+      price: t.routes.journey1Price,
+      dates: t.routes.journey1Dates,
+      flagship: false,
+    },
+    {
+      id: 'paris-istanbul',
+      routeParam: 'italian',
+      title: t.routes.journey2Title,
+      route: t.routes.journey2Route,
+      duration: t.routes.journey2Duration,
+      image: '/images/vsoe/vsoe-dining-car.jpg',
+      description: t.routes.journey2Desc,
+      price: t.routes.journey2Price,
+      dates: t.routes.journey2Dates,
+      flagship: true,
+    },
+    {
+      id: 'venice-paris',
+      routeParam: 'gateway',
+      title: t.routes.journey3Title,
+      route: t.routes.journey3Route,
+      duration: t.routes.journey3Duration,
+      image: '/images/vsoe/vsoe-venice-night.jpg',
+      description: t.routes.journey3Desc,
+      price: t.routes.journey3Price,
+      dates: t.routes.journey3Dates,
+      flagship: false,
+    },
+  ];
 
-                {/* Cards Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {JOURNEYS.map((journey, index) => (
-                        <motion.div
-                            key={journey.id}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group relative bg-[#0a0f1c] border border-vsoe-gold/20 hover:border-vsoe-gold/60 transition-colors duration-500 overflow-hidden"
-                        >
-                            {/* Image with Hover Effect */}
-                            <div className="aspect-[16/10] overflow-hidden relative">
-                                <img
-                                    src={journey.image}
-                                    alt={journey.title}
-                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f1c] to-transparent" />
+  return (
+    <section id="track-adventure" className="w-full bg-vsoe-midnight py-8 relative z-20">
 
-                                {/* Route Badge */}
-                                <div className="absolute top-4 left-4 bg-vsoe-midnight/90 backdrop-blur border border-vsoe-gold/50 px-3 py-1 text-[10px] uppercase tracking-widest text-vsoe-gold flex items-center gap-2">
-                                    <Train size={12} /> {journey.route}
-                                </div>
-                            </div>
+      {/* Journey rows */}
+      <div className="flex flex-col">
+        {JOURNEYS.map((journey, index) => {
+          const imageOnLeft = index % 2 === 0;
 
-                            {/* Content */}
-                            <div className="p-8">
-                                <h3 className="text-2xl font-serif text-vsoe-cream mb-2 group-hover:text-vsoe-gold transition-colors">{journey.title}</h3>
-                                <p className="text-white/60 text-sm font-sans mb-6 leading-relaxed border-b border-white/5 pb-6">
-                                    {journey.description}
-                                </p>
+          return (
+            <motion.div
+              key={journey.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.9, ease, delay: 0 }}
+              className={`relative flex flex-col md:flex-row ${!imageOnLeft ? 'md:flex-row-reverse' : ''} min-h-[480px] border-b border-vsoe-gold/10 last:border-b-0`}
+            >
+              {/* Image — 55% width */}
+              <div className="relative w-full md:w-[55%] overflow-hidden min-h-[320px] md:min-h-0">
+                <Image
+                  src={journey.image}
+                  alt={journey.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  sizes="55vw"
+                />
+                {/* Dark overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-${imageOnLeft ? 'r' : 'l'} from-transparent via-transparent to-vsoe-midnight`} />
 
-                                {/* Meta details */}
-                                <div className="grid grid-cols-2 gap-4 mb-8">
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Clock size={10} /> {t.routes.duration}</span>
-                                        <span className="text-sm text-vsoe-cream">{journey.duration}</span>
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <span className="text-[10px] text-white/40 uppercase tracking-widest mb-1 flex items-center gap-1"><Calendar size={10} /> {t.routes.dates}</span>
-                                        <span className="text-sm text-vsoe-cream">{journey.dates}</span>
-                                    </div>
-                                </div>
+                {/* Flagship badge */}
+                {journey.flagship && (
+                  <div className="absolute top-6 left-6 bg-vsoe-gold px-4 py-1.5 text-[9px] uppercase tracking-[0.4em] text-vsoe-midnight font-bold">
+                    Signature Journey
+                  </div>
+                )}
 
-                                {/* Action */}
-                                <div className="flex items-center justify-between">
-                                    <span className="text-vsoe-gold font-serif text-lg">{journey.price}</span>
-                                    <Link href={`/book?route=${journey.routeParam}`} className="flex items-center gap-2 text-[10px] uppercase font-bold tracking-[0.2em] text-white hover:text-vsoe-gold transition-colors">
-                                        {t.routes.reserve} <ArrowRight size={14} />
-                                    </Link>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
+                {/* Route pill */}
+                <div className="absolute bottom-6 left-6 border border-vsoe-gold/50 px-3 py-1 text-[9px] uppercase tracking-[0.3em] text-vsoe-gold backdrop-blur-sm bg-vsoe-midnight/60">
+                  {journey.route}
                 </div>
-            </div>
-        </section>
-    );
+              </div>
+
+              {/* Content — 45% width */}
+              <div className={`relative w-full md:w-[45%] flex flex-col justify-center px-10 py-12 md:py-16 md:px-14 ${journey.flagship ? 'bg-[#0d1220]' : 'bg-vsoe-midnight'}`}>
+
+                {/* Index number */}
+                <span className="text-vsoe-gold/20 font-serif text-[80px] leading-none absolute top-6 right-8 select-none pointer-events-none">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+
+                {/* Duration badge */}
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-6 h-px bg-vsoe-gold/40" />
+                  <span className="text-[9px] uppercase tracking-[0.4em] text-vsoe-gold/70">
+                    {journey.duration} · {journey.dates}
+                  </span>
+                </div>
+
+                {/* Title */}
+                <h3 className={`font-serif leading-tight mb-4 ${journey.flagship ? 'text-4xl md:text-5xl text-vsoe-gold' : 'text-3xl md:text-4xl text-vsoe-cream'}`}>
+                  {journey.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-vsoe-cream/60 text-sm leading-relaxed mb-8 max-w-xs font-sans">
+                  {journey.description}
+                </p>
+
+                {/* Price + CTA */}
+                <div className="flex items-center justify-between mt-auto pt-6 border-t border-vsoe-gold/15">
+                  <div>
+                    <span className="text-[9px] uppercase tracking-[0.3em] text-vsoe-cream/30 block mb-1">
+                      From
+                    </span>
+                    <span className={`font-serif ${journey.flagship ? 'text-3xl text-vsoe-gold' : 'text-2xl text-vsoe-cream'}`}>
+                      {journey.price}
+                    </span>
+                    <span className="text-vsoe-cream/30 text-xs ml-2">per person</span>
+                  </div>
+
+                  <Link
+                    href={`/book?route=${journey.routeParam}`}
+                    className={`group flex items-center gap-3 px-6 py-3 text-[9px] uppercase tracking-[0.35em] font-bold transition-all duration-300 ${
+                      journey.flagship
+                        ? 'bg-vsoe-gold text-vsoe-midnight hover:bg-vsoe-cream'
+                        : 'border border-vsoe-gold/40 text-vsoe-gold hover:border-vsoe-gold hover:bg-vsoe-gold/10'
+                    }`}
+                  >
+                    Reserve
+                    <ArrowRight size={12} className="transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+
+            </motion.div>
+          );
+        })}
+      </div>
+
+    </section>
+  );
 }
