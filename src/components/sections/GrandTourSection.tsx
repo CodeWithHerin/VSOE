@@ -63,14 +63,14 @@ export default function GrandTourSection() {
           return (
             <motion.div
               key={journey.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: imageOnLeft ? -60 : 60 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.9, ease, delay: 0 }}
               className={`relative flex flex-col md:flex-row ${!imageOnLeft ? 'md:flex-row-reverse' : ''} min-h-[480px] border-b border-vsoe-gold/10 last:border-b-0`}
             >
               {/* Image — 55% width */}
-              <div className="relative w-full md:w-[55%] overflow-hidden min-h-[320px] md:min-h-0">
+              <div className="group relative w-full md:w-[55%] overflow-hidden min-h-[320px] md:min-h-0">
                 <Image
                   src={journey.image}
                   alt={journey.title}
@@ -80,6 +80,7 @@ export default function GrandTourSection() {
                 />
                 {/* Dark overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-${imageOnLeft ? 'r' : 'l'} from-transparent via-transparent to-vsoe-midnight`} />
+                <div className="absolute inset-0 bg-vsoe-gold/0 group-hover:bg-vsoe-gold/8 transition-colors duration-700 pointer-events-none" />
 
                 {/* Flagship badge */}
                 {journey.flagship && (
@@ -95,7 +96,7 @@ export default function GrandTourSection() {
               </div>
 
               {/* Content — 45% width */}
-              <div className={`relative w-full md:w-[45%] flex flex-col justify-center px-10 py-12 md:py-16 md:px-14 ${journey.flagship ? 'bg-[#0d1220]' : 'bg-vsoe-midnight'}`}>
+              <div className={`relative w-full md:w-[45%] flex flex-col justify-center px-10 py-16 md:py-24 md:px-16 ${journey.flagship ? 'bg-[#0d1220]' : 'bg-vsoe-midnight'}`}>
 
                 {/* Index number */}
                 <span className="text-vsoe-gold/20 font-serif text-[80px] leading-none absolute top-6 right-8 select-none pointer-events-none">
