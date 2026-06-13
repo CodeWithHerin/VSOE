@@ -59,17 +59,17 @@ export default function JourneyWindows() {
   // Scene 1: fades in 0.24→0.28, holds 0.28→0.49, fades 0.49→0.53
   // Scene 2: fades in 0.49→0.53, holds 0.53→0.71, fades 0.71→0.75
   // Scene 3: fades in 0.71→0.75, holds 0.75→1.00
-  const scene0Opacity = useTransform(scrollYProgress, [0, 0, 0.24, 0.28], [0, 1, 1, 0]);
-  const scene1Opacity = useTransform(scrollYProgress, [0.24, 0.28, 0.49, 0.53], [0, 1, 1, 0]);
-  const scene2Opacity = useTransform(scrollYProgress, [0.49, 0.53, 0.71, 0.75], [0, 1, 1, 0]);
-  const scene3Opacity = useTransform(scrollYProgress, [0.71, 0.75, 1.00, 1.00], [0, 1, 1, 1]);
+  const scene0Opacity = useTransform(scrollYProgress, [0, 0, 0.22, 0.28], [0, 1, 1, 0]);
+  const scene1Opacity = useTransform(scrollYProgress, [0.22, 0.28, 0.47, 0.53], [0, 1, 1, 0]);
+  const scene2Opacity = useTransform(scrollYProgress, [0.47, 0.53, 0.69, 0.75], [0, 1, 1, 0]);
+  const scene3Opacity = useTransform(scrollYProgress, [0.69, 0.75, 1.00, 1.00], [0, 1, 1, 1]);
   const sceneOpacities = [scene0Opacity, scene1Opacity, scene2Opacity, scene3Opacity];
 
   // ─── Carriage window overlay — brief flash at scene boundaries ───────────
   const overlayOpacity = useTransform(
     scrollYProgress,
-    [0.22, 0.26, 0.30, 0.47, 0.51, 0.55, 0.69, 0.73, 0.77],
-    [0,    0.6,  0,    0,    0.6,  0,    0,    0.6,  0   ]
+    [0.23, 0.25, 0.31, 0.48, 0.50, 0.56, 0.70, 0.72, 0.78],
+    [0,    0.5,  0,    0,    0.5,  0,    0,    0.5,  0   ]
   );
 
   // ─── Background layer — slowest, 120px travel ────────────────────────────
@@ -132,7 +132,7 @@ export default function JourneyWindows() {
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-vsoe-midnight">
 
         {/* Section label */}
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 z-30 text-center pointer-events-none">
+        <div className="absolute top-16 left-1/2 -translate-x-1/2 z-30 text-center pointer-events-none">
           <div className="w-6 h-px bg-vsoe-gold mx-auto mb-3" />
           <span className="text-vsoe-gold text-[9px] font-bold uppercase tracking-[0.45em]">
             The Journey
