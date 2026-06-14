@@ -302,14 +302,14 @@ export default function Marquee() {
             }} />
 
             {/* Locomotive wheels — 3 spoke wheels + shadows */}
-            <SpokeWheelShadow size={22} x={14} rotate={wheelRotate} />
-            <SpokeWheel size={22} x={14} rotate={wheelRotate} />
+            <SpokeWheelShadow size={17} x={14} rotate={wheelRotate} />
+            <SpokeWheel size={17} x={14} rotate={wheelRotate} />
 
-            <SpokeWheelShadow size={28} x={42} rotate={wheelRotate} />
-            <SpokeWheel size={28} x={42} rotate={wheelRotate} />
+            <SpokeWheelShadow size={22} x={42} rotate={wheelRotate} />
+            <SpokeWheel size={22} x={42} rotate={wheelRotate} />
 
-            <SpokeWheelShadow size={22} x={74} rotate={wheelRotate} />
-            <SpokeWheel size={22} x={74} rotate={wheelRotate} />
+            <SpokeWheelShadow size={17} x={74} rotate={wheelRotate} />
+            <SpokeWheel size={17} x={74} rotate={wheelRotate} />
           </div>
 
           {/* ── Carriages ── */}
@@ -396,7 +396,7 @@ export default function Marquee() {
                     width: '200px',
                     textAlign: 'center',
                   }}>
-                    {t.marquee.cities}
+                    LONDON · PARIS · VENICE · ISTANBUL
                   </div>
                 </div>
               )}
