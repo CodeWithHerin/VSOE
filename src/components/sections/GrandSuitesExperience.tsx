@@ -160,7 +160,7 @@ export default function GrandSuitesExperience() {
                           </Link>
                           <Link
                             href="/suites"
-                            className="text-[9px] uppercase tracking-[0.45em] text-vsoe-cream/50 hover:text-vsoe-gold transition-colors duration-300 font-bold"
+                            className="group flex items-center gap-3 px-8 py-3 border border-vsoe-gold/30 text-[9px] uppercase tracking-[0.45em] text-vsoe-gold/60 font-bold hover:border-vsoe-gold hover:text-vsoe-gold transition-all duration-300"
                           >
                             Explore All Suites
                           </Link>
