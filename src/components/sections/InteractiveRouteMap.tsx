@@ -25,10 +25,10 @@ const VB_H = 600;
 const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
-const PALETTES: Record<TimeOfDay, ModePalette & { coast: string, particleColor?: string }> = {
-  day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)', coast: CREAM },
-  dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)', coast: CREAM },
-  night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)', coast: CREAM },
+const PALETTES: Record<TimeOfDay, ModePalette & { coast: string, particleColor?: string, land: string }> = {
+  day:   { bg: '#0A1525', bgCenter: '#162035', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.04)', coast: '#C8BEA0', land: '#0F1E30' },
+  dusk:  { bg: '#07101E', bgCenter: '#0E1A2E', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.06)', coast: '#B8A882', land: '#0C1826' },
+  night: { bg: '#040A16', bgCenter: '#080F1E', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.12)', coast: '#8898B0', land: '#060D1A' },
 };
 
 const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
@@ -192,16 +192,40 @@ const CompassRose = React.memo(function CompassRose({ accent }: { accent: string
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-component: Static Coastlines (Memoized)
 // ─────────────────────────────────────────────────────────────────────────────
-const StaticCoastlines = React.memo(function StaticCoastlines({ coastColor }: { coastColor: string }) {
+const StaticCoastlines = React.memo(function StaticCoastlines({ coastColor, landColor }: { coastColor: string; landColor: string }) {
   return (
     <g pointerEvents="none" aria-hidden="true">
-      {/* Bloom copy (cheaper than svg filter: just slightly thicker and very low opacity) */}
-      <g stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.04">
+      {/* ── Latitude lines — horizontal cartographic grid ── */}
+      <g stroke={coastColor} strokeWidth="0.4" opacity="0.12" strokeDasharray="3 8">
+        {[100, 150, 200, 250, 300, 350, 400, 450, 500].map((y) => (
+          <line key={y} x1="0" y1={y} x2="1200" y2={y} />
+        ))}
+      </g>
+      {/* ── Longitude lines — vertical cartographic grid ── */}
+      <g stroke={coastColor} strokeWidth="0.4" opacity="0.12" strokeDasharray="3 8">
+        {[150, 300, 450, 600, 750, 900, 1050].map((x) => (
+          <line key={x} x1={x} y1="0" x2={x} y2="600" />
+        ))}
+      </g>
+
+      {/* ── Land mass fills — subtle depth behind coastlines ── */}
+      <g fill={landColor} stroke="none" opacity="0.85">
+        {COASTLINES.map((d, i) => <path key={`fill-${i}`} d={d} />)}
+      </g>
+
+      {/* ── Coastline glow (bloom) ── */}
+      <g stroke={coastColor} strokeWidth="3" fill="none" opacity="0.06" strokeLinejoin="round" strokeLinecap="round">
         {COASTLINES.map((d, i) => <path key={`bloom-${i}`} d={d} />)}
       </g>
-      {/* Primary coastlines */}
-      <g stroke={coastColor} strokeWidth="1.2" fill="none" opacity="0.09" strokeLinejoin="round" strokeLinecap="round" style={{ transition: 'stroke 1.5s ease' }}>
+
+      {/* ── Primary coastlines — crisp, readable ── */}
+      <g stroke={coastColor} strokeWidth="1" fill="none" opacity="0.28" strokeLinejoin="round" strokeLinecap="round" style={{ transition: 'stroke 1.5s ease' }}>
         {COASTLINES.map((d, i) => <path key={`main-${i}`} d={d} />)}
+      </g>
+
+      {/* ── Shore detail — inner highlight line ── */}
+      <g stroke={coastColor} strokeWidth="0.5" fill="none" opacity="0.12" strokeLinejoin="round" strokeLinecap="round">
+        {COASTLINES.map((d, i) => <path key={`detail-${i}`} d={d} />)}
       </g>
     </g>
   );
@@ -418,19 +442,48 @@ export default function InteractiveRouteMap() {
             >
               <defs>
                 <path id="vsoe-train-route" d={TRAIN_PATH_SVG} />
-                {/* Grid */}
-                <pattern id="vsoe-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                  <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" strokeWidth="0.5" opacity="0.055" />
+                {/* Fine dot grid — cartographic style */}
+                <pattern id="vsoe-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <circle cx="40" cy="40" r="0.6" fill="currentColor" opacity="0.18" />
                 </pattern>
-                {/* Vignette (Top overlay) */}
-                <radialGradient id="vsoe-vignette-svg" cx="50%" cy="50%" r="65%">
-                  <stop offset="40%"  stopColor="transparent"  stopOpacity="0"    />
-                  <stop offset="100%" stopColor={palette.bg}   stopOpacity="0.5" />
+                {/* Vignette — stronger edges for depth */}
+                <radialGradient id="vsoe-vignette-svg" cx="50%" cy="50%" r="70%">
+                  <stop offset="30%"  stopColor="transparent"  stopOpacity="0"   />
+                  <stop offset="100%" stopColor={palette.bg}   stopOpacity="0.75" />
                 </radialGradient>
+                {/* Route line glow filter */}
+                <filter id="vsoe-route-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="2" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
               </defs>
 
-              {/* Grid (No opaque rect here, so layer 1 shows through) */}
+              {/* Fine dot grid */}
               <rect width={VB_W} height={VB_H} fill="url(#vsoe-grid)" />
+
+              {/* Cartographic degree labels — longitude */}
+              <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
+                <text x="150"  y="18" textAnchor="middle">10°W</text>
+                <text x="300"  y="18" textAnchor="middle">0°</text>
+                <text x="450"  y="18" textAnchor="middle">10°E</text>
+                <text x="600"  y="18" textAnchor="middle">20°E</text>
+                <text x="750"  y="18" textAnchor="middle">30°E</text>
+                <text x="900"  y="18" textAnchor="middle">40°E</text>
+                <text x="1050" y="18" textAnchor="middle">50°E</text>
+              </g>
+
+              {/* Cartographic degree labels — latitude */}
+              <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
+                <text x="12" y="102"  textAnchor="start">55°N</text>
+                <text x="12" y="152"  textAnchor="start">50°N</text>
+                <text x="12" y="202"  textAnchor="start">45°N</text>
+                <text x="12" y="252"  textAnchor="start">40°N</text>
+                <text x="12" y="302"  textAnchor="start">35°N</text>
+                <text x="12" y="352"  textAnchor="start">30°N</text>
+              </g>
 
               {/* ── Cloud drift (atmospheric depth, Layer 1 back) ── */}
               {!reducedMotion && (
@@ -451,7 +504,7 @@ export default function InteractiveRouteMap() {
               )}
 
               {/* ── Coastlines (Memoized, no expensive filters) ── */}
-              <StaticCoastlines coastColor={palette.coast} />
+              <StaticCoastlines coastColor={palette.coast} landColor={(palette as typeof palette & { land: string }).land} />
 
               {/* ── Route Lines ── */}
               {/* London → Paris — thin dashed */}
@@ -466,6 +519,7 @@ export default function InteractiveRouteMap() {
               <motion.path
                 d={PATH_PARIS_VENICE} stroke="currentColor" strokeWidth="2.5"
                 fill="none"
+                filter="url(#vsoe-route-glow)"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={isInView ? { pathLength: 1, opacity: 1 } : {}}
                 transition={{ duration: reducedMotion ? 0 : 1.5, delay: 0.3, ease: 'easeInOut' }}
