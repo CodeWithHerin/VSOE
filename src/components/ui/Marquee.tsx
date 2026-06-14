@@ -393,7 +393,8 @@ export default function Marquee() {
                     letterSpacing: '0.28em', textTransform: 'uppercase',
                     color: 'rgba(201,168,76,0.85)',
                     userSelect: 'none',
-                    width: '200px',
+                    width: 'auto',
+                    minWidth: '260px',
                     textAlign: 'center',
                   }}>
                     LONDON · PARIS · VENICE · ISTANBUL
