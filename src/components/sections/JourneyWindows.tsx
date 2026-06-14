@@ -55,7 +55,7 @@ function ClockTime({ time }: { time: string }) {
   const [parts] = time.split(':');
   const minutes = time.split(':')[1];
   return (
-    <div className="flex items-center justify-center gap-0 font-mono text-[11px] tracking-[0.25em] text-vsoe-gold/70 mb-4">
+    <div className="flex items-center justify-center gap-0 font-mono text-[11px] tracking-[0.25em] text-vsoe-gold/70 mb-1">
       <span>{parts}</span>
       <motion.span
         animate={{ opacity: [1, 0.2, 1] }}
@@ -248,7 +248,7 @@ export default function JourneyWindows() {
               className="text-center px-8"
             >
               <ClockTime time={scene.time} />
-              <div className="mb-2">
+              <div className="mb-3">
                 <span className="font-serif text-4xl md:text-5xl text-vsoe-cream tracking-wide">
                   {scene.city}
                 </span>
