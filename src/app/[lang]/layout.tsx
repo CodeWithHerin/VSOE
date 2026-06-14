@@ -11,6 +11,7 @@ import AIConcierge from '@/components/ui/AIConcierge';
 import { AudioProvider } from '@/components/audio/AudioContext';
 import FloatingBackButton from '@/components/ui/FloatingBackButton';
 import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
+import PortfolioBanner from '@/components/ui/PortfolioBanner';
 
 const SUPPORTED_LANGUAGES = ['en', 'fr', 'it', 'de'];
 
@@ -78,6 +79,7 @@ export default async function LanguageLayout({
       <BookTheScene />
       <AIConcierge />
       <CustomCursor />
+      <PortfolioBanner />
       <Navbar />
       {children}
       <Footer />
