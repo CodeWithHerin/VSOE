@@ -54,10 +54,10 @@ export default function Footer() {
                     <div className="lg:text-right">
                         <h3 className="font-serif text-2xl mb-6">{t.footer.follow}</h3>
                         <div className="flex gap-6 lg:justify-end text-white/60">
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
-                            <a href="#" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
+                            <a href="https://github.com/CodeWithHerin/VSOE" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
+                            <a href="https://github.com/CodeWithHerin" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
+                            <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
+                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
                         </div>
                     </div>
                 </div>
