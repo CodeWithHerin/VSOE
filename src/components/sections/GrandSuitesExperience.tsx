@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n/useTranslation';
+import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 
 interface SuiteData {
     id: string;
@@ -145,6 +146,26 @@ export default function GrandSuitesExperience() {
                                 </div>
                             ))}
                         </div>
+
+                        {/* CTAs */}
+                        <div className="flex items-center gap-6 mt-10">
+                          <Link
+                            href="/book"
+                            className="group flex items-center gap-3 px-8 py-3 bg-vsoe-gold text-vsoe-midnight text-[9px] uppercase tracking-[0.45em] font-bold hover:bg-vsoe-cream transition-all duration-300"
+                          >
+                            Reserve Suite
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="transition-transform duration-300 group-hover:translate-x-1">
+                              <path d="M 1 6 L 11 6 M 7 2 L 11 6 L 7 10" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                            </svg>
+                          </Link>
+                          <Link
+                            href="/suites"
+                            className="text-[9px] uppercase tracking-[0.45em] text-vsoe-cream/50 hover:text-vsoe-gold transition-colors duration-300 font-bold"
+                          >
+                            Explore All Suites
+                          </Link>
+                        </div>
+
                     </motion.div>
                 </div>
 
