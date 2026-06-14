@@ -4,7 +4,6 @@ import { useRef } from 'react';
 import { motion, useMotionValue, useAnimationFrame, useTransform } from 'framer-motion';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
-// CSS keyframe styles injected once
 const MARQUEE_STYLES = `
 @keyframes windowFlicker1 {
   0%, 100% { opacity: 1; }
@@ -24,33 +23,106 @@ const MARQUEE_STYLES = `
   0%, 100% { opacity: 0.3; }
   50% { opacity: 0.2; }
 }
-@keyframes steamRise1 {
-  0% { opacity: 0.6; transform: translateY(0) scaleX(1); }
-  100% { opacity: 0; transform: translateY(-28px) scaleX(1.8); }
+@keyframes steamDrift {
+  0%   { opacity: 0; transform: translate(0px, 0px) scale(0.6); }
+  15%  { opacity: 0.7; }
+  100% { opacity: 0; transform: translate(28px, -32px) scale(2.2); }
 }
-@keyframes steamRise2 {
-  0% { opacity: 0.5; transform: translateY(0) scaleX(1); }
-  100% { opacity: 0; transform: translateY(-22px) scaleX(2.2); }
+@keyframes steamDrift2 {
+  0%   { opacity: 0; transform: translate(0px, 0px) scale(0.5); }
+  15%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translate(22px, -26px) scale(1.8); }
 }
-@keyframes steamRise3 {
-  0% { opacity: 0.4; transform: translateY(0) scaleX(1); }
-  100% { opacity: 0; transform: translateY(-18px) scaleX(1.5); }
+@keyframes steamDrift3 {
+  0%   { opacity: 0; transform: translate(0px, 0px) scale(0.4); }
+  15%  { opacity: 0.4; }
+  100% { opacity: 0; transform: translate(18px, -20px) scale(1.5); }
+}
+@keyframes steamDrift4 {
+  0%   { opacity: 0; transform: translate(0px, 0px) scale(0.6); }
+  15%  { opacity: 0.6; }
+  100% { opacity: 0; transform: translate(32px, -28px) scale(2.4); }
+}
+@keyframes steamDrift5 {
+  0%   { opacity: 0; transform: translate(0px, 0px) scale(0.5); }
+  20%  { opacity: 0.45; }
+  100% { opacity: 0; transform: translate(24px, -36px) scale(2.0); }
 }
 `;
 
-// Window configs: each window has a glow style
 const WINDOWS = [
-  { style: 'animation: windowFlicker1 4.2s ease-in-out infinite', warm: true },
-  { style: 'animation: windowFlicker2 3.8s ease-in-out infinite 0.6s', warm: true },
-  { style: 'animation: windowDim 6s ease-in-out infinite 1.2s', warm: false },
-  { style: 'animation: windowFlicker1 5.1s ease-in-out infinite 0.3s', warm: true },
-  { style: 'animation: windowFlicker2 4.7s ease-in-out infinite 1.8s', warm: true },
-  { style: 'animation: windowDim 7s ease-in-out infinite 0.9s', warm: false },
-  { style: 'animation: windowFlicker1 3.9s ease-in-out infinite 2.1s', warm: true },
-  { style: 'animation: windowFlicker2 4.4s ease-in-out infinite 0.4s', warm: true },
-  { style: 'animation: windowDim 5.5s ease-in-out infinite 1.5s', warm: false },
-  { style: 'animation: windowFlicker1 6.2s ease-in-out infinite 0.8s', warm: true },
+  { anim: 'windowFlicker1 4.2s ease-in-out infinite', warm: true },
+  { anim: 'windowFlicker2 3.8s ease-in-out infinite 0.6s', warm: true },
+  { anim: 'windowDim 6s ease-in-out infinite 1.2s', warm: false },
+  { anim: 'windowFlicker1 5.1s ease-in-out infinite 0.3s', warm: true },
+  { anim: 'windowFlicker2 4.7s ease-in-out infinite 1.8s', warm: true },
+  { anim: 'windowDim 7s ease-in-out infinite 0.9s', warm: false },
+  { anim: 'windowFlicker1 3.9s ease-in-out infinite 2.1s', warm: true },
+  { anim: 'windowFlicker2 4.4s ease-in-out infinite 0.4s', warm: true },
+  { anim: 'windowDim 5.5s ease-in-out infinite 1.5s', warm: false },
+  { anim: 'windowFlicker1 6.2s ease-in-out infinite 0.8s', warm: true },
+  { anim: 'windowFlicker2 4.1s ease-in-out infinite 1.1s', warm: true },
+  { anim: 'windowDim 5.8s ease-in-out infinite 0.5s', warm: false },
 ];
+
+// SVG spoke wheel — front (bold, fully visible)
+function SpokeWheel({ size, x: wx, rotate }: { size: number; x: number; rotate: import('framer-motion').MotionValue<number> }) {
+  const r = size / 2;
+  const hubR = r * 0.22;
+  const spokeLen = r - hubR - 2;
+  const spokes = 6;
+  return (
+    <motion.svg
+      width={size} height={size}
+      style={{ position: 'absolute', bottom: -size * 0.35, left: wx, rotate }}
+      viewBox={`0 0 ${size} ${size}`}
+      overflow="visible"
+    >
+      {/* Outer rim */}
+      <circle cx={r} cy={r} r={r - 1} fill="#080e18" stroke="rgba(201,168,76,0.7)" strokeWidth="2" />
+      {/* Spokes */}
+      {Array.from({ length: spokes }).map((_, i) => {
+        const angle = (i * 360) / spokes;
+        const rad = (angle * Math.PI) / 180;
+        const x1 = r + Math.cos(rad) * hubR;
+        const y1 = r + Math.sin(rad) * hubR;
+        const x2 = r + Math.cos(rad) * (r - 2);
+        const y2 = r + Math.sin(rad) * (r - 2);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.55)" strokeWidth="1.2" />;
+      })}
+      {/* Hub */}
+      <circle cx={r} cy={r} r={hubR} fill="#0a1220" stroke="rgba(201,168,76,0.6)" strokeWidth="1.5" />
+      <circle cx={r} cy={r} r={hubR * 0.4} fill="rgba(201,168,76,0.4)" />
+    </motion.svg>
+  );
+}
+
+// SVG spoke wheel — rear shadow (faint, offset to suggest depth)
+function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; rotate: import('framer-motion').MotionValue<number> }) {
+  const r = size / 2;
+  const hubR = r * 0.22;
+  const spokes = 6;
+  return (
+    <motion.svg
+      width={size} height={size}
+      style={{ position: 'absolute', bottom: -size * 0.35 + 2, left: wx + 4, rotate, opacity: 0.28 }}
+      viewBox={`0 0 ${size} ${size}`}
+      overflow="visible"
+    >
+      <circle cx={r} cy={r} r={r - 1} fill="none" stroke="rgba(201,168,76,0.5)" strokeWidth="1.5" />
+      {Array.from({ length: spokes }).map((_, i) => {
+        const angle = (i * 360) / spokes;
+        const rad = (angle * Math.PI) / 180;
+        const x1 = r + Math.cos(rad) * hubR;
+        const y1 = r + Math.sin(rad) * hubR;
+        const x2 = r + Math.cos(rad) * (r - 2);
+        const y2 = r + Math.sin(rad) * (r - 2);
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.4)" strokeWidth="1" />;
+      })}
+      <circle cx={r} cy={r} r={hubR} fill="none" stroke="rgba(201,168,76,0.4)" strokeWidth="1" />
+    </motion.svg>
+  );
+}
 
 export default function Marquee() {
   const { t } = useTranslation();
@@ -59,15 +131,17 @@ export default function Marquee() {
   const isHovering = useRef(false);
   const x = useMotionValue(0);
 
+  const wheelRotate = useTransform(x, (v) => v * 2.2);
+
   useAnimationFrame((_t, delta) => {
     if (containerRef.current && trainRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      const trainWidth = trainRef.current.offsetWidth;
-      if (x.get() > containerWidth) x.set(-trainWidth);
-      if (x.get() < -trainWidth) x.set(containerWidth);
+      const cw = containerRef.current.offsetWidth;
+      const tw = trainRef.current.offsetWidth;
+      if (x.get() > cw) x.set(-tw);
+      if (x.get() < -tw) x.set(cw);
     }
     if (!isHovering.current) {
-      x.set(x.get() + -1.6 * (delta / 16));
+      x.set(x.get() - 1.6 * (delta / 16));
     }
   });
 
@@ -76,23 +150,38 @@ export default function Marquee() {
     x.set(x.get() + e.movementX * 2.5);
   };
 
+  // Track ballast background — repeating pattern full width
+  const trackStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    transform: 'translateY(-50%)',
+    height: '28px',
+    backgroundImage: `repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 18px,
+      rgba(201,168,76,0.07) 18px,
+      rgba(201,168,76,0.07) 20px
+    )`,
+    pointerEvents: 'none',
+  };
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: MARQUEE_STYLES }} />
       <div
         ref={containerRef}
-        className="bg-vsoe-midnight py-10 border-y border-vsoe-gold/20 relative z-20 overflow-hidden flex items-center"
-        style={{ minHeight: '160px' }}
+        className="bg-vsoe-midnight border-y border-vsoe-gold/20 relative z-20 overflow-hidden flex items-center"
+        style={{ minHeight: '180px', paddingTop: '32px', paddingBottom: '32px' }}
       >
-        {/* Rail tracks */}
-        <div className="absolute top-1/2 left-0 w-full h-px bg-vsoe-gold/15 -translate-y-3" />
-        <div className="absolute top-1/2 left-0 w-full h-px bg-vsoe-gold/15 translate-y-3" />
-        {/* Rail sleepers — subtle vertical dashes */}
-        <div className="absolute top-1/2 left-0 w-full -translate-y-1/2 flex gap-6 px-4 pointer-events-none">
-          {[...Array(40)].map((_, i) => (
-            <div key={i} className="w-1 h-7 bg-vsoe-gold/8 flex-shrink-0" />
-          ))}
-        </div>
+        {/* Track ballast — full width repeating pattern */}
+        <div style={trackStyle} />
+        {/* Rail — top */}
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(201,168,76,0.2)', transform: 'translateY(-10px)', pointerEvents: 'none' }} />
+        {/* Rail — bottom */}
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(201,168,76,0.2)', transform: 'translateY(10px)', pointerEvents: 'none' }} />
 
         <motion.div
           ref={trainRef}
@@ -103,161 +192,194 @@ export default function Marquee() {
           onMouseMove={handleMouseMove}
         >
           {/* ── Locomotive ── */}
-          <div className="relative flex-shrink-0 mr-0">
+          <div style={{ position: 'relative', flexShrink: 0 }}>
 
-            {/* Steam puffs — CSS only, no Framer Motion */}
-            <div className="absolute pointer-events-none" style={{ left: '18px', top: '-8px', zIndex: 30 }}>
-              <div style={{
-                width: '8px', height: '8px',
-                borderRadius: '50%',
-                background: 'rgba(245,240,232,0.35)',
-                animation: 'steamRise1 1.8s ease-out infinite',
-                position: 'absolute', left: '0px',
-              }} />
-              <div style={{
-                width: '6px', height: '6px',
-                borderRadius: '50%',
-                background: 'rgba(245,240,232,0.25)',
-                animation: 'steamRise2 2.2s ease-out infinite 0.4s',
-                position: 'absolute', left: '6px', top: '2px',
-              }} />
-              <div style={{
-                width: '5px', height: '5px',
-                borderRadius: '50%',
-                background: 'rgba(245,240,232,0.20)',
-                animation: 'steamRise3 1.6s ease-out infinite 0.9s',
-                position: 'absolute', left: '-4px', top: '3px',
-              }} />
+            {/* Steam puffs — drift backward (positive x = right = backward for leftward train) */}
+            <div style={{ position: 'absolute', left: '8px', top: '-4px', zIndex: 30, pointerEvents: 'none' }}>
+              {[
+                { w: 10, h: 10, anim: 'steamDrift 2.0s ease-out infinite', l: '0px', t: '0px' },
+                { w: 7,  h: 7,  anim: 'steamDrift2 2.4s ease-out infinite 0.5s', l: '8px', t: '3px' },
+                { w: 6,  h: 6,  anim: 'steamDrift3 1.8s ease-out infinite 1.0s', l: '-4px', t: '4px' },
+                { w: 9,  h: 9,  anim: 'steamDrift4 2.6s ease-out infinite 0.3s', l: '4px', t: '-2px' },
+                { w: 5,  h: 5,  anim: 'steamDrift5 2.2s ease-out infinite 1.4s', l: '-2px', t: '6px' },
+              ].map((s, i) => (
+                <div key={i} style={{
+                  width: s.w, height: s.h,
+                  borderRadius: '50%',
+                  background: 'rgba(245,240,232,0.3)',
+                  animation: s.anim,
+                  position: 'absolute',
+                  left: s.l, top: s.t,
+                }} />
+              ))}
             </div>
 
-            {/* Locomotive body */}
+            {/* Locomotive body — rounded front boiler */}
             <div style={{
-              width: '100px',
-              height: '56px',
+              width: '110px',
+              height: '58px',
               background: 'linear-gradient(180deg, #1e2d45 0%, #111c2e 60%, #0a1220 100%)',
               borderTop: '2px solid rgba(201,168,76,0.6)',
               borderBottom: '2px solid rgba(201,168,76,0.6)',
-              borderLeft: '2px solid rgba(201,168,76,0.4)',
+              borderLeft: '2px solid rgba(201,168,76,0.5)',
               borderRight: 'none',
-              borderRadius: '4px 0 0 4px',
+              borderRadius: '28px 0 0 28px',
               position: 'relative',
-              boxShadow: '0 0 20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)',
+              boxShadow: '0 0 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
             }}>
               {/* Chimney */}
               <div style={{
-                position: 'absolute', top: '-12px', left: '18px',
-                width: '10px', height: '14px',
+                position: 'absolute', top: '-14px', left: '22px',
+                width: '11px', height: '16px',
                 background: '#0a1220',
-                border: '1.5px solid rgba(201,168,76,0.4)',
-                borderRadius: '2px 2px 0 0',
+                border: '1.5px solid rgba(201,168,76,0.45)',
+                borderRadius: '3px 3px 0 0',
               }} />
-              {/* Cab window */}
+              {/* Chimney cap */}
               <div style={{
-                position: 'absolute', top: '8px', right: '10px',
-                width: '22px', height: '20px',
-                background: 'rgba(201,168,76,0.12)',
-                border: '1px solid rgba(201,168,76,0.3)',
+                position: 'absolute', top: '-16px', left: '19px',
+                width: '17px', height: '4px',
+                background: '#0a1220',
+                border: '1px solid rgba(201,168,76,0.35)',
                 borderRadius: '2px',
-                boxShadow: 'inset 0 0 8px rgba(201,168,76,0.15)',
               }} />
               {/* Boiler dome */}
               <div style={{
-                position: 'absolute', top: '-6px', left: '36px',
-                width: '20px', height: '8px',
+                position: 'absolute', top: '-8px', left: '42px',
+                width: '22px', height: '10px',
                 background: '#1a2840',
-                border: '1.5px solid rgba(201,168,76,0.35)',
-                borderRadius: '10px 10px 0 0',
+                border: '1.5px solid rgba(201,168,76,0.4)',
+                borderRadius: '11px 11px 0 0',
               }} />
-              {/* Gold stripe */}
+              {/* Cab window */}
               <div style={{
-                position: 'absolute', bottom: '12px', left: '0', right: '0',
-                height: '1px',
-                background: 'rgba(201,168,76,0.3)',
+                position: 'absolute', top: '10px', right: '10px',
+                width: '24px', height: '22px',
+                background: 'rgba(201,168,76,0.10)',
+                border: '1px solid rgba(201,168,76,0.35)',
+                borderRadius: '3px',
+                boxShadow: 'inset 0 0 10px rgba(201,168,76,0.18)',
+              }} />
+              {/* Headlamp */}
+              <div style={{
+                position: 'absolute', top: '16px', left: '6px',
+                width: '10px', height: '10px',
+                borderRadius: '50%',
+                background: 'rgba(201,168,76,0.15)',
+                border: '1px solid rgba(201,168,76,0.4)',
+                boxShadow: '0 0 8px rgba(201,168,76,0.3)',
+              }} />
+              {/* Gold waist stripe */}
+              <div style={{
+                position: 'absolute', bottom: '14px', left: '28px', right: '0',
+                height: '1px', background: 'rgba(201,168,76,0.35)',
               }} />
             </div>
 
-            {/* Locomotive wheels */}
-            <motion.div style={{ rotate: useTransform(x, v => v * 1.8), position: 'absolute', bottom: '-8px', left: '14px' }}>
-              <div style={{
-                width: '18px', height: '18px',
-                borderRadius: '50%',
-                background: '#080e18',
-                border: '2px solid rgba(201,168,76,0.5)',
-                boxShadow: '0 0 6px rgba(201,168,76,0.2)',
-              }} />
-            </motion.div>
-            <div style={{ position: 'absolute', bottom: '-8px', left: '44px', width: '22px', height: '22px', borderRadius: '50%', background: '#080e18', border: '2px solid rgba(201,168,76,0.5)', boxShadow: '0 0 6px rgba(201,168,76,0.2)' }} />
-            <div style={{ position: 'absolute', bottom: '-8px', left: '74px', width: '18px', height: '18px', borderRadius: '50%', background: '#080e18', border: '2px solid rgba(201,168,76,0.5)', boxShadow: '0 0 6px rgba(201,168,76,0.2)' }} />
+            {/* Connecting rod between locomotive wheels */}
+            <div style={{
+              position: 'absolute',
+              bottom: '-2px',
+              left: '18px',
+              width: '74px',
+              height: '2px',
+              background: 'rgba(201,168,76,0.35)',
+              zIndex: 5,
+            }} />
+
+            {/* Locomotive wheels — 3 spoke wheels + shadows */}
+            <SpokeWheelShadow size={22} x={14} rotate={wheelRotate} />
+            <SpokeWheel size={22} x={14} rotate={wheelRotate} />
+
+            <SpokeWheelShadow size={28} x={42} rotate={wheelRotate} />
+            <SpokeWheel size={28} x={42} rotate={wheelRotate} />
+
+            <SpokeWheelShadow size={22} x={74} rotate={wheelRotate} />
+            <SpokeWheel size={22} x={74} rotate={wheelRotate} />
           </div>
 
           {/* ── Carriages ── */}
-          {[0, 1, 2].map((carriageIndex) => (
-            <div key={carriageIndex} style={{
+          {[0, 1, 2].map((ci) => (
+            <div key={ci} style={{
               position: 'relative',
               flexShrink: 0,
-              width: '280px',
-              height: '56px',
+              width: '300px',
+              height: '58px',
               background: 'linear-gradient(180deg, #1a253a 0%, #111c2e 70%, #0a1220 100%)',
               borderTop: '2px solid rgba(201,168,76,0.5)',
               borderBottom: '2px solid rgba(201,168,76,0.5)',
-              borderLeft: carriageIndex === 0 ? 'none' : '1px solid rgba(201,168,76,0.2)',
-              borderRight: '1px solid rgba(201,168,76,0.2)',
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04), 0 0 20px rgba(0,0,0,0.4)',
+              borderLeft: ci === 0 ? 'none' : '2px solid rgba(201,168,76,0.25)',
+              borderRight: '2px solid rgba(201,168,76,0.25)',
+              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.04)',
             }}>
-              {/* Top highlight */}
-              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'rgba(255,255,255,0.06)' }} />
+              {/* Top sheen */}
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'rgba(255,255,255,0.05)' }} />
 
-              {/* Windows with individual glow and flicker */}
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '0 16px' }}>
-                {WINDOWS.slice(carriageIndex * 3, carriageIndex * 3 + 4).map((win, wi) => (
+              {/* Windows */}
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-around', padding: '0 20px' }}>
+                {WINDOWS.slice(ci * 4, ci * 4 + 4).map((win, wi) => (
                   <div key={wi} style={{
-                    width: '36px',
+                    width: '38px',
                     height: '26px',
-                    borderRadius: '2px',
-                    border: '1px solid rgba(201,168,76,0.25)',
-                    background: win.warm
-                      ? 'rgba(201,140,60,0.18)'
-                      : 'rgba(20,30,50,0.8)',
+                    borderRadius: '2px 2px 0 0',
+                    border: '1px solid rgba(201,168,76,0.3)',
+                    background: win.warm ? 'rgba(201,140,60,0.20)' : 'rgba(15,22,40,0.9)',
                     boxShadow: win.warm
-                      ? 'inset 0 0 10px rgba(201,140,60,0.25), 0 0 8px rgba(201,140,60,0.1)'
-                      : 'inset 0 0 4px rgba(0,0,0,0.5)',
-                    animation: win.style.replace('animation: ', ''),
+                      ? 'inset 0 0 12px rgba(201,140,60,0.28), 0 0 6px rgba(201,140,60,0.08)'
+                      : 'inset 0 0 4px rgba(0,0,0,0.6)',
+                    animation: win.anim,
                   } as React.CSSProperties} />
                 ))}
               </div>
 
-              {/* Carriage text content */}
-              {carriageIndex === 1 && (
+              {/* Center text — middle carriage only */}
+              {ci === 1 && (
                 <div style={{
                   position: 'absolute', inset: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   zIndex: 10,
                 }}>
                   <div style={{
-                    background: 'rgba(10,18,32,0.85)',
-                    border: '1px solid rgba(201,168,76,0.2)',
+                    background: 'rgba(8,14,24,0.88)',
+                    border: '1px solid rgba(201,168,76,0.25)',
                     borderRadius: '20px',
-                    padding: '4px 16px',
-                    backdropFilter: 'blur(4px)',
-                    display: 'flex', alignItems: 'center', gap: '12px',
-                    fontSize: '9px', fontWeight: '700',
-                    letterSpacing: '0.25em', textTransform: 'uppercase',
+                    padding: '5px 18px',
+                    backdropFilter: 'blur(6px)',
+                    display: 'flex', alignItems: 'center', gap: '10px',
+                    whiteSpace: 'nowrap',
+                    fontSize: '8px', fontWeight: '700',
+                    letterSpacing: '0.28em', textTransform: 'uppercase',
                     color: 'rgba(201,168,76,0.9)',
                     userSelect: 'none',
                   }}>
                     <span>{t.marquee.vsoe}</span>
-                    <span style={{ color: 'rgba(201,168,76,0.4)' }}>✦</span>
+                    <span style={{ color: 'rgba(201,168,76,0.35)', fontSize: '6px' }}>✦</span>
                     <span>{t.marquee.cities}</span>
                   </div>
                 </div>
               )}
 
-              {/* Gold stripe */}
-              <div style={{ position: 'absolute', bottom: '13px', left: 0, right: 0, height: '1px', background: 'rgba(201,168,76,0.15)' }} />
+              {/* Gold waist stripe */}
+              <div style={{ position: 'absolute', bottom: '14px', left: 0, right: 0, height: '1px', background: 'rgba(201,168,76,0.18)' }} />
 
-              {/* Wheels */}
-              <div style={{ position: 'absolute', bottom: '-8px', left: '40px', width: '18px', height: '18px', borderRadius: '50%', background: '#080e18', border: '2px solid rgba(201,168,76,0.4)', boxShadow: '0 0 4px rgba(201,168,76,0.15)' }} />
-              <div style={{ position: 'absolute', bottom: '-8px', right: '40px', width: '18px', height: '18px', borderRadius: '50%', background: '#080e18', border: '2px solid rgba(201,168,76,0.4)', boxShadow: '0 0 4px rgba(201,168,76,0.15)' }} />
+              {/* Connecting rod between carriage wheels */}
+              <div style={{
+                position: 'absolute',
+                bottom: '-2px',
+                left: '44px',
+                width: '212px',
+                height: '2px',
+                background: 'rgba(201,168,76,0.25)',
+                zIndex: 5,
+              }} />
+
+              {/* Carriage wheels — front pair */}
+              <SpokeWheelShadow size={20} x={44} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={44} rotate={wheelRotate} />
+
+              {/* Carriage wheels — rear pair */}
+              <SpokeWheelShadow size={20} x={236} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={236} rotate={wheelRotate} />
             </div>
           ))}
         </motion.div>
