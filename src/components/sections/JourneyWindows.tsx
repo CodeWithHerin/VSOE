@@ -50,6 +50,25 @@ const scenes = [
 
 const cities = ['Paris', 'Countryside', 'The Alps', 'Venice'];
 
+// Blinking clock display — colon pulses like a real digital clock
+function ClockTime({ time }: { time: string }) {
+  const [parts] = time.split(':');
+  const minutes = time.split(':')[1];
+  return (
+    <div className="flex items-center justify-center gap-0 font-mono text-[11px] tracking-[0.25em] text-vsoe-gold/70 mb-4">
+      <span>{parts}</span>
+      <motion.span
+        animate={{ opacity: [1, 0.2, 1] }}
+        transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+        className="mx-[1px]"
+      >
+        :
+      </motion.span>
+      <span>{minutes}</span>
+    </div>
+  );
+}
+
 export default function JourneyWindows() {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -228,12 +247,10 @@ export default function JourneyWindows() {
               style={{ opacity: textOpacities[i], y: textYs[i] }}
               className="text-center px-8"
             >
-              <div className="flex items-baseline justify-center gap-4 mb-2">
+              <ClockTime time={scene.time} />
+              <div className="mb-2">
                 <span className="font-serif text-4xl md:text-5xl text-vsoe-cream tracking-wide">
                   {scene.city}
-                </span>
-                <span className="font-mono text-vsoe-gold text-xs tracking-[0.3em] opacity-80">
-                  {scene.time}
                 </span>
               </div>
               <div className="mb-3">
