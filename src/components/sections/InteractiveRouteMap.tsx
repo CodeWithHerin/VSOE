@@ -8,7 +8,7 @@ import { useTranslation } from '@/lib/i18n/useTranslation';
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
 // ─────────────────────────────────────────────────────────────────────────────
-type TimeOfDay = 'dawn' | 'day' | 'dusk' | 'night';
+type TimeOfDay = 'day' | 'dusk' | 'night';
 
 interface ModePalette {
   bg: string;
@@ -26,14 +26,12 @@ const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
 const PALETTES: Record<TimeOfDay, ModePalette & { coast: string, particleColor?: string }> = {
-  dawn:  { bg: '#1A1228', bgCenter: '#2D2444', accent: '#FFD4A0', overlay: 'rgba(255,145,90, 0)', coast: '#C57B59', particleColor: '#FFB88C' },
   day:   { bg: '#0E1828', bgCenter: '#182238', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.06)', coast: CREAM },
   dusk:  { bg: '#050B14', bgCenter: '#0A1525', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.08)', coast: CREAM },
   night: { bg: '#020610', bgCenter: '#050A1A', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.18)', coast: CREAM },
 };
 
 const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
-  dawn:  { icon: '🌅', label: 'Dawn'  },
   day:   { icon: '☀️', label: 'Day'   },
   dusk:  { icon: '🌆', label: 'Dusk'  },
   night: { icon: '🌙', label: 'Night' },
@@ -323,7 +321,7 @@ export default function InteractiveRouteMap() {
                 key={m}
                 onClick={() => setMode(m)}
                 aria-pressed={mode === m}
-                className="px-3 py-1.5 text-[9px] uppercase tracking-widest border font-sans flex items-center gap-1.5 select-none"
+                className="px-4 py-2 text-[9px] uppercase tracking-widest border font-sans flex items-center gap-2 select-none"
                 style={{
                   borderColor:     mode === m ? palette.accent : 'rgba(255,255,255,0.14)',
                   color:           mode === m ? palette.accent : 'rgba(255,255,255,0.38)',
@@ -364,20 +362,8 @@ export default function InteractiveRouteMap() {
               <div 
                 className="absolute inset-0 transition-colors duration-1000 ease-in-out" 
                 style={{ 
-                  background: mode === 'dawn' 
-                    ? `linear-gradient(to top, #FFB88C 0%, #E89B8B 30%, #2D2444 100%)`
-                    : `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)` 
+                  background: `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)`,
                 }} 
-              />
-              
-              {/* Sun-glow for dawn */}
-              <div 
-                className="absolute bottom-0 left-0 w-[600px] h-[500px] pointer-events-none transition-opacity duration-1000"
-                style={{
-                  background: 'radial-gradient(circle at 20% 100%, #FFE0B0 0%, transparent 60%)',
-                  opacity: mode === 'dawn' ? 1 : 0,
-                  transform: 'translateZ(0)'
-                }}
               />
 
               <AnimatePresence>
@@ -470,10 +456,10 @@ export default function InteractiveRouteMap() {
               {/* ── Route Lines ── */}
               {/* London → Paris — thin dashed */}
               <motion.path
-                d={PATH_LONDON_PARIS} stroke="currentColor" strokeWidth="1.5"
+                d={PATH_LONDON_PARIS} stroke="currentColor" strokeWidth="2"
                 fill="none" strokeDasharray="5 5"
                 initial={{ pathLength: 0, opacity: 0 }}
-                animate={isInView ? { pathLength: 1, opacity: 0.7 } : {}}
+                animate={isInView ? { pathLength: 1, opacity: 0.85 } : {}}
                 transition={{ duration: reducedMotion ? 0 : 1.5, delay: 0, ease: 'easeInOut' }}
               />
               {/* Paris → Venice — solid, featured */}
@@ -486,10 +472,10 @@ export default function InteractiveRouteMap() {
               />
               {/* Venice → Istanbul — dashed */}
               <motion.path
-                d={PATH_VENICE_ISTANBUL} stroke="currentColor" strokeWidth="1.5"
+                d={PATH_VENICE_ISTANBUL} stroke="currentColor" strokeWidth="2"
                 fill="none" strokeDasharray="8 5"
                 initial={{ pathLength: 0, opacity: 0 }}
-                animate={isInView ? { pathLength: 1, opacity: 0.6 } : {}}
+                animate={isInView ? { pathLength: 1, opacity: 0.80 } : {}}
                 transition={{ duration: reducedMotion ? 0 : 1.5, delay: 0.6, ease: 'easeInOut' }}
               />
 
@@ -550,7 +536,7 @@ export default function InteractiveRouteMap() {
                       x={labelX} y={labelY}
                       fill={CREAM} fontSize="11" fontFamily="Georgia, serif"
                       letterSpacing="2" textAnchor={textAnchor}
-                      opacity={isHovered ? 1 : 0.55}
+                      opacity={isHovered ? 1 : 0.75}
                       style={{ transition: 'opacity 0.2s', userSelect: 'none' }}
                     >
                       {city.label.toUpperCase()}
@@ -647,11 +633,12 @@ export default function InteractiveRouteMap() {
                       >
                         {/* Card */}
                         <div
-                          className="border backdrop-blur-sm px-5 py-4 text-center shadow-2xl"
+                          className="backdrop-blur-sm px-5 py-4 text-center shadow-2xl"
                           style={{
                             minWidth:        '172px',
                             backgroundColor: `${palette.bg}f2`,
-                            borderColor:     `${palette.accent}55`,
+                            border:          `1px solid ${palette.accent}55`,
+                            borderLeft:      `2px solid ${palette.accent}`,
                             transition:      modeTransition,
                           }}
                         >
