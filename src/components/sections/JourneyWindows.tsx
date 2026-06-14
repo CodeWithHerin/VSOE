@@ -257,7 +257,7 @@ export default function JourneyWindows() {
             style={{ y: text3Y }}
             className="flex flex-col items-center gap-3"
           >
-            <div className="w-px h-6 bg-vsoe-gold/40" />
+
             <Link
               href="/book"
               className="pointer-events-auto group flex items-center gap-3 px-8 py-3 border border-vsoe-gold/50 text-[9px] uppercase tracking-[0.45em] text-vsoe-gold font-bold hover:bg-vsoe-gold hover:text-vsoe-midnight transition-all duration-500"
