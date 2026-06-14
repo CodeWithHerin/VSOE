@@ -107,26 +107,33 @@ function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; ro
       width={size} height={size}
       style={{
         position: 'absolute',
-        bottom: -size * 0.35 - 3,
-        left: wx + 3,
+        bottom: -size * 0.35,
+        left: wx + 4,
         rotate,
-        opacity: 0.32,
-        clipPath: 'inset(50% 0 0 0)',
+        opacity: 0.35,
+        overflow: 'hidden',
       }}
       viewBox={`0 0 ${size} ${size}`}
-      overflow="visible"
     >
-      <circle cx={r} cy={r} r={r - 1} fill="none" stroke="rgba(201,168,76,0.6)" strokeWidth="1.5" />
-      {Array.from({ length: spokes }).map((_, i) => {
-        const angle = (i * 360) / spokes;
-        const rad = (angle * Math.PI) / 180;
-        const x1 = r + Math.cos(rad) * hubR;
-        const y1 = r + Math.sin(rad) * hubR;
-        const x2 = r + Math.cos(rad) * (r - 2);
-        const y2 = r + Math.sin(rad) * (r - 2);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.45)" strokeWidth="1" />;
-      })}
-      <circle cx={r} cy={r} r={hubR} fill="none" stroke="rgba(201,168,76,0.45)" strokeWidth="1" />
+      {/* Clip — show only bottom half */}
+      <defs>
+        <clipPath id={`halfClip-${size}-${wx}`}>
+          <rect x="0" y={r} width={size} height={r} />
+        </clipPath>
+      </defs>
+      <g clipPath={`url(#halfClip-${size}-${wx})`}>
+        <circle cx={r} cy={r} r={r - 1} fill="none" stroke="rgba(201,168,76,0.65)" strokeWidth="1.5" />
+        {Array.from({ length: spokes }).map((_, i) => {
+          const angle = (i * 360) / spokes;
+          const rad = (angle * Math.PI) / 180;
+          const x1 = r + Math.cos(rad) * hubR;
+          const y1 = r + Math.sin(rad) * hubR;
+          const x2 = r + Math.cos(rad) * (r - 2);
+          const y2 = r + Math.sin(rad) * (r - 2);
+          return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.5)" strokeWidth="1" />;
+        })}
+        <circle cx={r} cy={r} r={hubR} fill="none" stroke="rgba(201,168,76,0.5)" strokeWidth="1" />
+      </g>
     </motion.svg>
   );
 }
@@ -344,6 +351,7 @@ export default function Marquee() {
                 <div style={{
                   position: 'absolute', inset: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  paddingBottom: '8px',
                   zIndex: 10,
                 }}>
                   <div style={{
@@ -357,6 +365,8 @@ export default function Marquee() {
                     letterSpacing: '0.28em', textTransform: 'uppercase',
                     color: 'rgba(201,168,76,0.95)',
                     userSelect: 'none',
+                    minWidth: '200px',
+                    textAlign: 'center',
                   }}>
                     {t.marquee.vsoe}
                   </div>
@@ -367,6 +377,7 @@ export default function Marquee() {
                 <div style={{
                   position: 'absolute', inset: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  paddingBottom: '8px',
                   zIndex: 10,
                 }}>
                   <div style={{
@@ -380,6 +391,8 @@ export default function Marquee() {
                     letterSpacing: '0.28em', textTransform: 'uppercase',
                     color: 'rgba(201,168,76,0.75)',
                     userSelect: 'none',
+                    minWidth: '200px',
+                    textAlign: 'center',
                   }}>
                     {t.marquee.cities}
                   </div>
