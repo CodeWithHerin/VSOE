@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
-import { Facebook, Instagram, Twitter, Youtube } from 'lucide-react';
+import { Github } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function Footer() {
@@ -53,11 +53,31 @@ export default function Footer() {
 
                     <div className="lg:text-right">
                         <h3 className="font-serif text-2xl mb-6">{t.footer.follow}</h3>
-                        <div className="flex gap-6 lg:justify-end text-white/60">
-                            <a href="https://github.com/CodeWithHerin/VSOE" target="_blank" rel="noopener noreferrer" aria-label="GitHub" className="hover:text-vsoe-gold transition-colors"><Instagram size={20} /></a>
-                            <a href="https://github.com/CodeWithHerin" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile" className="hover:text-vsoe-gold transition-colors"><Facebook size={20} /></a>
-                            <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="X" className="hover:text-vsoe-gold transition-colors"><Twitter size={20} /></a>
-                            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="hover:text-vsoe-gold transition-colors"><Youtube size={20} /></a>
+                        <div className="flex flex-col gap-4 lg:items-end">
+                          <a
+                            href="https://github.com/CodeWithHerin/VSOE"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="View source on GitHub"
+                            className="flex items-center gap-3 text-white/50 hover:text-vsoe-gold transition-colors duration-300 group"
+                          >
+                            <Github size={18} />
+                            <span className="text-[10px] uppercase tracking-[0.25em] font-sans group-hover:text-vsoe-gold transition-colors">
+                              View Source on GitHub
+                            </span>
+                          </a>
+                          <a
+                            href="https://github.com/CodeWithHerin"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="GitHub Profile"
+                            className="flex items-center gap-3 text-white/50 hover:text-vsoe-gold transition-colors duration-300 group"
+                          >
+                            <Github size={18} />
+                            <span className="text-[10px] uppercase tracking-[0.25em] font-sans group-hover:text-vsoe-gold transition-colors">
+                              Built by Herin Patel
+                            </span>
+                          </a>
                         </div>
                     </div>
                 </div>
