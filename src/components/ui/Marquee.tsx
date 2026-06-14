@@ -74,7 +74,7 @@ function SpokeWheel({ size, x: wx, rotate }: { size: number; x: number; rotate: 
   return (
     <motion.svg
       width={size} height={size}
-      style={{ position: 'absolute', bottom: -size * 0.35, left: wx, rotate }}
+      style={{ position: 'absolute', bottom: -size * 0.55, left: wx, rotate }}
       viewBox={`0 0 ${size} ${size}`}
       overflow="visible"
     >
@@ -107,7 +107,7 @@ function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; ro
       width={size} height={size}
       style={{
         position: 'absolute',
-        bottom: -size * 0.35,
+        bottom: -size * 0.55,
         left: wx + 4,
         rotate,
         opacity: 0.35,
@@ -383,15 +383,15 @@ export default function Marquee() {
                   pointerEvents: 'none',
                 }}>
                   <div style={{
-                    background: 'rgba(8,14,24,0.90)',
-                    border: '1px solid rgba(201,168,76,0.25)',
+                    background: 'rgba(8,14,24,0.97)',
+                    border: '1px solid rgba(201,168,76,0.30)',
                     borderRadius: '20px',
                     padding: '5px 20px',
-                    backdropFilter: 'blur(6px)',
+                    backdropFilter: 'blur(8px)',
                     whiteSpace: 'nowrap',
                     fontSize: '9px', fontWeight: '700',
                     letterSpacing: '0.28em', textTransform: 'uppercase',
-                    color: 'rgba(201,168,76,0.75)',
+                    color: 'rgba(201,168,76,0.85)',
                     userSelect: 'none',
                     width: '200px',
                     textAlign: 'center',
