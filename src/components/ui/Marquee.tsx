@@ -105,11 +105,18 @@ function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; ro
   return (
     <motion.svg
       width={size} height={size}
-      style={{ position: 'absolute', bottom: -size * 0.35 + 2, left: wx + 4, rotate, opacity: 0.28 }}
+      style={{
+        position: 'absolute',
+        bottom: -size * 0.35 - 3,
+        left: wx + 3,
+        rotate,
+        opacity: 0.32,
+        clipPath: 'inset(50% 0 0 0)',
+      }}
       viewBox={`0 0 ${size} ${size}`}
       overflow="visible"
     >
-      <circle cx={r} cy={r} r={r - 1} fill="none" stroke="rgba(201,168,76,0.5)" strokeWidth="1.5" />
+      <circle cx={r} cy={r} r={r - 1} fill="none" stroke="rgba(201,168,76,0.6)" strokeWidth="1.5" />
       {Array.from({ length: spokes }).map((_, i) => {
         const angle = (i * 360) / spokes;
         const rad = (angle * Math.PI) / 180;
@@ -117,9 +124,9 @@ function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; ro
         const y1 = r + Math.sin(rad) * hubR;
         const x2 = r + Math.cos(rad) * (r - 2);
         const y2 = r + Math.sin(rad) * (r - 2);
-        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.4)" strokeWidth="1" />;
+        return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(201,168,76,0.45)" strokeWidth="1" />;
       })}
-      <circle cx={r} cy={r} r={hubR} fill="none" stroke="rgba(201,168,76,0.4)" strokeWidth="1" />
+      <circle cx={r} cy={r} r={hubR} fill="none" stroke="rgba(201,168,76,0.45)" strokeWidth="1" />
     </motion.svg>
   );
 }
@@ -179,9 +186,9 @@ export default function Marquee() {
         {/* Track ballast — full width repeating pattern */}
         <div style={trackStyle} />
         {/* Rail — top */}
-        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(201,168,76,0.2)', transform: 'translateY(-10px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'rgba(201,168,76,0.25)', transform: 'translateY(-10px)', pointerEvents: 'none' }} />
         {/* Rail — bottom */}
-        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '2px', background: 'rgba(201,168,76,0.2)', transform: 'translateY(10px)', pointerEvents: 'none' }} />
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: '1px', background: 'rgba(201,168,76,0.25)', transform: 'translateY(10px)', pointerEvents: 'none' }} />
 
         <motion.div
           ref={trainRef}
@@ -195,7 +202,7 @@ export default function Marquee() {
           <div style={{ position: 'relative', flexShrink: 0 }}>
 
             {/* Steam puffs — drift backward (positive x = right = backward for leftward train) */}
-            <div style={{ position: 'absolute', left: '8px', top: '-4px', zIndex: 30, pointerEvents: 'none' }}>
+            <div style={{ position: 'absolute', left: '22px', top: '-18px', zIndex: 30, pointerEvents: 'none' }}>
               {[
                 { w: 10, h: 10, anim: 'steamDrift 2.0s ease-out infinite', l: '0px', t: '0px' },
                 { w: 7,  h: 7,  anim: 'steamDrift2 2.4s ease-out infinite 0.5s', l: '8px', t: '3px' },
@@ -223,7 +230,7 @@ export default function Marquee() {
               borderBottom: '2px solid rgba(201,168,76,0.6)',
               borderLeft: '2px solid rgba(201,168,76,0.5)',
               borderRight: 'none',
-              borderRadius: '28px 0 0 28px',
+              borderRadius: '40px 0 0 40px',
               position: 'relative',
               boxShadow: '0 0 24px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06)',
             }}>
@@ -332,8 +339,8 @@ export default function Marquee() {
                 ))}
               </div>
 
-              {/* Center text — middle carriage only */}
-              {ci === 1 && (
+              {/* Carriage 0 — train name */}
+              {ci === 0 && (
                 <div style={{
                   position: 'absolute', inset: 0,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -343,18 +350,38 @@ export default function Marquee() {
                     background: 'rgba(8,14,24,0.88)',
                     border: '1px solid rgba(201,168,76,0.25)',
                     borderRadius: '20px',
-                    padding: '5px 18px',
+                    padding: '5px 20px',
                     backdropFilter: 'blur(6px)',
-                    display: 'flex', alignItems: 'center', gap: '10px',
                     whiteSpace: 'nowrap',
-                    fontSize: '8px', fontWeight: '700',
+                    fontSize: '9px', fontWeight: '700',
                     letterSpacing: '0.28em', textTransform: 'uppercase',
-                    color: 'rgba(201,168,76,0.9)',
+                    color: 'rgba(201,168,76,0.95)',
                     userSelect: 'none',
                   }}>
-                    <span>{t.marquee.vsoe}</span>
-                    <span style={{ color: 'rgba(201,168,76,0.35)', fontSize: '6px' }}>✦</span>
-                    <span>{t.marquee.cities}</span>
+                    {t.marquee.vsoe}
+                  </div>
+                </div>
+              )}
+              {/* Carriage 2 — route cities */}
+              {ci === 2 && (
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  zIndex: 10,
+                }}>
+                  <div style={{
+                    background: 'rgba(8,14,24,0.88)',
+                    border: '1px solid rgba(201,168,76,0.25)',
+                    borderRadius: '20px',
+                    padding: '5px 20px',
+                    backdropFilter: 'blur(6px)',
+                    whiteSpace: 'nowrap',
+                    fontSize: '9px', fontWeight: '700',
+                    letterSpacing: '0.28em', textTransform: 'uppercase',
+                    color: 'rgba(201,168,76,0.75)',
+                    userSelect: 'none',
+                  }}>
+                    {t.marquee.cities}
                   </div>
                 </div>
               )}
@@ -362,24 +389,28 @@ export default function Marquee() {
               {/* Gold waist stripe */}
               <div style={{ position: 'absolute', bottom: '14px', left: 0, right: 0, height: '1px', background: 'rgba(201,168,76,0.18)' }} />
 
-              {/* Connecting rod between carriage wheels */}
+              {/* Connecting rod between carriage bogies */}
               <div style={{
                 position: 'absolute',
                 bottom: '-2px',
-                left: '44px',
-                width: '212px',
+                left: '36px',
+                width: '226px',
                 height: '2px',
                 background: 'rgba(201,168,76,0.25)',
                 zIndex: 5,
               }} />
 
-              {/* Carriage wheels — front pair */}
-              <SpokeWheelShadow size={20} x={44} rotate={wheelRotate} />
-              <SpokeWheel size={20} x={44} rotate={wheelRotate} />
+              {/* Carriage wheels — front bogie (two wheels close together) */}
+              <SpokeWheelShadow size={20} x={36} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={36} rotate={wheelRotate} />
+              <SpokeWheelShadow size={20} x={58} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={58} rotate={wheelRotate} />
 
-              {/* Carriage wheels — rear pair */}
-              <SpokeWheelShadow size={20} x={236} rotate={wheelRotate} />
-              <SpokeWheel size={20} x={236} rotate={wheelRotate} />
+              {/* Carriage wheels — rear bogie (two wheels close together) */}
+              <SpokeWheelShadow size={20} x={220} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={220} rotate={wheelRotate} />
+              <SpokeWheelShadow size={20} x={242} rotate={wheelRotate} />
+              <SpokeWheel size={20} x={242} rotate={wheelRotate} />
             </div>
           ))}
         </motion.div>
