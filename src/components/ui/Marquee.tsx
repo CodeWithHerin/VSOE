@@ -111,9 +111,9 @@ function SpokeWheelShadow({ size, x: wx, rotate }: { size: number; x: number; ro
         left: wx + 4,
         rotate,
         opacity: 0.35,
-        overflow: 'hidden',
       }}
       viewBox={`0 0 ${size} ${size}`}
+      overflow="visible"
     >
       {/* Clip — show only bottom half */}
       <defs>
@@ -372,16 +372,18 @@ export default function Marquee() {
                   </div>
                 </div>
               )}
-              {/* Carriage 2 — route cities */}
-              {ci === 2 && (
+              {/* Carriage 1 — cities text straddles border to carriage 2 */}
+              {ci === 1 && (
                 <div style={{
-                  position: 'absolute', inset: 0,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  paddingBottom: '8px',
-                  zIndex: 10,
+                  position: 'absolute',
+                  top: '50%',
+                  right: '-100px',
+                  transform: 'translateY(calc(-50% - 4px))',
+                  zIndex: 20,
+                  pointerEvents: 'none',
                 }}>
                   <div style={{
-                    background: 'rgba(8,14,24,0.88)',
+                    background: 'rgba(8,14,24,0.90)',
                     border: '1px solid rgba(201,168,76,0.25)',
                     borderRadius: '20px',
                     padding: '5px 20px',
@@ -391,7 +393,7 @@ export default function Marquee() {
                     letterSpacing: '0.28em', textTransform: 'uppercase',
                     color: 'rgba(201,168,76,0.75)',
                     userSelect: 'none',
-                    minWidth: '200px',
+                    width: '200px',
                     textAlign: 'center',
                   }}>
                     {t.marquee.cities}
