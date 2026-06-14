@@ -312,7 +312,7 @@ export default function Navbar() {
     };
 
     useMotionValueEvent(scrollY, "change", (latest) => {
-        setIsScrolled(latest > 50);
+        setIsScrolled(latest > 120);
     });
 
     // Close search on Escape key
@@ -337,8 +337,8 @@ export default function Navbar() {
                 className={cn(
                     "fixed top-0 w-full z-[60] transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]", // Liquid ease
                     isScrolled
-                        ? "bg-vsoe-midnight/95 backdrop-blur-md text-vsoe-cream shadow-2xl py-2 border-b border-white/5" // Scrolled: Reverted to Midnight (Dark)
-                        : "bg-gradient-to-b from-black/80 to-transparent text-white py-6" // Initial: Transparent
+                        ? "bg-vsoe-midnight/88 backdrop-blur-md text-vsoe-cream shadow-2xl py-2 border-b border-white/5" // Scrolled: Slightly transparent
+                        : "bg-gradient-to-b from-black/40 to-transparent text-white py-6" // Initial: More transparent
                 )}
                 initial={{ y: -100 }}
                 animate={{ y: 0 }}
