@@ -26,9 +26,9 @@ const CREAM = '#F5F0E8';
 const DARK  = '#050B14';
 
 const PALETTES: Record<TimeOfDay, ModePalette & { coast: string, particleColor?: string, land: string }> = {
-  day:   { bg: '#0A1525', bgCenter: '#162035', accent: '#D4C89A', overlay: 'rgba(210,200,160,0.04)', coast: '#C8BEA0', land: '#0F1E30' },
-  dusk:  { bg: '#07101E', bgCenter: '#0E1A2E', accent: '#C5A059', overlay: 'rgba(160,80,20, 0.06)', coast: '#B8A882', land: '#0C1826' },
-  night: { bg: '#040A16', bgCenter: '#080F1E', accent: '#8BAAD4', overlay: 'rgba(30,50,120, 0.12)', coast: '#8898B0', land: '#060D1A' },
+  day:   { bg: '#13233A', bgCenter: '#1D3048', accent: '#DCC07C', overlay: 'rgba(220,192,124,0.03)', coast: '#EFE4C8', land: '#22312A' },
+  dusk:  { bg: '#0B1422', bgCenter: '#13202F', accent: '#CBA253', overlay: 'rgba(190,120,50,0.05)',  coast: '#DAC69C', land: '#16221E' },
+  night: { bg: '#070F1C', bgCenter: '#0D1828', accent: '#A6BEDF', overlay: 'rgba(45,65,135,0.10)',   coast: '#B4BFD0', land: '#0A1320' },
 };
 
 const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
@@ -37,11 +37,11 @@ const MODE_LABELS: Record<TimeOfDay, { icon: string; label: string }> = {
   night: { icon: '🌙', label: 'Night' },
 };
 
-const PATH_LONDON_PARIS    = 'M 185 118 C 208 145 245 174 270 200';
-const PATH_PARIS_VENICE    = 'M 270 200 C 368 232 495 272 590 295';
-const PATH_VENICE_ISTANBUL = 'M 590 295 C 700 308 848 320 980 330';
-const TRAIN_PATH = `path('${PATH_LONDON_PARIS.slice(2)} C 368 232 495 272 590 295 C 700 308 848 320 980 330')`; // offset-path compatible
-const TRAIN_PATH_SVG = 'M 185 118 C 208 145 245 174 270 200 C 368 232 495 272 590 295 C 700 308 848 320 980 330';
+const PATH_LONDON_PARIS    = 'M 185 118 C 198 142 210 158 226 170 C 244 183 258 188 270 200';
+const PATH_PARIS_VENICE    = 'M 270 200 C 340 250 400 245 455 258 C 510 270 558 283 590 295';
+const PATH_VENICE_ISTANBUL = 'M 590 295 C 655 328 715 342 780 338 C 850 334 925 330 980 330';
+const TRAIN_PATH = "path('M 185 118 C 198 142 210 158 226 170 C 244 183 258 188 270 200 C 340 250 400 245 455 258 C 510 270 558 283 590 295 C 655 328 715 342 780 338 C 850 334 925 330 980 330')";
+const TRAIN_PATH_SVG = 'M 185 118 C 198 142 210 158 226 170 C 244 183 258 188 270 200 C 340 250 400 245 455 258 C 510 270 558 283 590 295 C 655 328 715 342 780 338 C 850 334 925 330 980 330';
 
 const COASTLINES = [
   'M 108 50 C 128 28 165 5 192 8 C 215 22 220 52 218 80 C 215 100 222 118 220 128 C 185 130 108 138 34 148 C 26 162 32 185 40 198 C 52 198 72 190 84 184 C 98 176 108 162 110 148 C 113 132 112 118 108 108 Z',
@@ -195,36 +195,32 @@ const CompassRose = React.memo(function CompassRose({ accent }: { accent: string
 const StaticCoastlines = React.memo(function StaticCoastlines({ coastColor, landColor }: { coastColor: string; landColor: string }) {
   return (
     <g pointerEvents="none" aria-hidden="true">
-      {/* ── Latitude lines — horizontal cartographic grid ── */}
-      <g stroke={coastColor} strokeWidth="0.4" opacity="0.12" strokeDasharray="3 8">
+      {/* ── Latitude lines ── */}
+      <g stroke={coastColor} strokeWidth="0.4" opacity="0.14" strokeDasharray="2 9">
         {[100, 150, 200, 250, 300, 350, 400, 450, 500].map((y) => (
           <line key={y} x1="0" y1={y} x2="1200" y2={y} />
         ))}
       </g>
-      {/* ── Longitude lines — vertical cartographic grid ── */}
-      <g stroke={coastColor} strokeWidth="0.4" opacity="0.12" strokeDasharray="3 8">
+      {/* ── Longitude lines ── */}
+      <g stroke={coastColor} strokeWidth="0.4" opacity="0.14" strokeDasharray="2 9">
         {[150, 300, 450, 600, 750, 900, 1050].map((x) => (
           <line key={x} x1={x} y1="0" x2={x} y2="600" />
         ))}
       </g>
-
-      {/* ── Land mass fills — subtle depth behind coastlines ── */}
-      <g fill={landColor} stroke="none" opacity="0.85">
+      {/* ── Land mass fills ── */}
+      <g fill={landColor} stroke="none" opacity="0.92">
         {COASTLINES.map((d, i) => <path key={`fill-${i}`} d={d} />)}
       </g>
-
       {/* ── Coastline glow (bloom) ── */}
-      <g stroke={coastColor} strokeWidth="3" fill="none" opacity="0.06" strokeLinejoin="round" strokeLinecap="round">
+      <g stroke={coastColor} strokeWidth="3" fill="none" opacity="0.08" strokeLinejoin="round" strokeLinecap="round">
         {COASTLINES.map((d, i) => <path key={`bloom-${i}`} d={d} />)}
       </g>
-
       {/* ── Primary coastlines — crisp, readable ── */}
-      <g stroke={coastColor} strokeWidth="1" fill="none" opacity="0.28" strokeLinejoin="round" strokeLinecap="round" style={{ transition: 'stroke 1.5s ease' }}>
+      <g stroke={coastColor} strokeWidth="1" fill="none" opacity="0.42" strokeLinejoin="round" strokeLinecap="round" style={{ transition: 'stroke 1.5s ease' }}>
         {COASTLINES.map((d, i) => <path key={`main-${i}`} d={d} />)}
       </g>
-
-      {/* ── Shore detail — inner highlight line ── */}
-      <g stroke={coastColor} strokeWidth="0.5" fill="none" opacity="0.12" strokeLinejoin="round" strokeLinecap="round">
+      {/* ── Shore detail ── */}
+      <g stroke={coastColor} strokeWidth="0.5" fill="none" opacity="0.16" strokeLinejoin="round" strokeLinecap="round">
         {COASTLINES.map((d, i) => <path key={`detail-${i}`} d={d} />)}
       </g>
     </g>
@@ -238,7 +234,7 @@ export default function InteractiveRouteMap() {
   const { t }              = useTranslation();
   const [mode, setMode]    = useState<TimeOfDay>('dusk');
   const [hoveredCity, setHoveredCity] = useState<string | null>(null);
-  const [trainDone, setTrainDone]     = useState(false);
+
   const sectionRef    = useRef<HTMLElement>(null);
   const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isInView      = useInView(sectionRef, { once: true, margin: '-80px' });
@@ -386,7 +382,7 @@ export default function InteractiveRouteMap() {
               <div 
                 className="absolute inset-0 transition-colors duration-1000 ease-in-out" 
                 style={{ 
-                  background: `radial-gradient(ellipse 60% 60% at 50% 50%, ${palette.bgCenter} 0%, ${palette.bg} 100%)`,
+                  background: `radial-gradient(ellipse 58% 55% at 50% 42%, ${palette.bgCenter} 0%, ${palette.bg} 72%), radial-gradient(circle at 50% 118%, ${palette.accent}0f 0%, transparent 55%)`,
                 }} 
               />
 
@@ -396,7 +392,7 @@ export default function InteractiveRouteMap() {
                     key={hoveredCity}
                     className="absolute inset-0"
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.40 }}
+                    animate={{ opacity: 0.55 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: 0.5, ease: 'easeInOut' }}
                     style={{ zIndex: 2, transform: 'translateZ(0)' }}
@@ -409,7 +405,7 @@ export default function InteractiveRouteMap() {
                       className="w-full h-full object-cover"
                       loading="eager"
                       /* Removed mixBlendMode and filter for performance */
-                      style={{ opacity: 0.5 }}
+                      style={{ opacity: 0.9 }}
                     />
                   </motion.div>
                 )}
@@ -461,6 +457,9 @@ export default function InteractiveRouteMap() {
                 </filter>
               </defs>
 
+              {/* Base cartography group — recedes on hover so the destination photo reads cleanly */}
+              <g style={{ opacity: hoveredCity ? 0.12 : 1, transition: 'opacity 0.6s ease' }}>
+
               {/* Fine dot grid */}
               <rect width={VB_W} height={VB_H} fill="url(#vsoe-grid)" />
 
@@ -506,6 +505,9 @@ export default function InteractiveRouteMap() {
               {/* ── Coastlines (Memoized, no expensive filters) ── */}
               <StaticCoastlines coastColor={palette.coast} landColor={(palette as typeof palette & { land: string }).land} />
 
+              {/* close base cartography group */}
+              </g>
+
               {/* ── Route Lines ── */}
               {/* London → Paris — thin dashed */}
               <motion.path
@@ -517,7 +519,7 @@ export default function InteractiveRouteMap() {
               />
               {/* Paris → Venice — solid, featured */}
               <motion.path
-                d={PATH_PARIS_VENICE} stroke="currentColor" strokeWidth="2.5"
+                d={PATH_PARIS_VENICE} stroke="currentColor" strokeWidth="3"
                 fill="none"
                 filter="url(#vsoe-route-glow)"
                 initial={{ pathLength: 0, opacity: 0 }}
@@ -539,14 +541,13 @@ export default function InteractiveRouteMap() {
               <text x={760} y={288} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.40" transform="rotate(-3, 760, 288)">THE GRAND EXPRESS</text>
 
               {/* ── Steam locomotive (CSS offset-path animation for GPU perf) ── */}
-              {isInView && !trainDone && (
+              {isInView && (
                 <g
                   style={{
                     offsetPath: TRAIN_PATH,
-                    animation: 'vsoeTrainJourney 7s ease-in-out forwards',
+                    animation: 'vsoeTrainJourney 14s linear infinite',
                     willChange: 'offset-distance, opacity',
                   }}
-                  onAnimationEnd={() => setTrainDone(true)}
                 >
                   <SteamLocomotive accent={palette.accent} />
                 </g>
