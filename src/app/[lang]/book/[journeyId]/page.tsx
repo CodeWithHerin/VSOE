@@ -1,5 +1,6 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
+import { auth } from '@/auth';
 import { getJourney } from '@/lib/data/journeys';
 import { getJourneyImage } from '@/lib/journeyImages';
 import Image from 'next/image';
@@ -10,8 +11,13 @@ export const dynamic = 'force-dynamic';
 import BookingWizard from '@/components/booking/BookingWizard';
 import { Calendar, MapPin, Clock } from 'lucide-react';
 
-export default async function JourneyPage({ params }: { params: { journeyId: string } }) {
-    const { journeyId } = await params;
+export default async function JourneyPage({ params }: { params: Promise<{ journeyId: string; lang: string }> }) {
+    const { journeyId, lang } = await params;
+    const session = await auth();
+    if (!session?.user) {
+        redirect(`/${lang}/login?callbackUrl=/${lang}/book/${journeyId}`);
+    }
+
     const journey = await getJourney(journeyId);
 
     if (!journey) {
