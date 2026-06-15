@@ -23,6 +23,8 @@ export function useLenis() {
 
 export default function SmoothScroll({ children }: { children?: React.ReactNode }) {
     const lenisRef = useRef<Lenis | null>(null);
+    const rafIdRef = useRef<number | null>(null);
+    const pausedRef = useRef(false);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -42,12 +44,17 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
         });
 
         function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+            if (!pausedRef.current) {
+                lenis.raf(time);
+            }
+            rafIdRef.current = requestAnimationFrame(raf);
         }
-        requestAnimationFrame(raf);
+        rafIdRef.current = requestAnimationFrame(raf);
 
         return () => {
+            if (rafIdRef.current !== null) {
+                cancelAnimationFrame(rafIdRef.current);
+            }
             lenis.destroy();
             lenisRef.current = null;
         };
@@ -55,8 +62,14 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
 
     return (
         <LenisContext.Provider value={{
-            stop: () => lenisRef.current?.stop(),
-            start: () => lenisRef.current?.start(),
+            stop: () => {
+                pausedRef.current = true;
+                lenisRef.current?.stop();
+            },
+            start: () => {
+                pausedRef.current = false;
+                lenisRef.current?.start();
+            },
         }}>
             {children}
         </LenisContext.Provider>
