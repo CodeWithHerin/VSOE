@@ -8,7 +8,7 @@ import HeroSection from '@/components/ui/HeroSection';
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
-type Category = 'all' | 'train' | 'journey' | 'table';
+type Category = 'all' | 'train' | 'journey' | 'table' | 'landscape';
 
 interface GalleryImage {
     src: string;
@@ -19,90 +19,172 @@ interface GalleryImage {
 }
 
 const IMAGES: GalleryImage[] = [
+    // ── The Train ────────────────────────────────────────────────────────
     {
         src: '/images/vsoe/vsoe-exterior-night.jpg',
         alt: 'The train at night',
         caption: 'The Venice Simplon-Orient-Express — a moving landmark of the golden age.',
         category: 'train',
-        aspect: 'landscape'
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-bar-car.jpg',
         alt: 'Bar Car 3674',
         caption: "Bar Car '3674' — where the night truly begins.",
         category: 'train',
-        aspect: 'landscape'
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-historic-cabin.jpg',
         alt: 'Historic cabin interior',
         caption: 'A Historic Cabin — original 1920s craftsmanship, lovingly restored.',
         category: 'train',
-        aspect: 'portrait'
+        aspect: 'portrait',
     },
     {
         src: '/images/vsoe/vsoe-grand-suite.jpg',
         alt: 'Grand Suite',
         caption: 'The Grand Suite — the pinnacle of rail travel.',
         category: 'train',
-        aspect: 'landscape'
+        aspect: 'landscape',
     },
+    {
+        src: '/images/vsoe/vsoe-train-exterior.jpg',
+        alt: 'The train exterior',
+        caption: 'Prussian blue and gold — the livery of a legend.',
+        category: 'train',
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-window-detail.jpg',
+        alt: 'Carriage window detail',
+        caption: 'Every window a frame. Every view a painting.',
+        category: 'train',
+        aspect: 'portrait',
+    },
+    // ── The Journey ──────────────────────────────────────────────────────
     {
         src: '/images/vsoe/vsoe-london-station.jpg',
         alt: 'Departure from London Victoria',
         caption: 'London Victoria — the blue carpet marks the beginning of the journey.',
-        category: 'train',
-        aspect: 'landscape'
+        category: 'journey',
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-paris-departure.jpg',
         alt: 'Paris departure',
         caption: 'Paris — departing into the golden hour.',
         category: 'journey',
-        aspect: 'landscape'
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-paris-station.jpg',
+        alt: 'Paris station platform',
+        caption: 'Gare de l\'Est — the gateway to the continent.',
+        category: 'journey',
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-countryside-window.jpg',
         alt: 'Countryside through the window',
         caption: 'Europe drifts past — the unhurried pleasure of slow travel.',
         category: 'journey',
-        aspect: 'landscape'
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-venice-night.jpg',
         alt: 'Venice at night',
         caption: 'Venice — the floating city, revealed at dawn.',
         category: 'journey',
-        aspect: 'landscape'
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-venice-dawn.jpg',
+        alt: 'Venice at dawn',
+        caption: 'Santa Lucia — the lagoon shimmers gold beyond the platform.',
+        category: 'journey',
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-istanbul-twilight.jpg',
         alt: 'Istanbul at twilight',
         caption: 'Istanbul — the gateway between worlds, at the end of the grand tour.',
         category: 'journey',
-        aspect: 'landscape'
+        aspect: 'landscape',
     },
+    // ── The Table ────────────────────────────────────────────────────────
     {
         src: '/images/vsoe/vsoe-dining-car.jpg',
         alt: 'The restaurant car',
         caption: 'The restaurant car — a stage for Michelin-level cuisine at 100km/h.',
         category: 'table',
-        aspect: 'landscape'
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-dining-interior.jpg',
+        alt: 'Dining interior',
+        caption: 'White linen, crystal, candlelight — dinner is always an occasion.',
+        category: 'table',
+        aspect: 'landscape',
     },
     {
         src: '/images/vsoe/vsoe-champagne-detail.jpg',
         alt: 'Champagne detail',
         caption: 'The details that define the experience.',
         category: 'table',
-        aspect: 'portrait'
+        aspect: 'portrait',
+    },
+    // ── Landscapes ───────────────────────────────────────────────────────
+    {
+        src: '/images/vsoe/vsoe-countryside-blue.jpg',
+        alt: 'Blue hour countryside',
+        caption: 'The blue hour — when Europe holds its breath.',
+        category: 'landscape',
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-countryside-green.jpg',
+        alt: 'Green countryside',
+        caption: 'Rolling pasture, unhurried. The world at a different speed.',
+        category: 'landscape',
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-sunrise-fields.jpg',
+        alt: 'Sunrise over fields',
+        caption: 'Dawn breaks over the Loire — the first light of the continent.',
+        category: 'landscape',
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-alpine-moonlight.jpg',
+        alt: 'Alps by moonlight',
+        caption: 'The Simplon Pass — moonlight on snow, silence in the carriage.',
+        category: 'landscape',
+        aspect: 'landscape',
+    },
+    {
+        src: '/images/vsoe/vsoe-alpine-silhouette.jpg',
+        alt: 'Alpine silhouette',
+        caption: 'Peaks against the fading sky — the crossing of the Alps.',
+        category: 'landscape',
+        aspect: 'portrait',
+    },
+    {
+        src: '/images/vsoe/vsoe-sky-night.jpg',
+        alt: 'Night sky over Europe',
+        caption: 'Stars over the continent — no Wi-Fi, no notifications, just this.',
+        category: 'landscape',
+        aspect: 'landscape',
     },
 ];
 
 const CATEGORIES: { key: Category; label: string }[] = [
-    { key: 'all',     label: 'All'         },
-    { key: 'train',   label: 'The Train'   },
-    { key: 'journey', label: 'The Journey' },
-    { key: 'table',   label: 'The Table'   },
+    { key: 'all',       label: 'All'         },
+    { key: 'train',     label: 'The Train'   },
+    { key: 'journey',   label: 'The Journey' },
+    { key: 'table',     label: 'The Table'   },
+    { key: 'landscape', label: 'Landscapes'  },
 ];
 
 // ─── Lightbox ─────────────────────────────────────────────────────────────────
