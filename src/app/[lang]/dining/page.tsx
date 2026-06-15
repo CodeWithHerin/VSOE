@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { dining } from '@/data/dining';
 import Image from 'next/image';
@@ -64,8 +65,10 @@ interface MenuModalProps {
 
 function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
     const menu = SAMPLE_MENUS[venueId];
+    const [mounted, setMounted] = useState(false);
 
     React.useEffect(() => {
+        setMounted(true);
         const handleKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
         window.addEventListener('keydown', handleKey);
         document.body.style.overflow = 'hidden';
@@ -75,7 +78,9 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
         };
     }, [onClose]);
 
-    return (
+    if (!mounted) return null;
+
+    return createPortal(
         <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -89,7 +94,7 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 24 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="relative bg-vsoe-midnight text-vsoe-cream max-w-lg w-full p-10 md:p-14"
+                className="relative bg-vsoe-midnight text-vsoe-cream max-w-lg w-full p-10 md:p-14 max-h-[90vh] flex flex-col"
                 onClick={(e) => e.stopPropagation()}
             >
                 {/* Gold corner accents */}
@@ -109,7 +114,7 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                 <p className="text-vsoe-gold text-[10px] uppercase tracking-[0.3em] mb-2">Sample Menu</p>
                 <h3 className="text-2xl font-serif mb-8">{venueName}</h3>
 
-                <div className="space-y-4">
+                <div className="overflow-y-auto flex-1 space-y-4 pr-1" style={{ scrollbarWidth: 'thin' }}>
                     {menu.courses.map((item, i) => (
                         <div key={i} className="flex gap-6 items-baseline border-b border-white/8 pb-4">
                             <span className="text-[10px] uppercase tracking-[0.2em] text-vsoe-gold/70 w-28 shrink-0">
@@ -126,7 +131,8 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                     Sample menu — dishes vary by season and route
                 </p>
             </motion.div>
-        </motion.div>
+        </motion.div>,
+        document.body
     );
 }
 
