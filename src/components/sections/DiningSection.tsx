@@ -19,12 +19,18 @@ export default function DiningSection() {
             <div id="track-gastronomy" className="container mx-auto px-6 md:px-20 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
                 {/* Image Content (Left on Desktop) */}
                 <div className="order-2 md:order-1 relative group interactive-area overflow-hidden rounded-sm">
-                    <div className="aspect-[4/5] relative z-10 border border-vsoe-gold/30 p-2">
-                        <ParallaxImage
-                            src={diningImage}
-                            alt="Fine dining on the Orient Express"
-                            className="w-full h-full"
-                        />
+                    <div className="aspect-[4/5] relative z-10 overflow-hidden">
+                        {/* Gold border frame — sits on top of image, not around it */}
+                        <div className="absolute inset-0 border border-vsoe-gold/30 z-20 pointer-events-none rounded-sm" />
+                        {/* Hover overlay */}
+                        <div className="absolute inset-0 bg-vsoe-midnight/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none" />
+                        <div className="w-full h-full transition-transform duration-700 group-hover:scale-105">
+                            <ParallaxImage
+                                src={diningImage}
+                                alt="Fine dining on the Orient Express"
+                                className="w-full h-full"
+                            />
+                        </div>
                     </div>
                 </div>
 
