@@ -101,6 +101,8 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 className="relative bg-vsoe-midnight text-vsoe-cream max-w-lg w-full p-10 md:p-14 max-h-[90vh] flex flex-col border border-vsoe-gold/20"
                 onClick={(e) => e.stopPropagation()}
+                onWheelCapture={(e) => e.stopPropagation()}
+                onTouchMoveCapture={(e) => e.stopPropagation()}
             >
                 {/* Gold corner accents */}
                 <span className="absolute top-0 left-0 w-8 h-8 border-t border-l border-vsoe-gold/60" />
@@ -119,7 +121,12 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                 <p className="text-vsoe-gold text-[10px] uppercase tracking-[0.3em] mb-2">Sample Menu</p>
                 <h3 className="text-2xl font-serif mb-8">{venueName}</h3>
 
-                <div className="overflow-y-auto flex-1 space-y-4 pr-2" style={{ scrollbarWidth: 'thin', overscrollBehavior: 'contain' }}>
+                <div
+                    className="overflow-y-auto flex-1 space-y-4 pr-2"
+                    style={{ scrollbarWidth: 'thin', overscrollBehavior: 'contain' }}
+                    onWheelCapture={(e) => e.stopPropagation()}
+                    onTouchMoveCapture={(e) => e.stopPropagation()}
+                >
                     {menu.courses.map((item, i) => (
                         <div key={i} className="flex gap-6 items-baseline border-b border-white/8 pb-4">
                             <span className="text-[10px] uppercase tracking-[0.2em] text-vsoe-gold/70 w-28 shrink-0">
