@@ -20,8 +20,8 @@ export default function DiningSection() {
                 {/* Image Content (Left on Desktop) */}
                 <div className="order-2 md:order-1 relative group interactive-area overflow-hidden rounded-sm">
                     <div className="aspect-[4/5] relative z-10 overflow-hidden">
-                        {/* Gold border frame — sits on top of image, not around it */}
-                        <div className="absolute inset-0 border border-vsoe-gold/30 z-20 pointer-events-none rounded-sm" />
+                        {/* Gold border frame — inset 8px so it floats inside the image */}
+                        <div className="absolute inset-2 border border-vsoe-gold/40 z-20 pointer-events-none" />
                         {/* Hover overlay */}
                         <div className="absolute inset-0 bg-vsoe-midnight/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 z-10 pointer-events-none" />
                         <div className="w-full h-full transition-transform duration-700 group-hover:scale-105">
