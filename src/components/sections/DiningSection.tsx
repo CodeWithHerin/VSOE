@@ -12,7 +12,7 @@ export default function DiningSection() {
     const { t } = useTranslation();
     useTrackInterest('gastronomy');
     // Using a more consistent and high quality image for the dining section
-    const diningImage = "/images/vsoe/vsoe-dining-car.jpg";
+    const diningImage = "/images/vsoe/vsoe-dining-interior.jpg";
 
     return (
         <section id="dining" className="relative w-full min-h-screen py-20 md:py-32 bg-vsoe-blue flex items-center">
