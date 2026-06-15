@@ -108,7 +108,7 @@ function LoginPageInner() {
                                 Demo access:{' '}
                                 <span className="text-white/60">john@example.com</span>
                                 {' / '}
-                                <span className="text-white/60">password123</span>
+                                <span className="text-white/60">Vitesse2026</span>
                             </p>
                             <p className="text-xs text-white/40">
                                 New here?{' '}
