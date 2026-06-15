@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { dining } from '@/data/dining';
 import Image from 'next/image';
 import { X } from 'lucide-react';
+import { useLenis } from '@/components/ui/SmoothScroll';
 import { updateInterest } from '@/lib/profiling';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
@@ -64,6 +65,7 @@ interface MenuModalProps {
 }
 
 function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
+    const lenis = useLenis();
     const menu = SAMPLE_MENUS[venueId];
     const [mounted, setMounted] = useState(false);
 
@@ -73,11 +75,13 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
         window.addEventListener('keydown', handleKey);
         const prev = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
+        lenis.stop();
         return () => {
             window.removeEventListener('keydown', handleKey);
             document.body.style.overflow = prev;
+            lenis.start();
         };
-    }, [onClose]);
+    }, [onClose, lenis]);
 
     if (!mounted) return null;
 

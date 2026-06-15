@@ -72,18 +72,19 @@ export default async function LanguageLayout({
 
   return (
     <AudioProvider>
-      <GlobalProgressBar />
-      <Preloader />
-      <SmoothScroll />
-      <CookieConsent />
-      <BookTheScene />
-      <AIConcierge />
-      <CustomCursor />
-      <PortfolioBanner />
-      <Navbar />
-      {children}
-      <Footer />
-      <FloatingBackButton />
+      <SmoothScroll>
+        <GlobalProgressBar />
+        <Preloader />
+        <CookieConsent />
+        <BookTheScene />
+        <AIConcierge />
+        <CustomCursor />
+        <PortfolioBanner />
+        <Navbar />
+        {children}
+        <Footer />
+        <FloatingBackButton />
+      </SmoothScroll>
     </AudioProvider>
   );
 }
