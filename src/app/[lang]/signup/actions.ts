@@ -4,13 +4,14 @@ import { prisma } from '@/lib/prisma';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs';
+import { redirect } from 'next/navigation';
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
 function validateEmail(email: string): string | null {
     if (!email) return 'Email is required.';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Please enter a valid email address.';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!emailRegex.test(email)) return 'Please enter a valid email address (e.g. you@example.com).';
     return null;
 }
 
@@ -31,7 +32,7 @@ function validatePassword(password: string): string | null {
     return null;
 }
 
-// ─── Return type ──────────────────────────────────────────────────────────────
+// ─── State type ───────────────────────────────────────────────────────────────
 
 export interface RegisterState {
     errors?: {
@@ -41,13 +42,17 @@ export interface RegisterState {
         confirmPassword?: string;
         general?: string;
     };
-    success?: boolean;
+    // Echo back submitted values so the form doesn't reset on error
+    values?: {
+        name?: string;
+        email?: string;
+    };
 }
 
 // ─── Action ───────────────────────────────────────────────────────────────────
 
 export async function register(
-    prevState: RegisterState | undefined,
+    _prevState: RegisterState | undefined,
     formData: FormData
 ): Promise<RegisterState> {
     const name = (formData.get('name') as string)?.trim() ?? '';
@@ -55,8 +60,11 @@ export async function register(
     const password = (formData.get('password') as string) ?? '';
     const confirmPassword = (formData.get('confirmPassword') as string) ?? '';
 
+    // Always echo name/email back so the form survives error renders
+    const values = { name, email };
+
     // Field-level validation
-    const errors: RegisterState['errors'] = {};
+    const errors: NonNullable<RegisterState['errors']> = {};
 
     const nameError = validateName(name);
     if (nameError) errors.name = nameError;
@@ -74,39 +82,44 @@ export async function register(
     }
 
     if (Object.keys(errors).length > 0) {
-        return { errors };
+        return { errors, values };
     }
 
     // DB checks
     try {
         const existing = await prisma.user.findUnique({ where: { email } });
         if (existing) {
-            return { errors: { email: 'An account with this email already exists.' } };
+            return { errors: { email: 'An account with this email already exists.' }, values };
         }
 
         const hashedPassword = await bcrypt.hash(password, 12);
 
         await prisma.user.create({
-            data: { name, email, password: hashedPassword }
+            data: { name, email, password: hashedPassword },
         });
     } catch (error) {
-        console.error('Registration error:', error);
-        return { errors: { general: 'Something went wrong. Please try again.' } };
+        console.error('Registration DB error:', error);
+        const message = error instanceof Error ? error.message : 'Database error during account creation.';
+        return { errors: { general: `Could not create account: ${message}` }, values };
     }
 
-    // Auto sign-in after registration
+    // Sign in with redirect: false so we control the redirect explicitly
     try {
         await signIn('credentials', {
             email,
             password,
-            redirectTo: '/profile',
+            redirect: false,
         });
     } catch (error) {
         if (error instanceof AuthError) {
-            return { errors: { general: 'Account created but sign-in failed. Please log in manually.' } };
+            return {
+                errors: { general: 'Account created, but automatic sign-in failed. Please sign in manually.' },
+                values,
+            };
         }
         throw error;
     }
 
-    return { success: true };
+    // Explicit redirect outside try/catch so it doesn't get caught
+    redirect('/profile');
 }
