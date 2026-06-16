@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Playfair_Display, Inter, Cinzel, Montserrat } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react';
-import { auth } from '@/auth';
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -38,14 +37,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
 
   return (
     <html lang="en">
       <body
         className={`${playfair.variable} ${cinzel.variable} ${montserrat.variable} ${inter.variable} antialiased bg-vsoe-midnight text-vsoe-cream overflow-x-hidden cursor-none`}
       >
-        <SessionProvider session={session}>
+        <SessionProvider>
           {children}
         </SessionProvider>
       </body>
