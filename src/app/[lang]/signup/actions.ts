@@ -4,7 +4,6 @@ import { prisma } from '@/lib/prisma';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import bcrypt from 'bcryptjs';
-import { redirect } from 'next/navigation';
 
 // ─── Validation helpers ───────────────────────────────────────────────────────
 
@@ -103,23 +102,15 @@ export async function register(
         return { errors: { general: `Could not create account: ${message}` }, values };
     }
 
-    // Sign in with redirect: false so we control the redirect explicitly
-    try {
-        await signIn('credentials', {
-            email,
-            password,
-            redirect: false,
-        });
-    } catch (error) {
-        if (error instanceof AuthError) {
-            return {
-                errors: { general: 'Account created, but automatic sign-in failed. Please sign in manually.' },
-                values,
-            };
-        }
-        throw error;
-    }
+    // In NextAuth v5, signIn with redirectTo throws NEXT_REDIRECT which
+    // Next.js catches and handles as a real redirect with session cookie set.
+    // We must NOT catch it — let it propagate.
+    await signIn('credentials', {
+        email,
+        password,
+        redirectTo: '/profile',
+    });
 
-    // Explicit redirect outside try/catch so it doesn't get caught
-    redirect('/profile');
+    // Fallback return for TypeScript — signIn with redirectTo throws NEXT_REDIRECT before this runs
+    return {};
 }
