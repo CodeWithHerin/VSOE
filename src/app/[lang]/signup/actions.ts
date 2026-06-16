@@ -108,7 +108,7 @@ export async function register(
     await signIn('credentials', {
         email,
         password,
-        redirectTo: '/profile',
+        redirectTo: '/en/profile',
     });
 
     // Fallback return for TypeScript — signIn with redirectTo throws NEXT_REDIRECT before this runs
