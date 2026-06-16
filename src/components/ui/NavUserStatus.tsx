@@ -7,7 +7,9 @@ import { User } from 'lucide-react';
 export default function NavUserStatus() {
     const { data: session, status } = useSession();
 
-    if (status === 'loading') return null;
+    if (status === 'loading') return (
+        <div className="w-16 h-3 bg-white/10 rounded-full animate-pulse" />
+    );
 
     if (!session?.user) {
         return (
