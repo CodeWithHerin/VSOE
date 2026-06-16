@@ -40,7 +40,7 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
         lenisRef.current = lenis;
 
         lenis.on('scroll', () => {
-            window.dispatchEvent(new Event('scroll'));
+            window.dispatchEvent(new CustomEvent('lenis-scroll'));
         });
 
         function raf(time: number) {
