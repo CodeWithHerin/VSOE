@@ -128,7 +128,12 @@ export async function POST(req: Request) {
                             if (cabins.length > 0) {
                                 const types = [...new Set(cabins.map((c: any) => c.type))];
                                 const grandSuites = cabins.filter((c: any) => c.type === 'grand_suite').map((c: any) => c.number);
-                                results.push(`Departure: ${journey.departure.toDateString()} — Available: ${types.map((t: string) => t.replace('_', ' ')).join(', ')}${grandSuites.length > 0 ? `. Grand Suites: ${grandSuites.join(', ')}` : ''}.`);
+                                const priceInfo = cabins.reduce((acc: any, c: any) => {
+                                    if (!acc[c.type]) acc[c.type] = c.price;
+                                    return acc;
+                                }, {} as Record<string, number>);
+                                const priceStr = Object.entries(priceInfo).map(([type, price]) => `${type.replace('_', ' ')}: €${Number(price).toLocaleString()}`).join(', ');
+                                results.push(`Departure: ${journey.departure.toDateString()} — Available: ${types.map((t: string) => t.replace('_', ' ')).join(', ')}. Prices per person: ${priceStr}.${grandSuites.length > 0 ? ` Grand Suites: ${grandSuites.join(', ')}` : ''}`);
                             } else {
                                 results.push(`Departure: ${journey.departure.toDateString()} — Fully booked.`);
                             }
