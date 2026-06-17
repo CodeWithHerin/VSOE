@@ -182,6 +182,10 @@ export async function POST(req: Request) {
         }
 
         // --- REAL MODE ---
+        // Skip tool calls for very short confirmations — they don't need availability checks
+        const lastMessage = messages[messages.length - 1]?.content?.toLowerCase().trim() ?? '';
+        const isShortConfirmation = lastMessage.length < 15 && !lastMessage.includes('avail') && !lastMessage.includes('journey') && !lastMessage.includes('route') && !lastMessage.includes('cabin') && !lastMessage.includes('venice') && !lastMessage.includes('istanbul') && !lastMessage.includes('london') && !lastMessage.includes('paris');
+
         // 1. First Call
         const response = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
@@ -189,8 +193,8 @@ export async function POST(req: Request) {
                 { role: "system", content: SYSTEM_PROMPT },
                 ...messages
             ],
-            tools: tools,
-            tool_choice: "auto",
+            tools: isShortConfirmation ? undefined : tools,
+            tool_choice: isShortConfirmation ? undefined : "auto",
         });
 
         const responseMessage = response.choices[0].message;
@@ -242,8 +246,8 @@ export async function POST(req: Request) {
                     toolResult = `Journey: ${journeys[0].name}. Found ${journeys.length} upcoming departure(s):\n${results.join('\n')}`;
                 }
 
-                // 3. Second Call with Tool Result — tool_choice: 'none' prevents re-triggering
-                const secondResponse = await groq.chat.completions.create({
+                // 3. Second Call with Tool Result — streamed, tool_choice: 'none' prevents re-triggering
+                const secondStream = await groq.chat.completions.create({
                     model: "llama-3.3-70b-versatile",
                     messages: [
                         { role: "system", content: SYSTEM_PROMPT },
@@ -256,19 +260,27 @@ export async function POST(req: Request) {
                         }
                     ],
                     tool_choice: "none",
+                    stream: true,
                 });
 
-                const msg = secondResponse.choices[0].message;
-                const content = cleanContent(msg.content || '');
-                return new Response(
-                    new ReadableStream({
-                        start(controller) {
-                            controller.enqueue(new TextEncoder().encode(content));
-                            controller.close();
+                const encoder2 = new TextEncoder();
+                const toolStream = new ReadableStream({
+                    async start(controller) {
+                        let buffer = '';
+                        for await (const chunk of secondStream) {
+                            const text = chunk.choices[0]?.delta?.content || '';
+                            if (text) {
+                                buffer += text;
+                                controller.enqueue(encoder2.encode(text));
+                            }
                         }
-                    }),
-                    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
-                );
+                        controller.close();
+                    }
+                });
+
+                return new Response(toolStream, {
+                    headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+                });
             }
         }
 
@@ -298,11 +310,14 @@ export async function POST(req: Request) {
         });
 
     } catch (error: any) {
-        console.error('[Chat API] Full error:', error);
-        console.error('[Chat API] Error message:', error?.message);
-        console.error('[Chat API] Error status:', error?.status);
-        console.error('[Chat API] API key present:', !!process.env.GROQ_API_KEY);
-        console.error('[Chat API] API key first 7 chars:', process.env.GROQ_API_KEY?.substring(0, 7));
-        return NextResponse.json({ content: 'I apologise — I am unable to connect at the moment.' }, { status: 500 });
+        console.error('[Chat API] Error:', error?.message ?? error);
+        const isRateLimit = error?.status === 429;
+        const errorContent = isRateLimit
+            ? 'I apologise — we are experiencing high demand at the moment. Please allow a moment and try again.'
+            : 'I apologise — I am momentarily indisposed. Please try again shortly.';
+        return new Response(errorContent, {
+            status: 200,
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
     }
 }
