@@ -6,7 +6,7 @@ import { X, Send, Sparkles } from 'lucide-react';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function AIConcierge() {
-    const { t } = useTranslation();
+    const { t, language } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
         { role: 'assistant', content: t.ai.greeting }
@@ -69,7 +69,7 @@ export default function AIConcierge() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 onClick={() => setIsOpen(true)}
-                className={`fixed bottom-8 right-8 z-50 p-4 rounded-full bg-vsoe-gold text-vsoe-midnight shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-110 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'}`}
+                className={`fixed bottom-8 right-20 z-50 p-4 rounded-full bg-vsoe-gold text-vsoe-midnight shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-110 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'}`}
             >
                 <Sparkles size={24} />
             </motion.button>
@@ -83,7 +83,7 @@ export default function AIConcierge() {
                         exit={{ opacity: 0, y: 50, scale: 0.9 }}
                         onWheel={(e) => e.stopPropagation()}
                         onTouchMove={(e) => e.stopPropagation()}
-                        className="fixed bottom-8 right-8 z-50 w-96 h-[500px] bg-vsoe-midnight border border-vsoe-gold/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
+                        className="fixed bottom-8 right-20 z-50 w-96 h-[500px] bg-vsoe-midnight border border-vsoe-gold/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
                     >
                         {/* Header */}
                         <div className="p-4 bg-vsoe-gold/10 border-b border-vsoe-gold/20 flex justify-between items-center">
@@ -118,7 +118,7 @@ export default function AIConcierge() {
                                             {displayContent}
                                             {hasBookAction && msg.role === 'assistant' && (
                                                 <a 
-                                                    href="/book" 
+                                                    href={`/${language?.toLowerCase() || 'en'}/book`}
                                                     className="mt-3 block text-center bg-vsoe-gold text-vsoe-midnight py-2 px-4 rounded-md font-serif font-bold text-xs uppercase tracking-widest hover:bg-white transition-colors"
                                                 >
                                                     Proceed to Booking

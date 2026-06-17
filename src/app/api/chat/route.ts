@@ -29,7 +29,7 @@ Booking Handoff:
 - Example: "I would be delighted to secure the Prague Grand Suite for you. Please proceed to our reservation portal to finalize the details. [ACTION_BOOK]"
 - NEVER output raw URLs like /book or full domain names. Just use the [ACTION_BOOK] tag.
 
-Today's date is May 4, 2026.
+Today's date is ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}.
 INTERNAL DIRECTIVE: Silently filter for journeys after today. Do NOT mention the current date or your date filtering process to the guest. Just present the available options naturally. 
 Do not invent parameters for the tool call (only use journey_name).
 `;
@@ -73,7 +73,7 @@ export async function POST(req: Request) {
             if (lastMsg.includes('avail') || lastMsg.includes('book')) {
                 return NextResponse.json({
                     role: "assistant",
-                    content: "I have consulted our registry. We have limited availability for the Paris to Venice route in March 2025. Several Historic Cabins and one Grand Suite ('Vienna') remain. Would you like to proceed with a reservation?"
+                    content: "I have consulted our registry. We have limited availability for the Paris to Venice route this season. Several Historic Cabins and one Grand Suite remain. Would you like to proceed with a reservation?"
                 });
             }
 
