@@ -1,6 +1,8 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { register } from './actions';
 import type { RegisterState } from './actions';
 import MagneticButton from '@/components/ui/MagneticButton';
@@ -62,6 +64,16 @@ export default function SignupPage() {
     const [state, dispatch, isPending] = useActionState(register, initialState);
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const { update } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (state.success) {
+            update().then(() => {
+                router.push('/en/profile');
+            });
+        }
+    }, [state.success, update, router]);
 
     const passwordsMatch = password.length > 0 && confirmPassword.length > 0 && password === confirmPassword;
     const passwordsMismatch = password.length > 0 && confirmPassword.length > 0 && password !== confirmPassword;

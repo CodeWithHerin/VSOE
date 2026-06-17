@@ -41,11 +41,11 @@ export interface RegisterState {
         confirmPassword?: string;
         general?: string;
     };
-    // Echo back submitted values so the form doesn't reset on error
     values?: {
         name?: string;
         email?: string;
     };
+    success?: boolean;
 }
 
 // ─── Action ───────────────────────────────────────────────────────────────────
@@ -102,15 +102,23 @@ export async function register(
         return { errors: { general: `Could not create account: ${message}` }, values };
     }
 
-    // In NextAuth v5, signIn with redirectTo throws NEXT_REDIRECT which
-    // Next.js catches and handles as a real redirect with session cookie set.
-    // We must NOT catch it — let it propagate.
-    await signIn('credentials', {
-        email,
-        password,
-        redirectTo: '/en/profile',
-    });
+    // Use redirect: false so the client controls navigation.
+    // This lets the client call update() to sync the session before navigating.
+    try {
+        await signIn('credentials', {
+            email,
+            password,
+            redirect: false,
+        });
+    } catch (error) {
+        if (error instanceof AuthError) {
+            return {
+                errors: { general: 'Account created, but sign-in failed. Please log in manually.' },
+                values,
+            };
+        }
+        throw error;
+    }
 
-    // Fallback return for TypeScript — signIn with redirectTo throws NEXT_REDIRECT before this runs
-    return {};
+    return { success: true };
 }
