@@ -11,6 +11,7 @@ import MagneticButton from '@/components/ui/MagneticButton';
 import { useLanguageStore } from '@/lib/store/useLanguageStore';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import NavUserStatus from '@/components/ui/NavUserStatus';
+import { useLenis } from '@/components/ui/SmoothScroll';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -247,6 +248,8 @@ export default function Navbar() {
     const { language: storeLang, setLanguage: setStoreLang } = useLanguageStore();
     const { t } = useTranslation();
     const [isSearchOpen, setIsSearchOpen] = useState(false);
+    const [expandedSection, setExpandedSection] = useState<string | null>(null);
+    const lenis = useLenis();
 
     // Sync store with URL params if available
     useEffect(() => {
@@ -315,6 +318,22 @@ export default function Navbar() {
         setIsScrolled(latest > 120);
     });
 
+    // Lock scroll when mobile menu is open
+    useEffect(() => {
+        if (isMobileMenuOpen) {
+            lenis?.stop();
+            document.body.style.overflow = 'hidden';
+        } else {
+            lenis?.start();
+            document.body.style.overflow = '';
+            setExpandedSection(null);
+        }
+        return () => {
+            lenis?.start();
+            document.body.style.overflow = '';
+        };
+    }, [isMobileMenuOpen, lenis]);
+
     // Close search on Escape key
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -353,9 +372,10 @@ export default function Navbar() {
                     {/* Left: Mobile Menu */}
                     <div className="flex items-center gap-6 justify-start">
                         <button
+                            aria-label="Open menu"
                             className={cn(
                                 "lg:hidden transition-colors hover:text-vsoe-gold",
-                                isScrolled ? "text-vsoe-midnight" : "text-white"
+                                isScrolled ? "text-vsoe-cream" : "text-white"
                             )}
                             onClick={() => setIsMobileMenuOpen(true)}
                         >
@@ -434,10 +454,20 @@ export default function Navbar() {
                             <NavUserStatus />
                         </div>
 
-                        <Link href="/book" className={cn("transition-all duration-500 whitespace-nowrap", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
+                        <Link href="/book" className={cn("hidden lg:inline-block transition-all duration-500 whitespace-nowrap", isScrolled ? "opacity-0 pointer-events-none translate-y-[-10px]" : "opacity-100 translate-y-0")}>
                             <MagneticButton className="bg-vsoe-gold text-vsoe-midnight px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors duration-300 inline-block whitespace-nowrap">
                                 {t.nav.bookJourney}
                             </MagneticButton>
+                        </Link>
+
+                        {/* Mobile Book CTA — always visible on small screens */}
+                        <Link
+                            href="/book"
+                            className={cn(
+                                "lg:hidden bg-vsoe-gold text-vsoe-midnight px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] hover:bg-white transition-colors duration-300 whitespace-nowrap",
+                            )}
+                        >
+                            {t.nav.bookJourney}
                         </Link>
                     </div>
                 </div>
@@ -668,38 +698,133 @@ export default function Navbar() {
 
             {/* ─── Mobile Menu Overlay ─────────────────────────────────────────── */}
             <AnimatePresence>
-                {
-                    isMobileMenuOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, x: -100 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -100 }}
-                            className="fixed inset-0 z-[100] bg-vsoe-midnight text-white p-8"
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, x: '-100%' }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: '-100%' }}
+                        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                        className="fixed inset-0 z-[250] bg-vsoe-midnight text-white flex flex-col"
+                    >
+                        {/* Header */}
+                        <div className="flex justify-between items-center px-6 py-5 border-b border-white/10 shrink-0">
+                            <span className="font-display text-xl tracking-wider">PROJECT VITESSE</span>
+                            <button aria-label="Close menu" onClick={() => setIsMobileMenuOpen(false)}>
+                                <X size={24} className="text-vsoe-cream hover:text-vsoe-gold transition-colors" />
+                            </button>
+                        </div>
+
+                        {/* Scrollable content */}
+                        <div
+                            className="flex-1 overflow-y-auto overscroll-contain px-6 py-6"
+                            onWheelCapture={(e) => e.stopPropagation()}
+                            onTouchMoveCapture={(e) => e.stopPropagation()}
                         >
-                            <div className="flex justify-between items-center mb-12">
-                                <span className="font-display text-2xl">Menu</span>
-                                <button onClick={() => setIsMobileMenuOpen(false)}>
-                                    <X size={24} />
-                                </button>
-                            </div>
-                            <div className="flex flex-col gap-8 px-4">
+                            {/* Search */}
+                            <button
+                                onClick={() => { setIsMobileMenuOpen(false); setIsSearchOpen(true); }}
+                                className="flex items-center gap-3 w-full text-left text-white/70 hover:text-vsoe-gold transition-colors mb-8 pb-4 border-b border-white/10"
+                            >
+                                <Search size={16} />
+                                <span className="text-sm uppercase tracking-widest">{t.nav.search}</span>
+                            </button>
+
+                            {/* Nav accordion */}
+                            <nav className="space-y-1">
                                 {translatedNavItems.map((item) => (
-                                    <Link
-                                        key={item.label}
-                                        href={item.href}
-                                        onClick={() => setIsMobileMenuOpen(false)}
-                                        className="text-3xl font-serif text-white/90 hover:text-vsoe-gold transition-colors"
-                                    >
-                                        {item.label}
-                                    </Link>
+                                    <div key={item.label} className="border-b border-white/5">
+                                        {item.megaMenu ? (
+                                            <>
+                                                <button
+                                                    onClick={() => setExpandedSection(expandedSection === item.label ? null : item.label)}
+                                                    className="w-full flex justify-between items-center py-4 text-left"
+                                                >
+                                                    <span className="text-lg font-serif text-white/90">{item.label}</span>
+                                                    <ChevronDown
+                                                        size={18}
+                                                        className={cn(
+                                                            "text-vsoe-gold transition-transform duration-300",
+                                                            expandedSection === item.label ? "rotate-180" : ""
+                                                        )}
+                                                    />
+                                                </button>
+                                                <AnimatePresence>
+                                                    {expandedSection === item.label && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: 'auto', opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            transition={{ duration: 0.3 }}
+                                                            className="overflow-hidden"
+                                                        >
+                                                            <div className="pb-4 pl-4 space-y-3">
+                                                                {item.megaMenu.columns.flatMap(col => col.links).map((link) => (
+                                                                    <Link
+                                                                        key={link.label}
+                                                                        href={link.href}
+                                                                        onClick={() => setIsMobileMenuOpen(false)}
+                                                                        className="block text-sm text-white/60 hover:text-vsoe-gold transition-colors"
+                                                                    >
+                                                                        {link.label}
+                                                                    </Link>
+                                                                ))}
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </>
+                                        ) : (
+                                            <Link
+                                                href={item.href}
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                className="block py-4 text-lg font-serif text-white/90 hover:text-vsoe-gold transition-colors"
+                                            >
+                                                {item.label}
+                                            </Link>
+                                        )}
+                                    </div>
                                 ))}
-                                <div className="mt-4 pt-8 border-t border-white/10">
-                                    <NavUserStatus />
+                            </nav>
+
+                            {/* Language switcher */}
+                            <div className="mt-8 pt-6 border-t border-white/10">
+                                <span className="text-[10px] uppercase tracking-[0.3em] text-white/40 block mb-4">Language</span>
+                                <div className="flex gap-3">
+                                    {['EN', 'FR', 'IT', 'DE'].map((code) => (
+                                        <button
+                                            key={code}
+                                            onClick={() => { handleLanguageChange(code); setIsMobileMenuOpen(false); }}
+                                            className={cn(
+                                                "px-4 py-2 text-xs uppercase tracking-widest border transition-colors",
+                                                storeLang === code
+                                                    ? "border-vsoe-gold text-vsoe-gold"
+                                                    : "border-white/15 text-white/50 hover:border-vsoe-gold/50 hover:text-vsoe-gold"
+                                            )}
+                                        >
+                                            {code}
+                                        </button>
+                                    ))}
                                 </div>
                             </div>
-                        </motion.div>
-                    )
-                }
+
+                            {/* User status */}
+                            <div className="mt-8 pt-6 border-t border-white/10">
+                                <NavUserStatus />
+                            </div>
+                        </div>
+
+                        {/* Bottom Book CTA */}
+                        <div className="px-6 py-5 border-t border-white/10 shrink-0">
+                            <Link
+                                href="/book"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="block w-full text-center bg-vsoe-gold text-vsoe-midnight py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white transition-colors"
+                            >
+                                {t.nav.bookJourney}
+                            </Link>
+                        </div>
+                    </motion.div>
+                )}
             </AnimatePresence>
         </>
     );
