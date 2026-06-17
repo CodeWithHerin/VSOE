@@ -110,7 +110,8 @@ export async function POST(req: Request) {
                 const journey = await prisma.journey.findFirst({
                     where: {
                         name: { contains: journeyName },
-                        status: 'scheduled'
+                        status: 'scheduled',
+                        departure: { gt: new Date() }
                     },
                     orderBy: { departure: 'asc' } // Get next upcoming
                 });
