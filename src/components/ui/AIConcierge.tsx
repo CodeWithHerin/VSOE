@@ -50,15 +50,33 @@ export default function AIConcierge() {
 
             if (!response.ok) throw new Error('API request failed');
 
-            const data = await response.json();
-            setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
+            const reader = response.body?.getReader();
+            const decoder = new TextDecoder();
+
+            if (!reader) throw new Error('No response body');
+
+            // Add empty assistant message to stream into
+            setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+            setIsLoading(false);
+
+            let fullContent = '';
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                const chunk = decoder.decode(value, { stream: true });
+                fullContent += chunk;
+                setMessages(prev => {
+                    const updated = [...prev];
+                    updated[updated.length - 1] = { role: 'assistant', content: fullContent };
+                    return updated;
+                });
+            }
         } catch (error) {
+            setIsLoading(false);
             setMessages(prev => [...prev, {
                 role: 'assistant',
                 content: 'I apologise — I am unable to connect at the moment. Please try again shortly.'
             }]);
-        } finally {
-            setIsLoading(false);
         }
     };
 

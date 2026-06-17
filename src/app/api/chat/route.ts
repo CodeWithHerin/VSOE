@@ -107,36 +107,36 @@ export async function POST(req: Request) {
 
                 // DB Lookup
                 // We use 'contains' to be forgiving with names
-                const journey = await prisma.journey.findFirst({
+                const journeys = await prisma.journey.findMany({
                     where: {
                         name: { contains: journeyName },
                         status: 'scheduled',
                         departure: { gt: new Date() }
                     },
-                    orderBy: { departure: 'asc' } // Get next upcoming
+                    orderBy: { departure: 'asc' }
                 });
 
                 let toolResult = "";
 
-                if (!journey) {
-                    toolResult = `I could not find a scheduled journey matching "${journeyName}".`;
+                if (!journeys.length) {
+                    toolResult = `I could not find any upcoming scheduled journeys matching "${journeyName}".`;
                 } else {
-                    try {
-                        const cabins = await findAvailableCabins(journey.id);
-                        if (cabins.length > 0) {
-                            // Summarize availability
-                            const types = [...new Set(cabins.map((c: any) => c.type))];
-                            const grandSuites = cabins.filter((c: any) => c.type === 'grand_suite').map((c: any) => c.number);
-
-                            toolResult = `Journey found: ${journey.name} departing ${journey.departure.toDateString()}. 
-                            Availability: ${types.map(t => t.replace('_', ' ')).join(', ')}.
-                            ${grandSuites.length > 0 ? `Specific Grand Suites available: ${grandSuites.join(', ')}.` : ''}`;
-                        } else {
-                            toolResult = `Journey found: ${journey.name} on ${journey.departure.toDateString()}, but it is fully booked.`;
+                    const results = [];
+                    for (const journey of journeys) {
+                        try {
+                            const cabins = await findAvailableCabins(journey.id);
+                            if (cabins.length > 0) {
+                                const types = [...new Set(cabins.map((c: any) => c.type))];
+                                const grandSuites = cabins.filter((c: any) => c.type === 'grand_suite').map((c: any) => c.number);
+                                results.push(`Departure: ${journey.departure.toDateString()} — Available: ${types.map((t: string) => t.replace('_', ' ')).join(', ')}${grandSuites.length > 0 ? `. Grand Suites: ${grandSuites.join(', ')}` : ''}.`);
+                            } else {
+                                results.push(`Departure: ${journey.departure.toDateString()} — Fully booked.`);
+                            }
+                        } catch (e) {
+                            results.push(`Departure: ${journey.departure.toDateString()} — Unable to check availability.`);
                         }
-                    } catch (e) {
-                        toolResult = "Error checking inventory system.";
                     }
+                    toolResult = `Journey: ${journeys[0].name}. Found ${journeys.length} upcoming departure(s):\n${results.join('\n')}`;
                 }
 
                 // 3. Second Call with Tool Result
@@ -155,11 +155,43 @@ export async function POST(req: Request) {
                 });
 
                 const msg = secondResponse.choices[0].message;
-                return NextResponse.json({ ...msg, content: cleanContent(msg.content || '') });
+                const content = cleanContent(msg.content || '');
+                return new Response(
+                    new ReadableStream({
+                        start(controller) {
+                            controller.enqueue(new TextEncoder().encode(content));
+                            controller.close();
+                        }
+                    }),
+                    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } }
+                );
             }
         }
 
-        return NextResponse.json({ ...responseMessage, content: cleanContent(responseMessage.content || '') });
+        // Stream the direct response
+        const streamResponse = await groq.chat.completions.create({
+            model: "llama-3.3-70b-versatile",
+            messages: [
+                { role: "system", content: SYSTEM_PROMPT },
+                ...messages
+            ],
+            stream: true,
+        });
+
+        const encoder = new TextEncoder();
+        const stream = new ReadableStream({
+            async start(controller) {
+                for await (const chunk of streamResponse) {
+                    const text = chunk.choices[0]?.delta?.content || '';
+                    if (text) controller.enqueue(encoder.encode(text));
+                }
+                controller.close();
+            }
+        });
+
+        return new Response(stream, {
+            headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        });
 
     } catch (error: any) {
         console.error('[Chat API] Full error:', error);
