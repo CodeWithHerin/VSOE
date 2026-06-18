@@ -460,15 +460,10 @@ export default function Navbar() {
                             </MagneticButton>
                         </Link>
 
-                        {/* Mobile Book CTA — always visible on small screens */}
-                        <Link
-                            href="/book"
-                            className={cn(
-                                "lg:hidden bg-vsoe-gold text-vsoe-midnight px-4 py-2 text-[9px] font-bold uppercase tracking-[0.15em] hover:bg-white transition-colors duration-300 whitespace-nowrap",
-                            )}
-                        >
-                            {t.nav.bookJourney}
-                        </Link>
+                        {/* Mobile Sign-In — compact, top right */}
+                        <div className="lg:hidden">
+                            <NavUserStatus />
+                        </div>
                     </div>
                 </div>
 
