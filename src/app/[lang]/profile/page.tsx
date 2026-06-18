@@ -22,15 +22,15 @@ export default async function ProfilePage({ params }: { params: Promise<{ lang: 
 
     return (
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
-            <div className="pt-32 pb-20 px-6 max-w-7xl mx-auto">
+            <div className="pt-24 sm:pt-32 pb-12 sm:pb-20 px-6 max-w-7xl mx-auto">
 
                 {/* Header */}
-                <div className="mb-16 border-b border-white/10 pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
+                <div className="mb-10 sm:mb-16 border-b border-white/10 pb-8 flex flex-col md:flex-row justify-between items-end gap-6">
                     <div>
                         <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-2">My Account</span>
                         <h1 className="text-4xl md:text-5xl font-serif text-vsoe-cream">Your Journeys</h1>
                     </div>
-                    <div className="flex items-center gap-4 text-white/60 text-sm">
+                    <div className="flex flex-wrap items-center gap-4 text-white/60 text-sm">
                         <div className="w-10 h-10 rounded-full bg-vsoe-gold/20 flex items-center justify-center text-vsoe-gold border border-vsoe-gold/30">
                             <User size={20} />
                         </div>
@@ -44,7 +44,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ lang: 
 
                 {/* Content */}
                 {bookings.length === 0 ? (
-                    <div className="bg-white/5 border border-white/10 rounded-sm p-12 text-center">
+                    <div className="bg-white/5 border border-white/10 rounded-sm p-8 sm:p-12 text-center">
                         <Ticket className="w-12 h-12 text-white/20 mx-auto mb-6" />
                         <h3 className="text-2xl font-serif text-white mb-4">No Journeys Found</h3>
                         <p className="text-white/60 mb-8 max-w-md mx-auto">

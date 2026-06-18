@@ -13,7 +13,7 @@ export default async function InvoicePage({ params }: { params: Promise<{ bookin
     }
 
     return (
-        <main className="min-h-screen bg-white text-black p-8 md:p-16 pt-32 print:p-0">
+        <main className="min-h-screen bg-white text-black p-4 sm:p-8 md:p-16 pt-24 sm:pt-32 print:p-0">
             <style dangerouslySetInnerHTML={{
                 __html: `
                 @media print {
@@ -27,13 +27,13 @@ export default async function InvoicePage({ params }: { params: Promise<{ bookin
                 }
             `}} />
 
-            <div className="max-w-4xl mx-auto relative border border-gray-200 p-12 shadow-lg print:shadow-none print:border-none">
+            <div className="max-w-4xl mx-auto relative border border-gray-200 p-5 sm:p-8 md:p-12 shadow-lg print:shadow-none print:border-none">
                 {/* Watermark */}
                 <div
                     className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden z-0"
                     style={{ printColorAdjust: 'exact', WebkitPrintColorAdjust: 'exact' } as React.CSSProperties}
                 >
-                    <div className="text-[5rem] md:text-[6rem] font-bold text-gray-400 opacity-10 -rotate-[30deg] whitespace-nowrap select-none font-sans">
+                    <div className="text-[1.75rem] sm:text-[3rem] md:text-[6rem] font-bold text-gray-400 opacity-10 -rotate-[30deg] whitespace-nowrap select-none font-sans">
                         PORTFOLIO DEMO &mdash; NOT A REAL BOOKING
                     </div>
                 </div>
@@ -47,12 +47,12 @@ export default async function InvoicePage({ params }: { params: Promise<{ bookin
                 </div>
 
                 {/* Header */}
-                <div className="flex justify-between items-start border-b border-gray-200 pb-8 mb-8 relative z-10">
+                <div className="flex flex-col sm:flex-row sm:justify-between items-start border-b border-gray-200 pb-8 mb-8 relative z-10 gap-6">
                     <div>
-                        <h1 className="text-4xl font-serif text-[#1e293b] mb-2">INVOICE</h1>
+                        <h1 className="text-3xl sm:text-4xl font-serif text-[#1e293b] mb-2">INVOICE</h1>
                         <p className="text-sm text-gray-500 uppercase tracking-widest">Venice Simplon-Orient-Express</p>
                     </div>
-                    <div className="text-right">
+                    <div className="text-left sm:text-right">
                         <h2 className="text-xl font-serif text-[#1e293b] mb-1">Project Vitesse</h2>
                         <p className="text-sm text-gray-500">Portfolio demonstration &mdash; not a real booking</p>
                         <p className="text-sm text-gray-500 mt-2">Not affiliated with Belmond Management Limited or LVMH</p>
@@ -60,14 +60,14 @@ export default async function InvoicePage({ params }: { params: Promise<{ bookin
                 </div>
 
                 {/* Booking Info */}
-                <div className="grid grid-cols-2 gap-12 mb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 mb-12">
                     <div>
                         <h3 className="text-xs font-bold uppercase tracking-widest text-gray-400 mb-4">Billed To</h3>
                         <p className="font-serif text-lg">{booking.firstName} {booking.lastName}</p>
                         <p className="text-gray-600">{booking.email}</p>
                         {booking.phone && <p className="text-gray-600">{booking.phone}</p>}
                     </div>
-                    <div className="text-right">
+                    <div className="sm:text-right">
                         <div className="flex justify-between mb-2">
                             <span className="text-gray-500">Invoice No:</span>
                             <span className="font-mono">{booking.id.slice(0, 8).toUpperCase()}</span>
