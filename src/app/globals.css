@@ -47,3 +47,13 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(184, 134, 11, 0.6);
 }
+
+/* Restore default cursor on touch devices (phones/tablets) */
+@media (pointer: coarse) {
+  body {
+    cursor: auto !important;
+  }
+  * {
+    cursor: auto;
+  }
+}

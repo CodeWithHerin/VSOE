@@ -49,7 +49,7 @@ export default function BookTheScene({
                     animate={{ x: 0, opacity: 1 }}
                     exit={{ x: 100, opacity: 0 }}
                     transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                    className="fixed bottom-32 right-6 z-40 bg-white p-4 rounded-sm shadow-2xl max-w-xs border border-vsoe-gold/20"
+                    className="hidden md:block fixed bottom-32 right-6 z-40 bg-white p-4 rounded-sm shadow-2xl max-w-xs border border-vsoe-gold/20"
                 >
                     <button
                         onClick={() => { setIsVisible(false); setHasClosed(true); }}

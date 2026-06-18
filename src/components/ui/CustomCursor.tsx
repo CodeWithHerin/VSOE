@@ -6,6 +6,11 @@ import { motion, useMotionValue, useSpring } from 'framer-motion';
 export default function CustomCursor() {
     const [isVisible, setIsVisible] = useState(false);
     const [isHovering, setIsHovering] = useState(false);
+    const [isTouch, setIsTouch] = useState(false);
+    useEffect(() => {
+        const mq = window.matchMedia('(pointer: coarse)');
+        setIsTouch(mq.matches);
+    }, []);
 
     const cursorX = useMotionValue(-100);
     const cursorY = useMotionValue(-100);
@@ -60,7 +65,7 @@ export default function CustomCursor() {
         };
     }, [cursorX, cursorY, isVisible]);
 
-    if (!isVisible) return null;
+    if (isTouch || !isVisible) return null;
 
     return (
         <>

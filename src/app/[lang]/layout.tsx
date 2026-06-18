@@ -10,6 +10,7 @@ import BookTheScene from '@/components/ui/BookTheScene';
 import AIConcierge from '@/components/ui/AIConcierge';
 import { AudioProvider } from '@/components/audio/AudioContext';
 import FloatingBackButton from '@/components/ui/FloatingBackButton';
+import MobileBookBar from '@/components/ui/MobileBookBar';
 import GlobalProgressBar from "@/components/ui/GlobalProgressBar";
 import PortfolioBanner from '@/components/ui/PortfolioBanner';
 
@@ -84,6 +85,7 @@ export default async function LanguageLayout({
         {children}
         <Footer />
         <FloatingBackButton />
+        <MobileBookBar />
       </SmoothScroll>
     </AudioProvider>
   );
