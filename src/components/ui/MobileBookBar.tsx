@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { LocalizedLink as Link } from '@/components/i18n/LocalizedLink';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 import { ArrowRight } from 'lucide-react';
 
 export default function MobileBookBar() {
     const { t } = useTranslation();
+    const pathname = usePathname();
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -18,6 +20,9 @@ export default function MobileBookBar() {
         handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
+    const isExcludedPath = pathname?.includes('/book') || pathname?.includes('/invoice');
+    if (isExcludedPath) return null;
 
     return (
         <div
