@@ -231,10 +231,11 @@ function Lightbox({ images, index, onClose, onNext, onPrev }: LightboxProps) {
             {/* Prev */}
             <button
                 onClick={(e) => { e.stopPropagation(); onPrev(); }}
-                className="absolute left-4 md:left-8 text-white/60 hover:text-white transition-colors z-10"
+                className="absolute left-2 md:left-8 z-10 w-9 h-9 md:w-auto md:h-auto rounded-full bg-black/40 md:bg-transparent flex items-center justify-center text-white/60 hover:text-white transition-colors"
                 aria-label="Previous image"
             >
-                <ChevronLeft size={36} />
+                <ChevronLeft size={22} className="md:hidden" />
+                <ChevronLeft size={36} className="hidden md:block" />
             </button>
 
             {/* Image */}
@@ -270,10 +271,11 @@ function Lightbox({ images, index, onClose, onNext, onPrev }: LightboxProps) {
             {/* Next */}
             <button
                 onClick={(e) => { e.stopPropagation(); onNext(); }}
-                className="absolute right-4 md:right-8 text-white/60 hover:text-white transition-colors z-10"
+                className="absolute right-2 md:right-8 z-10 w-9 h-9 md:w-auto md:h-auto rounded-full bg-black/40 md:bg-transparent flex items-center justify-center text-white/60 hover:text-white transition-colors"
                 aria-label="Next image"
             >
-                <ChevronRight size={36} />
+                <ChevronRight size={22} className="md:hidden" />
+                <ChevronRight size={36} className="hidden md:block" />
             </button>
         </motion.div>
     );
