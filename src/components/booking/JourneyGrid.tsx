@@ -34,7 +34,7 @@ function Skeleton() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3].map(i => (
-                <div key={i} className="h-[600px] bg-white/5 rounded-sm animate-pulse flex items-center justify-center border border-white/10">
+                <div key={i} className="h-[480px] md:h-[600px] bg-white/5 rounded-sm animate-pulse flex items-center justify-center border border-white/10">
                     <span className="text-vsoe-gold/20 text-4xl font-serif">VSOE</span>
                 </div>
             ))}
@@ -67,7 +67,7 @@ export default function JourneyGrid({ journeys, loading, error }: JourneyGridPro
             {journeys.map((journey) => (
                 <div
                     key={journey.id}
-                    className="group relative h-[600px] rounded-sm overflow-hidden cursor-pointer border border-white/5 hover:border-vsoe-gold/50 transition-colors duration-500"
+                    className="group relative h-[480px] md:h-[600px] rounded-sm overflow-hidden cursor-pointer border border-white/5 hover:border-vsoe-gold/50 transition-colors duration-500"
                 >
                     <Link href={`/book/${journey.id}`} className="block w-full h-full">
                         {/* Background Image */}
@@ -84,7 +84,7 @@ export default function JourneyGrid({ journeys, loading, error }: JourneyGridPro
 
                         {/* Content */}
                         <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                            <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                            <div className="transform translate-y-0 md:translate-y-4 md:group-hover:translate-y-0 transition-transform duration-500">
                                 <div className="flex items-center gap-2 text-vsoe-gold mb-2 text-xs tracking-[0.2em] uppercase font-bold">
                                     <Calendar size={12} />
                                     <span>{formatDate(journey.departureDate)}</span>
@@ -94,7 +94,7 @@ export default function JourneyGrid({ journeys, loading, error }: JourneyGridPro
                                     {journey.name}
                                 </h2>
 
-                                <p className="text-vsoe-cream/70 text-sm leading-relaxed mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 line-clamp-3">
+                                <p className="text-vsoe-cream/70 text-sm leading-relaxed mb-6 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100 line-clamp-3">
                                     {journey.description}
                                 </p>
 

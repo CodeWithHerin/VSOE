@@ -46,7 +46,7 @@ export default async function JourneyPage({ params }: { params: Promise<{ journe
                     <div className="flex flex-col md:flex-row justify-between items-end gap-8">
                         <div>
                             <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block mb-4">The Journey</span>
-                            <h1 className="text-5xl md:text-7xl font-serif text-white mb-6">{journey.name}</h1>
+                            <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-white mb-6">{journey.name}</h1>
                             <div className="flex gap-8 text-sm text-white/70">
                                 <div className="flex items-center gap-2">
                                     <Calendar size={14} className="text-vsoe-gold" />
@@ -63,7 +63,7 @@ export default async function JourneyPage({ params }: { params: Promise<{ journe
             </div>
 
             {/* Booking Wizard Section */}
-            <div className="relative z-20 max-w-7xl mx-auto px-6 py-20 -mt-20">
+            <div className="relative z-20 max-w-7xl mx-auto px-6 py-20 -mt-10 md:-mt-20">
                 <div className="bg-vsoe-midnight border border-white/10 p-8 md:p-16 rounded-sm shadow-2xl">
                     <BookingWizard journey={journey} />
                 </div>
@@ -73,9 +73,9 @@ export default async function JourneyPage({ params }: { params: Promise<{ journe
             <div className="max-w-4xl mx-auto px-6 py-20">
                 <h3 className="text-2xl font-serif text-vsoe-gold mb-8 text-center">Your Itinerary</h3>
                 <div className="space-y-12">
-                    <div className="flex gap-8 group">
-                        <div className="w-24 text-right pt-2 text-sm text-vsoe-gold font-bold">Day 1</div>
-                        <div className="relative border-l border-white/20 pl-8 pb-12">
+                    <div className="flex gap-4 sm:gap-8 group">
+                        <div className="w-14 sm:w-24 text-right pt-2 text-sm text-vsoe-gold font-bold">Day 1</div>
+                        <div className="relative border-l border-white/20 pl-4 sm:pl-8 pb-12">
                             <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-vsoe-gold" />
                             <h4 className="text-xl font-serif text-white mb-2">Departure</h4>
                             <p className="text-white/60 text-sm leading-relaxed">
@@ -84,9 +84,9 @@ export default async function JourneyPage({ params }: { params: Promise<{ journe
                             </p>
                         </div>
                     </div>
-                    <div className="flex gap-8 group">
-                        <div className="w-24 text-right pt-2 text-sm text-vsoe-gold font-bold">Day 2</div>
-                        <div className="relative border-l border-white/20 pl-8">
+                    <div className="flex gap-4 sm:gap-8 group">
+                        <div className="w-14 sm:w-24 text-right pt-2 text-sm text-vsoe-gold font-bold">Day 2</div>
+                        <div className="relative border-l border-white/20 pl-4 sm:pl-8">
                             <div className="absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full bg-vsoe-gold" />
                             <h4 className="text-xl font-serif text-white mb-2">Arrival</h4>
                             <p className="text-white/60 text-sm leading-relaxed">

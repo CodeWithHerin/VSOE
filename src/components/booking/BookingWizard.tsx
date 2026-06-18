@@ -125,7 +125,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
     return (
         <div className="w-full max-w-5xl mx-auto">
             {/* Cinematic Progress Tracker - "The Timeline" */}
-            <div className="relative mb-16 md:mb-20 px-4">
+            <div className="relative mb-16 md:mb-20 px-6 sm:px-4">
                 <div className="absolute top-1/2 left-0 w-full h-[1px] bg-white/10 -z-10" />
                 <div className="flex justify-between items-center max-w-3xl mx-auto">
                     {steps.map((s) => (
@@ -144,7 +144,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                                     <span className={`text-sm font-serif ${step >= s.id ? 'text-vsoe-gold' : 'text-white/30'}`}>{s.id}</span>
                                 )}
                             </motion.div>
-                            <span className={`absolute -bottom-8 text-[10px] md:text-xs uppercase tracking-[0.2em] font-bold whitespace-nowrap transition-colors duration-300
+                            <span className={`absolute -bottom-7 md:-bottom-8 text-[8px] sm:text-[10px] md:text-xs uppercase tracking-[0.1em] sm:tracking-[0.2em] font-bold whitespace-nowrap transition-colors duration-300
                                 ${step >= s.id ? 'text-vsoe-gold' : 'text-white/20'}`}>
                                 {s.label}
                             </span>
@@ -254,7 +254,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                                 <div className="w-6 h-6 border-2 border-vsoe-gold border-t-transparent rounded-full animate-spin" />
                             </div>
                         ) : (
-                        <form onSubmit={handleDetailsSubmit} className="space-y-8 bg-white/5 p-10 rounded-sm border border-white/10 backdrop-blur-sm">
+                        <form onSubmit={handleDetailsSubmit} className="space-y-8 bg-white/5 p-6 md:p-10 rounded-sm border border-white/10 backdrop-blur-sm">
                             <input type="hidden" name="journeyId" value={journey.id} />
                             <input type="hidden" name="cabinId" value={selectedCabin?.data.cabinId} />
                             <input type="hidden" name="price" value={selectedCabin?.data.price} />
@@ -318,7 +318,7 @@ export default function BookingWizard({ journey }: BookingWizardProps) {
                                 </div>
                             </div>
                             
-                            <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                                 <div>
                                     <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">Guest</p>
                                     <p className="text-white/80">{String(formDataState?.get('firstName') || '')} {String(formDataState?.get('lastName') || '')}</p>
