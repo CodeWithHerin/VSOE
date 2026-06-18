@@ -99,7 +99,7 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 24 }}
                 transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-                className="relative bg-vsoe-midnight text-vsoe-cream max-w-lg w-full p-10 md:p-14 max-h-[90vh] flex flex-col border border-vsoe-gold/20"
+                className="relative bg-vsoe-midnight text-vsoe-cream max-w-lg w-full p-6 sm:p-10 md:p-14 max-h-[90vh] flex flex-col border border-vsoe-gold/20"
                 onClick={(e) => e.stopPropagation()}
                 onWheelCapture={(e) => e.stopPropagation()}
                 onTouchMoveCapture={(e) => e.stopPropagation()}
@@ -128,8 +128,8 @@ function MenuModal({ venueId, venueName, onClose }: MenuModalProps) {
                     onTouchMoveCapture={(e) => e.stopPropagation()}
                 >
                     {menu.courses.map((item, i) => (
-                        <div key={i} className="flex gap-6 items-baseline border-b border-white/8 pb-4">
-                            <span className="text-[10px] uppercase tracking-[0.2em] text-vsoe-gold/70 w-28 shrink-0">
+                        <div key={i} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 border-b border-white/8 pb-4">
+                            <span className="text-[10px] uppercase tracking-[0.2em] text-vsoe-gold/70 sm:w-28 sm:shrink-0">
                                 {item.course}
                             </span>
                             <span className="text-sm text-white/80 font-sans leading-relaxed">
@@ -215,7 +215,7 @@ export default function DiningPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.9, delay: 0.4 }}
-                        className="text-5xl md:text-7xl font-serif"
+                        className="text-4xl sm:text-5xl md:text-7xl font-serif"
                     >
                         {t.diningPage.title}
                     </motion.h1>
@@ -231,7 +231,7 @@ export default function DiningPage() {
             </div>
 
             {/* Venue cards — alternating layout */}
-            <div className="max-w-7xl mx-auto px-6 pb-24 space-y-32">
+            <div className="max-w-7xl mx-auto px-6 pb-24 space-y-16 sm:space-y-24 md:space-y-32">
                 {dining.map((venue, index) => (
                     <motion.div
                         key={venue.id}
@@ -261,7 +261,7 @@ export default function DiningPage() {
                             <span className="text-vsoe-gold text-[10px] font-bold tracking-[0.3em] uppercase">
                                 {venue.badge}
                             </span>
-                            <h2 className="text-4xl md:text-5xl font-serif text-vsoe-blue leading-tight">
+                            <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif text-vsoe-blue leading-tight">
                                 {venue.name}
                             </h2>
                             <p className="text-vsoe-blue/70 leading-relaxed font-sans text-[15px]">
