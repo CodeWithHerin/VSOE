@@ -115,6 +115,17 @@ function usePrefersReducedMotion(): boolean {
   }, []);
   return reduced;
 }
+function useIsMobile(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return isMobile;
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Sub-component: SteamLocomotive
@@ -239,6 +250,7 @@ export default function InteractiveRouteMap() {
   const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isInView      = useInView(sectionRef, { once: true, margin: '-80px' });
   const reducedMotion = usePrefersReducedMotion();
+  const isMobile = useIsMobile();
 
   const palette = PALETTES[mode];
 
@@ -463,26 +475,30 @@ export default function InteractiveRouteMap() {
               {/* Fine dot grid */}
               <rect width={VB_W} height={VB_H} fill="url(#vsoe-grid)" />
 
-              {/* Cartographic degree labels — longitude */}
-              <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
-                <text x="150"  y="18" textAnchor="middle">10°W</text>
-                <text x="300"  y="18" textAnchor="middle">0°</text>
-                <text x="450"  y="18" textAnchor="middle">10°E</text>
-                <text x="600"  y="18" textAnchor="middle">20°E</text>
-                <text x="750"  y="18" textAnchor="middle">30°E</text>
-                <text x="900"  y="18" textAnchor="middle">40°E</text>
-                <text x="1050" y="18" textAnchor="middle">50°E</text>
-              </g>
+              {/* Cartographic degree labels — longitude (hidden on mobile) */}
+              {!isMobile && (
+                <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
+                  <text x="150"  y="18" textAnchor="middle">10°W</text>
+                  <text x="300"  y="18" textAnchor="middle">0°</text>
+                  <text x="450"  y="18" textAnchor="middle">10°E</text>
+                  <text x="600"  y="18" textAnchor="middle">20°E</text>
+                  <text x="750"  y="18" textAnchor="middle">30°E</text>
+                  <text x="900"  y="18" textAnchor="middle">40°E</text>
+                  <text x="1050" y="18" textAnchor="middle">50°E</text>
+                </g>
+              )}
 
-              {/* Cartographic degree labels — latitude */}
-              <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
-                <text x="12" y="102"  textAnchor="start">55°N</text>
-                <text x="12" y="152"  textAnchor="start">50°N</text>
-                <text x="12" y="202"  textAnchor="start">45°N</text>
-                <text x="12" y="252"  textAnchor="start">40°N</text>
-                <text x="12" y="302"  textAnchor="start">35°N</text>
-                <text x="12" y="352"  textAnchor="start">30°N</text>
-              </g>
+              {/* Cartographic degree labels — latitude (hidden on mobile) */}
+              {!isMobile && (
+                <g fill="currentColor" fontSize="6.5" fontFamily="Georgia, serif" opacity="0.22" letterSpacing="0.5">
+                  <text x="12" y="102"  textAnchor="start">55°N</text>
+                  <text x="12" y="152"  textAnchor="start">50°N</text>
+                  <text x="12" y="202"  textAnchor="start">45°N</text>
+                  <text x="12" y="252"  textAnchor="start">40°N</text>
+                  <text x="12" y="302"  textAnchor="start">35°N</text>
+                  <text x="12" y="352"  textAnchor="start">30°N</text>
+                </g>
+              )}
 
               {/* ── Cloud drift (atmospheric depth, Layer 1 back) ── */}
               {!reducedMotion && (
@@ -535,10 +551,12 @@ export default function InteractiveRouteMap() {
                 transition={{ duration: reducedMotion ? 0 : 1.5, delay: 0.6, ease: 'easeInOut' }}
               />
 
-              {/* Route line labels */}
+              {/* Route line labels (hidden on mobile) */}
+              {!isMobile && <>
               <text x={214} y={128} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.45" transform="rotate(-14, 214, 128)">BRITISH PULLMAN</text>
               <text x={395} y={222} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.50" transform="rotate(-7, 395, 222)">THE CLASSIC ROUTE</text>
               <text x={760} y={288} fill="currentColor" fontSize="7.5" fontFamily="sans-serif" letterSpacing="1.5" opacity="0.40" transform="rotate(-3, 760, 288)">THE GRAND EXPRESS</text>
+              </>}
 
               {/* ── Steam locomotive (CSS offset-path animation for GPU perf) ── */}
               {isInView && (
@@ -589,9 +607,9 @@ export default function InteractiveRouteMap() {
                     {/* City label */}
                     <text
                       x={labelX} y={labelY}
-                      fill={CREAM} fontSize="11" fontFamily="Georgia, serif"
+                      fill={CREAM} fontSize={isMobile ? "20" : "11"} fontFamily="Georgia, serif"
                       letterSpacing="2" textAnchor={textAnchor}
-                      opacity={isHovered ? 1 : 0.75}
+                      opacity={isHovered ? 1 : 0.85}
                       style={{ transition: 'opacity 0.2s', userSelect: 'none' }}
                     >
                       {city.label.toUpperCase()}
@@ -630,16 +648,18 @@ export default function InteractiveRouteMap() {
                 />
               ))}
 
-              {/* ── Compass rose (Static now) ── */}
-              <CompassRose accent={palette.accent} />
+              {/* ── Compass rose (Static now, hidden on mobile) ── */}
+              {!isMobile && <CompassRose accent={palette.accent} />}
 
-              {/* ── Bottom labels ── */}
+              {/* ── Bottom labels (hidden on mobile) ── */}
+              {!isMobile && <>
               <text x={22} y={VB_H - 18} fill="currentColor" fontSize="8.5" fontFamily="sans-serif" letterSpacing="3" opacity="0.45">
                 {(t.routeMap?.network ?? 'Venice Simplon-Orient-Express Network').toUpperCase()}
               </text>
               <text x={VB_W - 22} y={VB_H - 18} fill={CREAM} fontSize="8.5" fontFamily="Georgia, serif" opacity="0.28" textAnchor="end" fontStyle="italic">
                 Est. 1982
               </text>
+              </>}
 
               {/* Vignette overlay (top of SVG stack) */}
               <rect width={VB_W} height={VB_H} fill="url(#vsoe-vignette-svg)" pointerEvents="none" />

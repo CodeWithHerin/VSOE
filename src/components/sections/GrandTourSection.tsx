@@ -129,13 +129,13 @@ export default function GrandTourSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7, ease, delay: 0.15 }}
-          className="flex gap-0 mb-8 border border-vsoe-gold/15 rounded-sm overflow-hidden w-fit"
+          className="flex gap-0 mb-8 border border-vsoe-gold/15 rounded-sm overflow-hidden w-full md:w-fit"
         >
           {JOURNEYS.map((journey, index) => (
             <button
               key={journey.id}
               onClick={() => setActiveIndex(index)}
-              className={`px-6 py-3 text-[8px] uppercase tracking-[0.4em] font-bold transition-all duration-300 border-r border-vsoe-gold/15 last:border-r-0 ${
+              className={`flex-1 md:flex-none px-3 md:px-6 py-3 text-[8px] uppercase tracking-[0.25em] md:tracking-[0.4em] font-bold transition-all duration-300 border-r border-vsoe-gold/15 last:border-r-0 ${
                 activeIndex === index
                   ? 'bg-vsoe-gold text-vsoe-midnight'
                   : 'text-vsoe-gold/50 hover:text-vsoe-gold hover:bg-vsoe-gold/5'
@@ -190,7 +190,7 @@ export default function GrandTourSection() {
             <div className="relative w-full md:w-[45%] flex flex-col justify-center px-8 py-10 md:py-14 md:px-12">
 
               {/* Ghost index */}
-              <span className="text-vsoe-gold/10 font-serif text-[60px] leading-none absolute top-4 right-6 select-none pointer-events-none">
+              <span className="text-vsoe-gold/10 font-serif text-[40px] md:text-[60px] leading-none absolute top-4 right-4 md:right-6 select-none pointer-events-none">
                 {String(activeIndex + 1).padStart(2, '0')}
               </span>
 
