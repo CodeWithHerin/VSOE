@@ -87,7 +87,7 @@ export default function AIConcierge() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 onClick={() => setIsOpen(true)}
-                className={`fixed bottom-8 right-20 z-[200] p-4 rounded-full bg-vsoe-gold text-vsoe-midnight shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-110 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'}`}
+                className={`fixed bottom-24 right-4 lg:bottom-8 lg:right-20 z-[200] p-4 rounded-full bg-vsoe-gold text-vsoe-midnight shadow-[0_0_30px_rgba(197,160,89,0.3)] hover:scale-110 transition-transform duration-300 ${isOpen ? 'hidden' : 'flex'}`}
             >
                 <Sparkles size={24} />
             </motion.button>
@@ -101,8 +101,8 @@ export default function AIConcierge() {
                         exit={{ opacity: 0, y: 50, scale: 0.9 }}
                         onWheel={(e) => e.stopPropagation()}
                         onTouchMove={(e) => e.stopPropagation()}
-                        className="fixed bottom-8 right-20 z-[200] w-96 bg-vsoe-midnight border border-vsoe-gold/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl"
-                        style={{ height: 'min(500px, calc(100vh - 120px))' }}
+                        className="fixed z-[200] bg-vsoe-midnight border border-vsoe-gold/30 rounded-2xl shadow-2xl flex flex-col overflow-hidden backdrop-blur-xl inset-x-4 bottom-4 lg:inset-x-auto lg:right-20 lg:left-auto lg:bottom-8 lg:w-96"
+                        style={{ height: 'min(520px, calc(100vh - 100px))' }}
                     >
                         {/* Header */}
                         <div className="p-4 bg-vsoe-gold/10 border-b border-vsoe-gold/20 flex justify-between items-center">
