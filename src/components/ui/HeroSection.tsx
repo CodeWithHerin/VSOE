@@ -173,7 +173,7 @@ export default function HeroSection({
                                 >
                                     <motion.span
                                         style={{ y: transform.y, opacity: transform.opacity }}
-                                        className="font-serif text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-vsoe-cream drop-shadow-lg inline-block"
+                                        className="font-serif text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-light tracking-wide text-vsoe-cream drop-shadow-lg inline-block"
                                     >
                                         {word}
                                     </motion.span>
@@ -182,6 +182,21 @@ export default function HeroSection({
                         })}
                     </div>
                 )}
+
+                {/* Mobile-only Book CTA */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 1, delay: 1.2 }}
+                    className="lg:hidden mt-10"
+                >
+                    <a
+                        href="/book"
+                        className="inline-block bg-vsoe-gold text-vsoe-midnight px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.25em] hover:bg-white transition-colors duration-300"
+                    >
+                        {t.nav.bookJourney}
+                    </a>
+                </motion.div>
 
                 {/* Scroll Indicator */}
                 <motion.button

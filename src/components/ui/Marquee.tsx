@@ -188,7 +188,8 @@ export default function Marquee() {
       <div
         ref={containerRef}
         className="bg-vsoe-midnight border-y border-vsoe-gold/20 relative z-20 overflow-hidden flex items-center"
-        style={{ minHeight: '180px', paddingTop: '32px', paddingBottom: '32px' }}
+        style={{ minHeight: '140px', paddingTop: '24px', paddingBottom: '24px' }}
+        data-marquee-container
       >
         {/* Track ballast — full width repeating pattern */}
         <div style={trackStyle} />

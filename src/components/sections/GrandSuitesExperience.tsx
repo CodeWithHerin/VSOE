@@ -129,14 +129,14 @@ export default function GrandSuitesExperience() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <h3 className="mb-6 font-serif text-6xl text-white md:text-8xl">
+                        <h3 className="mb-4 md:mb-6 font-serif text-4xl sm:text-5xl text-white md:text-8xl">
                             {activeSuite.city}
                         </h3>
-                        <p className="mb-8 max-w-xl font-sans text-lg font-light leading-relaxed text-vsoe-cream/90">
+                        <p className="mb-6 md:mb-8 max-w-xl font-sans text-base md:text-lg font-light leading-relaxed text-vsoe-cream/90">
                             {activeSuite.description}
                         </p>
 
-                        <div className="flex gap-8">
+                        <div className="flex flex-wrap gap-4 md:gap-8">
                             {activeSuite.features.map((feature, i) => (
                                 <div key={i} className="flex items-center gap-2">
                                     <span className="h-[1px] w-4 bg-vsoe-gold" />
@@ -148,7 +148,7 @@ export default function GrandSuitesExperience() {
                         </div>
 
                         {/* CTAs */}
-                        <div className="flex items-center gap-6 mt-10">
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 mt-8 md:mt-10">
                           <Link
                             href="/book"
                             className="group flex items-center gap-3 px-8 py-3 bg-vsoe-gold text-vsoe-midnight text-[9px] uppercase tracking-[0.45em] font-bold hover:bg-vsoe-cream transition-all duration-300"

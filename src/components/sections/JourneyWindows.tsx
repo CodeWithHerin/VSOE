@@ -249,7 +249,7 @@ export default function JourneyWindows() {
             >
               <ClockTime time={scene.time} />
               <div className="mb-3">
-                <span className="font-serif text-4xl md:text-5xl text-vsoe-cream tracking-wide">
+                <span className="font-serif text-3xl sm:text-4xl md:text-5xl text-vsoe-cream tracking-wide">
                   {scene.city}
                 </span>
               </div>
@@ -288,7 +288,7 @@ export default function JourneyWindows() {
         </motion.div>
 
         {/* Progress indicator */}
-        <div className="absolute right-8 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
+        <div className="absolute right-3 md:right-8 top-1/2 -translate-y-1/2 z-30 flex flex-col items-center">
           <div className="relative w-px bg-vsoe-gold/20" style={{ height: '160px' }}>
             <motion.div
               style={{ height: progressHeight }}

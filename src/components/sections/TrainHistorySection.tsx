@@ -61,7 +61,7 @@ export default function TrainHistorySection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={vp}
                         transition={{ duration: 0.8, ease, delay: 0.25 }}
-                        className="text-5xl md:text-6xl font-serif leading-tight"
+                        className="text-4xl md:text-6xl font-serif leading-tight"
                     >
                         {t.history.title1} <br />
                         <span className="text-vsoe-gold">{t.history.title2}</span>
@@ -110,7 +110,7 @@ export default function TrainHistorySection() {
                 </div>
 
                 {/* Visuals */}
-                <div className="relative h-[600px] grid grid-cols-2 gap-8">
+                <div className="relative h-[380px] md:h-[600px] grid grid-cols-2 gap-4 md:gap-8">
                     <motion.div
                         style={{ y: y1, rotate: rotate1 }}
                         className="relative h-[80%] mt-auto self-end group"
