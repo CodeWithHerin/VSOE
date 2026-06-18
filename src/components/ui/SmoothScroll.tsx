@@ -39,8 +39,12 @@ export default function SmoothScroll({ children }: { children?: React.ReactNode 
 
         lenisRef.current = lenis;
 
+        let isDispatching = false;
         lenis.on('scroll', () => {
+            if (isDispatching) return;
+            isDispatching = true;
             window.dispatchEvent(new Event('scroll'));
+            isDispatching = false;
         });
 
         function raf(time: number) {
