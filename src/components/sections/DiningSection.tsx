@@ -43,7 +43,7 @@ export default function DiningSection() {
                     </TextReveal>
 
                     <TextReveal delay={0.1}>
-                        <h2 className="text-5xl md:text-7xl text-vsoe-cream mb-8 leading-[1.1] font-serif">
+                        <h2 className="text-4xl sm:text-5xl md:text-7xl text-vsoe-cream mb-8 leading-[1.1] font-serif">
                             {t.dining.haute}
                         </h2>
                     </TextReveal>
@@ -54,7 +54,7 @@ export default function DiningSection() {
                         </p>
                     </TextReveal>
 
-                    <div className="flex gap-4 mb-8">
+                    <div className="flex flex-wrap gap-4 mb-8">
                         <TextReveal delay={0.3}>
                             <span className="flex items-center gap-2 text-vsoe-gold text-xs tracking-[0.2em] uppercase font-sans">
                                 <Wine className="w-4 h-4" /> {t.dining.sommelier}
