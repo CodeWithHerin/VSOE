@@ -40,7 +40,7 @@ export default function SuitesPage() {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-6xl md:text-8xl font-serif text-white mb-8"
+                        className="text-4xl sm:text-5xl md:text-8xl font-serif text-white mb-8"
                     >
                         {t.suitesPage.title}
                     </motion.h1>

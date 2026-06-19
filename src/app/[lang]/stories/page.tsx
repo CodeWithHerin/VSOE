@@ -2,7 +2,6 @@
 
 
 
-import HeroSection from '@/components/ui/HeroSection';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -50,16 +49,11 @@ export default function StoriesPage() {
         <main className="min-h-screen bg-vsoe-midnight text-vsoe-cream selection:bg-vsoe-gold selection:text-vsoe-blue">
             
 
-            <HeroSection
-            // title="The Journal"
-            // subtitle="Stories from the Rails"
-            // backgroundImage="https://images.unsplash.com/photo-1534053916961-07379d48b11a?q=80&w=2670&auto=format&fit=crop"
-            />
-            {/* Custom Hero Overlay since HeroSection might be video based */}
-            <div className="absolute top-0 w-full h-[80vh] flex items-center justify-center pointer-events-none z-10">
+            {/* Hero — custom block; HeroSection requires video/image which this page intentionally doesn't use */}
+            <div className="relative w-full h-[55vh] sm:h-[65vh] md:h-[80vh] flex items-center justify-center bg-vsoe-midnight px-6">
                 <div className="text-center">
                     <span className="text-vsoe-gold text-sm font-bold tracking-[0.4em] uppercase mb-6 block">{t.storiesPage.journal}</span>
-                    <h1 className="text-6xl md:text-8xl font-serif text-white">{t.storiesPage.title}</h1>
+                    <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif text-white">{t.storiesPage.title}</h1>
                 </div>
             </div>
 
