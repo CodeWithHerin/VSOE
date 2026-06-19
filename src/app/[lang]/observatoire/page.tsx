@@ -84,7 +84,7 @@ export default function ObservatoirePage() {
                         initial={{ opacity: 0, y: 32 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 1, delay: 0.6 }}
-                        className="font-serif text-6xl md:text-8xl lg:text-[9rem] text-vsoe-cream leading-none tracking-tight mb-2"
+                        className="font-serif text-3xl sm:text-4xl md:text-8xl lg:text-[9rem] text-vsoe-cream leading-none tracking-tight mb-2"
                     >
                         L'Observatoire
                     </motion.h1>

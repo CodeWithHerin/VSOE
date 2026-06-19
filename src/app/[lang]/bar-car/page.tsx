@@ -3,7 +3,6 @@
 
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 import { useTranslation } from '@/lib/i18n/useTranslation';
 
 export default function BarCarPage() {
@@ -55,7 +54,7 @@ export default function BarCarPage() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1 }}
-                        className="text-8xl md:text-[10rem] font-serif text-[#c5a059] leading-none"
+                        className="text-5xl sm:text-6xl md:text-[10rem] font-serif text-[#c5a059] leading-none"
                     >
                         3674
                     </motion.h1>
