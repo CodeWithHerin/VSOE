@@ -22,7 +22,7 @@ export default function OccasionsPage() {
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
                     <div className="space-y-8">
                         <span className="text-vsoe-gold text-xs font-bold tracking-[0.3em] uppercase block">{t.occasionsPage.suitedFor}</span>
-                        <h2 className="text-5xl md:text-6xl font-serif">{t.occasionsPage.wedTitle}</h2>
+                        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif">{t.occasionsPage.wedTitle}</h2>
                         <p className="text-vsoe-midnight/70 text-lg leading-relaxed font-light">
                             {t.occasionsPage.wedDesc}
                         </p>

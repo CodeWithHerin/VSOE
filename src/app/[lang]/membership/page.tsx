@@ -63,7 +63,7 @@ export default function MembershipPage() {
                     className="relative z-10 text-center px-6 max-w-4xl mt-20"
                 >
                     <span className="text-vsoe-gold text-xs font-bold tracking-[0.4em] uppercase block mb-6">The Inner Circle</span>
-                    <h1 className="text-5xl md:text-8xl font-serif mb-6 drop-shadow-2xl">{t.membershipPage.title}</h1>
+                    <h1 className="text-4xl sm:text-5xl md:text-8xl font-serif mb-6 drop-shadow-2xl">{t.membershipPage.title}</h1>
                     <p className="text-lg md:text-2xl font-light text-white/80 tracking-wide max-w-2xl mx-auto drop-shadow-md">
                         {t.membershipPage.subtitle}
                     </p>
@@ -106,11 +106,11 @@ export default function MembershipPage() {
                                 <div className="absolute inset-0 bg-vsoe-midnight/80 group-hover:bg-vsoe-midnight/40 transition-colors duration-500" />
                                 
                                 <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                                    <div className="text-vsoe-gold mb-4 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">
+                                    <div className="text-vsoe-gold mb-4 transform translate-y-0 md:translate-y-8 md:group-hover:translate-y-0 transition-transform duration-500">
                                         {ben.icon}
                                     </div>
-                                    <h3 className="text-xl font-serif text-vsoe-cream mb-2 transform translate-y-8 group-hover:translate-y-0 transition-transform duration-500">{ben.title}</h3>
-                                    <p className="text-sm text-white/70 font-sans opacity-0 group-hover:opacity-100 transform translate-y-8 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                                    <h3 className="text-xl font-serif text-vsoe-cream mb-2 transform translate-y-0 md:translate-y-8 md:group-hover:translate-y-0 transition-transform duration-500">{ben.title}</h3>
+                                    <p className="text-sm text-white/70 font-sans opacity-100 md:opacity-0 md:group-hover:opacity-100 transform translate-y-0 md:translate-y-8 md:group-hover:translate-y-0 transition-all duration-500 delay-100">
                                         {ben.desc}
                                     </p>
                                 </div>
