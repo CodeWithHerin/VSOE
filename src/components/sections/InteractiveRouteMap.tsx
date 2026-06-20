@@ -601,6 +601,7 @@ export default function InteractiveRouteMap() {
                     <motion.circle
                       cx={city.x} cy={city.y}
                       fill="currentColor"
+                      initial={{ r: 5 }}
                       animate={{ r: isHovered ? 8 : 5 }}
                       transition={{ duration: 0.2 }}
                     />
