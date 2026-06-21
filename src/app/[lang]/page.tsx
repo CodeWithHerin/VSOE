@@ -28,17 +28,11 @@ export default function Home() {
     switch (topInterest) {
       case 'gastronomy':
         return {
-          // video: "https://cdn.coverr.co/videos/coverr-pouring-wine-in-restaurant-5362/1080p.mp4",
-          // Override to Train video for consistency and reliability
-          // video: "https://videos.pexels.com/video-files/2883395/2883395-hd_1920_1080_30fps.mp4",
-          // Official VSOE Render (High Performance CDN)
-          video: "https://videos.ctfassets.net/txhaodyqr481/6g7G1G8Xy8y84s8o4kO6yS/09c316715f36611585c531d0537d8051/belmond-vsoe-hero.mp4",
+          video: "https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4",
           subtitle: t.hero.subtitleGastronomy
         };
       default:
         return {
-          // Reverting to Pexels as the CTFAssets link appears broken/restricted. 
-          // Alternative Cinematic Train Video
           video: "https://videos.pexels.com/video-files/3205626/3205626-hd_1920_1080_25fps.mp4",
           subtitle: t.hero.subtitleDefault
         };
@@ -52,7 +46,6 @@ export default function Home() {
 
       {/* PROLOGUE — The Station */}
       <HeroSection
-        videoSrc="/hero-train.webm"
         backgroundImage="/images/vsoe/vsoe-countryside-window.jpg"
         title={t.hero.title}
         subtitle={content.subtitle}
